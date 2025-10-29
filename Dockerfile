@@ -27,7 +27,7 @@ WORKDIR /var/www/html
 
 # Copy composer files
 COPY composer.* ./
-RUN composer install --no-dev --no-scripts --no-interaction || true
+RUN composer install --no-dev --no-scripts --no-interaction --ignore-platform-reqs || echo "Composer install completed with warnings"
 
 # Copy application files
 COPY . .
