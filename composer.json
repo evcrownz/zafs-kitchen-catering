@@ -1,6 +1,22 @@
 {
-    "require": {
-        "phpmailer/phpmailer": "^6.10",
-        "google/apiclient": "2.15.0"
+  "name": "vendor/zafs_kitchen",
+  "autoload": {
+    "psr-4": {
+      "Vendor\\ZafsKitchen\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Cronics Zayn",
+      "email": "zafskitchen95@gmail.com"
+    }
+  ],
+  "require": {
+    "phpmailer/phpmailer": "^7.0"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php -r \"echo '✅ PHPMailer installed successfully!\\n';\""
+    ]
+  }
 }
