@@ -1,38 +1,39 @@
 FROM php:8.2-apache
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    unzip \
-    git \
-    && docker-php-ext-install pdo pdo_pgsql \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install PostgreSQL extension
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    docker-php-ext-install pdo pdo_pgsql && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Enable Apache modules
-RUN a2enmod rewrite headers
+# Enable mod_rewrite
+RUN a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
-COPY . /var/www/html/
+# Copy composer files first (better caching)
+COPY composer.* ./
+RUN composer install --no-dev --no-scripts --no-interaction || true
 
-# Install PHP dependencies
-RUN if [ -f composer.json ]; then composer install --no-dev --optimize-autoloader; fi
+# Copy everything else
+COPY . .
 
-# Fix permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
 
-# Make startup script executable
-RUN chmod +x /var/www/html/docker-start.sh
+# Railway uses PORT env variable - configure Apache to use it
+ENV APACHE_DOCUMENT_ROOT=/var/www/html
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Expose default port
-EXPOSE 80
+# This is the key: make Apache listen on Railway's PORT
+ENV PORT=80
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:${PORT}/g' /etc/apache2/sites-available/000-default.conf
 
-# Start Apache with custom script
-CMD ["/var/www/html/docker-start.sh"]
+# Default command
+CMD ["apache2-foreground"]
