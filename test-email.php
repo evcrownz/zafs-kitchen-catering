@@ -3,7 +3,7 @@ require 'vendor/autoload.php';
 require 'sendmail.php';
 
 // Test OTP email
-$test_email = 'your-email@gmail.com'; // ← PUT YOUR EMAIL HERE
+$test_email = 'agbojames00@gmail.com'; // ← PUT YOUR EMAIL HERE
 $test_otp = '123456';
 $test_name = 'Test User';
 
