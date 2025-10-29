@@ -27,23 +27,27 @@ RUN a2enmod rewrite
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first for better caching
-COPY composer.json composer.lock* ./
+# Copy application files first
+COPY . .
 
-# Install dependencies with verbose output
-RUN composer install --no-dev --no-scripts --no-interaction --optimize-autoloader -vvv && \
+# Remove old vendor and lock file to start fresh
+RUN rm -rf vendor composer.lock
+
+# Install dependencies fresh (ignore lock file)
+RUN composer require phpmailer/phpmailer:^7.0 --no-interaction --optimize-autoloader && \
+    composer require google/apiclient:^2.15 --no-interaction --optimize-autoloader && \
     composer dump-autoload --optimize && \
     echo "✅ Composer dependencies installed" && \
     ls -la vendor/
 
-# Copy application files
-COPY . .
-
-# Verify vendor directory exists and has Google client
-RUN if [ ! -d "vendor/google/apiclient" ]; then \
-        echo "❌ Google API Client not found! Reinstalling..." && \
-        composer require google/apiclient --no-interaction; \
-    fi
+# Verify Google Client is available
+RUN php -r "require 'vendor/autoload.php'; \
+    if (class_exists('Google_Client')) { \
+        echo '✅ Google_Client class is available\n'; \
+    } else { \
+        echo '❌ Google_Client class NOT found\n'; \
+        exit(1); \
+    }"
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html && \
@@ -60,9 +64,6 @@ RUN echo '<Directory /var/www/html/>' >> /etc/apache2/sites-available/000-defaul
     echo '    AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
     echo '    Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
     echo '</Directory>' >> /etc/apache2/sites-available/000-default.conf
-
-# Health check
-RUN php -r "require 'vendor/autoload.php'; echo '✅ Autoload works\n';" || echo "❌ Autoload failed"
 
 EXPOSE ${PORT}
 
