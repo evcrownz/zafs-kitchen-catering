@@ -1,434 +1,427 @@
-<?php 
-// This fixes the "OTP has expired" issue due to mismatched timezones
-date_default_timezone_set('Asia/Manila');
+<?php
 
-session_start();
-require "connection.php";
-require_once "sendmail.php";
-require_once "google-oauth-config.php";
+    // Include PHPMailer
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    require 'vendor/autoload.php';
 
-// Initialize variables
-$email = "";
-$name = "";
-$errors = [];
+    $email = "";
+    $name = "";
+    $errors = array();
 
-// Function to generate secure reset token
-function generateResetToken($length = 32) {
-    return bin2hex(random_bytes($length));
-}
-
-// If already logged in, redirect to dashboard
-if (isset($_SESSION['user_id']) && isset($_SESSION['email'])) {
-    header('Location: dashboard.php');
-    exit();
-}
-
-// Handle Google OAuth Callback
-if(isset($_GET['code'])) {
-    error_log("=== GOOGLE CALLBACK STARTED ===");
-    
-    if(isset($_SESSION['user_id'])) {
-        session_unset();
+    function generateOTP($length = 6) {
+        // More secure OTP generation
+        $otp = '';
+        for ($i = 0; $i < $length; $i++) {
+            $otp .= random_int(0, 9);
+        }
+        return $otp;
     }
-    
-    $result = handleGoogleCallback($_GET['code']);
-    
-    if($result['success']) {
-        $email = $result['email'];
-        $name = $result['name'];
-        $google_id = $result['google_id'];
-        $avatar_url = $result['avatar'];
-        
-        try {
-            $check_user = "SELECT * FROM usertable WHERE email = :email OR google_id = :google_id";
-            $stmt = $conn->prepare($check_user);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':google_id', $google_id);
-            $stmt->execute();
+
+    // Function to send OTP email
+        function sendOTPEmail($email, $otp, $name) {
+            $mail = new PHPMailer(true);
+
+            try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
             
-            if($stmt->rowCount() > 0) {
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                
-                if(empty($user['google_id'])) {
-                    $update = "UPDATE usertable SET google_id = :google_id, avatar_url = :avatar_url, oauth_provider = 'google' WHERE email = :email";
-                    $update_stmt = $conn->prepare($update);
-                    $update_stmt->bindParam(':google_id', $google_id);
-                    $update_stmt->bindParam(':avatar_url', $avatar_url);
-                    $update_stmt->bindParam(':email', $email);
-                    $update_stmt->execute();
-                }
-                
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['name'];
-                $_SESSION['name'] = $user['name'];
-                $_SESSION['email'] = $email;
-                $_SESSION['avatar_url'] = $avatar_url;
-                
-                header('Location: dashboard.php');
-                exit();
-                
-            } else {
-                $status = 'verified';
-                $oauth_provider = 'google';
-                $random_password = password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT);
-                
-                $insert = "INSERT INTO usertable (name, email, password, status, google_id, avatar_url, oauth_provider) 
-                          VALUES (:name, :email, :password, :status, :google_id, :avatar_url, :oauth_provider)";
-                $insert_stmt = $conn->prepare($insert);
-                $insert_stmt->bindParam(':name', $name);
-                $insert_stmt->bindParam(':email', $email);
-                $insert_stmt->bindParam(':password', $random_password);
-                $insert_stmt->bindParam(':status', $status);
-                $insert_stmt->bindParam(':google_id', $google_id);
-                $insert_stmt->bindParam(':avatar_url', $avatar_url);
-                $insert_stmt->bindParam(':oauth_provider', $oauth_provider);
-                
-                if($insert_stmt->execute()) {
-                    $user_id = $conn->lastInsertId();
+            // Consider moving these to environment variables or config file
+            $mail->Username   = 'zafskitchen95@gmail.com';
+            $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
+            $mail->Port       = 465;
+
+            // Recipients
+            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8')); // Sanitize name
+            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Email Verification - Zaf\'s Kitchen';
+            
+            // Sanitize variables for HTML output
+            $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
+            
+            $mail->Body = "
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Email Verification</title>
+            </head>
+            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
+                    <div style='text-align: center; margin-bottom: 30px;'>
+                        <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
+                    </div>
                     
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['username'] = $name;
-                    $_SESSION['name'] = $name;
-                    $_SESSION['email'] = $email;
-                    $_SESSION['avatar_url'] = $avatar_url;
+                    <h2 style='color: #E75925; margin-bottom: 20px;'>Welcome to Zaf's Kitchen!</h2>
+                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
+                    <p style='margin-bottom: 20px;'>Thank you for signing up! Please use the following verification code to complete your registration:</p>
                     
-                    header('Location: dashboard.php');
-                    exit();
-                }
-            }
-        } catch(PDOException $e) {
-            error_log("Database error: " . $e->getMessage());
-            $errors['google-error'] = 'Database error occurred.';
+                    <div style='background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; text-align: center; margin: 30px 0; border-radius: 12px; border-left: 5px solid #E75925;'>
+                        <p style='margin: 0 0 10px 0; font-size: 14px; color: #666;'>Your Verification Code:</p>
+                        <h1 style='color: #E75925; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);'>$safe_otp</h1>
+                    </div>
+                    
+                    <div style='background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0; color: #856404;'><strong>Important:</strong> This code will expire in <strong>10 minutes</strong> for security purposes.</p>
+                    </div>
+                    
+                    <p style='margin-bottom: 20px;'>If you didn't create an account with us, please ignore this email.</p>
+                    
+                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
+                        <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
+                            This is an automated message from Zaf's Kitchen.<br>
+                            Please do not reply to this email.<br>
+                            <br>
+                            © " . date('Y') . " Zaf's Kitchen. All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            ";
+
+            // Alternative plain text version for email clients that don't support HTML
+            $mail->AltBody = "
+            Welcome to Zaf's Kitchen!
+            
+            Hello $safe_name,
+            
+            Thank you for signing up! Please use the following verification code to complete your registration:
+            
+            Verification Code: $safe_otp
+            
+            This code will expire in 10 minutes for security purposes.
+            
+            If you didn't create an account with us, please ignore this email.
+            
+            This is an automated message from Zaf's Kitchen.
+            ";
+
+            $mail->send();
+            return true;
+            
+        } catch (Exception $e) {
+            // Log the error for debugging (don't expose to user)
+            error_log("PHPMailer Error: " . $mail->ErrorInfo);
+            return false;
         }
     }
-}
 
-// Function to verify OTP
-if(isset($_POST['check'])) {
-    $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-    
-    if(empty($email)) {
-        $errors['otp-error'] = 'Session expired. Please sign up again.';
-    } else {
-        $entered_otp = '';
-        for ($i = 1; $i <= 6; $i++) {
-            $entered_otp .= isset($_POST["otp$i"]) ? trim($_POST["otp$i"]) : '';
-        }
+    // Function to send password reset email (bonus function)
+    function sendPasswordResetEmail($email, $reset_link, $name) {
+        $mail = new PHPMailer(true);
 
         try {
-            $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > NOW()";
-            $stmt = $conn->prepare($check_otp);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':otp', $entered_otp);
-            $stmt->execute();
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'zafskitchen95@gmail.com';
+            $mail->Password   = 'edsrxcmgytunsawi';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
 
-            if($stmt->rowCount() > 0){
-                $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL WHERE email = :email";
-                $update_stmt = $conn->prepare($update_status);
-                $update_stmt->bindParam(':email', $email);
-                
-                if($update_stmt->execute()){
-                    $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
-                    $_SESSION['name'] = $user_data['name'];
-                    $_SESSION['email'] = $email;
-                    unset($_SESSION['show_otp_modal']);
+            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
+            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
 
-                    $_SESSION['verification_success'] = 'Email verified successfully! You can now sign in.';
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    exit();
-                } else {
-                    $errors['otp-error'] = 'Failed to update account. Please try again.';
-                    $_SESSION['show_otp_modal'] = true;
-                }
-            } else {
-                $check_expired = "SELECT * FROM usertable WHERE email = :email AND code = :otp";
-                $expired_stmt = $conn->prepare($check_expired);
-                $expired_stmt->bindParam(':email', $email);
-                $expired_stmt->bindParam(':otp', $entered_otp);
-                $expired_stmt->execute();
+            $mail->isHTML(true);
+            $mail->Subject = 'Password Reset - Zaf\'s Kitchen';
+            
+            $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            $safe_link = htmlspecialchars($reset_link, ENT_QUOTES, 'UTF-8');
+            
+            $mail->Body = "
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Password Reset</title>
+            </head>
+            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
+                    <div style='text-align: center; margin-bottom: 30px;'>
+                        <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
+                    </div>
+                    
+                    <h2 style='color: #E75925; margin-bottom: 20px;'>Password Reset Request</h2>
+                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
+                    <p style='margin-bottom: 20px;'>We received a request to reset your password. Click the button below to create a new password:</p>
+                    
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <a href='$safe_link' style='background-color: #E75925; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;'>Reset Password</a>
+                    </div>
+                    
+                    <p style='margin-bottom: 20px;'>If the button doesn't work, copy and paste this link into your browser:</p>
+                    <p style='word-break: break-all; color: #666; font-size: 14px; margin-bottom: 20px;'>$safe_link</p>
+                    
+                    <div style='background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0; color: #721c24;'><strong>Security Notice:</strong> If you didn't request this password reset, please ignore this email. Your password will remain unchanged.</p>
+                    </div>
+                    
+                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
+                        <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
+                            This is an automated message from Zaf's Kitchen.<br>
+                            Please do not reply to this email.<br>
+                            <br>
+                            © " . date('Y') . " Zaf's Kitchen. All rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            ";
 
-                if($expired_stmt->rowCount() > 0){
-                    $errors['otp-error'] = 'OTP has expired. Please resend a new one.';
-                } else {
-                    $errors['otp-error'] = 'Invalid OTP. Please check and try again.';
-                }
-                $_SESSION['show_otp_modal'] = true;
-            }
-        } catch(PDOException $e) {
-            $errors['otp-error'] = 'Database error occurred.';
-            $_SESSION['show_otp_modal'] = true;
+            $mail->send();
+            return true;
+            
+        } catch (Exception $e) {
+            error_log("PHPMailer Error: " . $mail->ErrorInfo);
+            return false;
         }
     }
-}
 
-// SIGNUP - Fixed to properly handle email sending
-if(isset($_POST['signup'])){
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
-    $cpassword = $_POST['cpassword'];
-
-    if($password !== $cpassword){
-        $errors['password'] = "Confirm password not matched!";
-    }
-
-    if(strlen($password) < 8){
-        $errors['password_length'] = "Password must be at least 8 characters long!";
-    }
+// ✅ Function to send booking approval email
+function sendBookingApprovalEmail($booking) {
+    $mail = new PHPMailer(true);
 
     try {
-        $email_check = "SELECT * FROM usertable WHERE email = :email";
-        $stmt = $conn->prepare($email_check);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'zafskitchen95@gmail.com';
+        $mail->Password   = 'edsrxcmgytunsawi';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
+
+        // Recipients
+        $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+        $mail->addAddress($booking['email'], htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8'));
+        $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+
+        // Format dates and times
+        $eventDate = date('F d, Y (l)', strtotime($booking['event_date']));
+        $startTime = date('g:i A', strtotime($booking['start_time']));
+        $endTime = date('g:i A', strtotime($booking['end_time']));
+        $paymentDeadline = date('F d, Y g:i A', strtotime('+20 hours'));
+        $bookingRef = str_pad($booking['id'], 6, '0', STR_PAD_LEFT);
         
-        if($stmt->rowCount() > 0){
-            $errors['email'] = "Email already exists!";
-        }
+        // Sanitize variables
+        $safe_name = htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8');
+        $safe_celebrant = htmlspecialchars($booking['celebrant_name'], ENT_QUOTES, 'UTF-8');
+        $safe_event_type = htmlspecialchars(ucfirst($booking['event_type']), ENT_QUOTES, 'UTF-8');
+        $safe_location = htmlspecialchars($booking['location'], ENT_QUOTES, 'UTF-8');
+        $safe_package = htmlspecialchars(ucfirst(str_replace('_', ' ', $booking['food_package'])), ENT_QUOTES, 'UTF-8');
+        $total_price = number_format($booking['total_price'], 2);
 
-        if(count($errors) === 0){
-            $encpass = password_hash($password, PASSWORD_BCRYPT);
-            $otp = generateOTP();
-            $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
-            $status = "unverified";
-
-            $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry)
-                            VALUES (:name, :email, :password, :status, :code, :otp_expiry)";
-            $insert_stmt = $conn->prepare($insert_data);
-            $insert_stmt->bindParam(':name', $name);
-            $insert_stmt->bindParam(':email', $email);
-            $insert_stmt->bindParam(':password', $encpass);
-            $insert_stmt->bindParam(':status', $status);
-            $insert_stmt->bindParam(':code', $otp);
-            $insert_stmt->bindParam(':otp_expiry', $otp_expiry);
-
-            if($insert_stmt->execute()){
-                error_log("User inserted. Sending OTP to: $email");
-                
-                // Try to send email
-                $email_sent = sendOTPEmail($email, $otp, $name);
-                
-                if($email_sent) {
-                    error_log("✅ OTP email sent successfully to $email");
-                    $_SESSION['email'] = $email;
-                    $_SESSION['name'] = $name;
-                    $_SESSION['show_otp_modal'] = true;
-                    $_SESSION['info'] = "OTP has been sent to your email address.";
-                    
-                    // Redirect to prevent form resubmission
-                    header('Location: ' . $_SERVER['PHP_SELF']);
-                    exit();
-                } else {
-                    error_log("❌ Failed to send OTP email to $email");
-                    $errors['email'] = "Account created but failed to send OTP. Please contact support.";
-                }
-            } else {
-                $errors['db-error'] = "Failed to create account!";
-            }
-        }
-    } catch(PDOException $e) {
-        error_log("Signup error: " . $e->getMessage());
-        $errors['db-error'] = "Database error occurred.";
-    }
-}
-
-// RESEND OTP - Fixed
-if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] == 'resend-otp')){
-    if(!isset($_SESSION['email'])){
-        if(isset($_POST['action'])){
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'message' => 'Session expired.']);
-            exit();
-        } else {
-            $errors['otp-error'] = 'Session expired.';
-        }
-    } else {
-        $email = $_SESSION['email'];
-        $name = $_SESSION['name'];
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = "🎉 Your Booking is APPROVED! - Ref #$bookingRef - Zaf's Kitchen";
         
-        $new_otp = generateOTP();
-        $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
-        
-        try {
-            $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
-            $stmt = $conn->prepare($update_otp);
-            $stmt->bindParam(':code', $new_otp);
-            $stmt->bindParam(':otp_expiry', $otp_expiry);
-            $stmt->bindParam(':email', $email);
-            
-            if($stmt->execute()){
-                error_log("Database updated. Sending new OTP to: $email");
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Booking Approved</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+            <div style='max-width: 650px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
                 
-                $email_sent = sendOTPEmail($email, $new_otp, $name);
+                <!-- Header -->
+                <div style='background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); padding: 40px 20px; text-align: center; border-radius: 12px 12px 0 0;'>
+                    <h1 style='color: white; margin: 0; font-size: 32px;'>🎉 BOOKING APPROVED!</h1>
+                    <p style='color: #FEE2E2; margin: 10px 0 0 0; font-size: 16px;'>Congratulations! Your event is confirmed</p>
+                </div>
                 
-                if($email_sent) {
-                    error_log("✅ Resend OTP successful to $email");
+                <!-- Main Content -->
+                <div style='padding: 30px;'>
+                    <p style='font-size: 16px; margin-bottom: 20px;'>Dear <strong>$safe_name</strong>,</p>
                     
-                    if(isset($_POST['action'])){
-                        header('Content-Type: application/json');
-                        echo json_encode(['success' => true, 'message' => 'New OTP sent successfully']);
-                        exit();
-                    } else {
-                        $_SESSION['info'] = 'New OTP sent successfully';
-                        $_SESSION['show_otp_modal'] = true;
-                        header('Location: ' . $_SERVER['PHP_SELF']);
-                        exit();
-                    }
-                } else {
-                    error_log("❌ Failed to resend OTP to $email");
+                    <p style='font-size: 16px; line-height: 1.6; margin-bottom: 20px;'>
+                        Great news! Your booking for <strong>$safe_celebrant's $safe_event_type</strong> has been 
+                        <span style='color: #10B981; font-weight: bold;'>APPROVED</span>! ✅
+                    </p>
                     
-                    if(isset($_POST['action'])){
-                        header('Content-Type: application/json');
-                        echo json_encode(['success' => false, 'message' => 'Failed to send OTP']);
-                        exit();
-                    } else {
-                        $errors['otp-error'] = 'Failed to send OTP';
-                        $_SESSION['show_otp_modal'] = true;
-                    }
-                }
-            }
-        } catch(PDOException $e) {
-            error_log("Resend OTP error: " . $e->getMessage());
-            
-            if(isset($_POST['action'])){
-                header('Content-Type: application/json');
-                echo json_encode(['success' => false, 'message' => 'Database error']);
-                exit();
-            } else {
-                $errors['otp-error'] = 'Database error';
-                $_SESSION['show_otp_modal'] = true;
-            }
-        }
-    }
-}
-
-// SIGNIN - Fixed to properly handle unverified accounts
-if(isset($_POST['signin'])){    
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
-    
-    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-        try {
-            $check_email = "SELECT * FROM usertable WHERE email = :email";
-            $stmt = $conn->prepare($check_email);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-            
-            if($stmt->rowCount() > 0){
-                $fetch = $stmt->fetch(PDO::FETCH_ASSOC);
-                $fetch_pass = $fetch['password'];
-                
-                if($fetch['status'] == 'unverified'){
-                    error_log("Unverified account login attempt: $email");
+                    <!-- Payment Deadline Alert -->
+                    <div style='background: #FEF3C7; border-left: 5px solid #F59E0B; padding: 20px; margin: 25px 0; border-radius: 8px;'>
+                        <p style='margin: 0 0 10px 0; font-size: 18px; font-weight: bold; color: #92400E;'>
+                            ⚠️ IMPORTANT: Payment Deadline
+                        </p>
+                        <p style='margin: 0 0 5px 0; font-size: 15px; color: #78350F;'>
+                            Complete your downpayment by:<br>
+                            <strong style='font-size: 18px; color: #DC2626;'>$paymentDeadline</strong>
+                        </p>
+                        <p style='margin: 10px 0 0 0; font-size: 13px; color: #78350F;'>
+                            ⏰ Your booking will be automatically cancelled if payment is not received within 20 hours.
+                        </p>
+                    </div>
                     
-                    // Generate new OTP
-                    $new_otp = generateOTP();
-                    $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
-                    
-                    $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
-                    $update_stmt = $conn->prepare($update_otp);
-                    $update_stmt->bindParam(':code', $new_otp);
-                    $update_stmt->bindParam(':otp_expiry', $otp_expiry);
-                    $update_stmt->bindParam(':email', $email);
-                    
-                    if($update_stmt->execute()){
-                        error_log("Database updated for unverified user. Sending OTP to: $email");
+                    <!-- Booking Details -->
+                    <div style='background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 12px; padding: 25px; margin: 25px 0;'>
+                        <h2 style='color: #DC2626; margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid #DC2626; padding-bottom: 10px;'>
+                            📋 Booking Details
+                        </h2>
                         
-                        $email_sent = sendOTPEmail($email, $new_otp, $fetch['name']);
-                        
-                        if($email_sent) {
-                            error_log("✅ OTP sent to unverified user: $email");
-                            $_SESSION['email'] = $email;
-                            $_SESSION['name'] = $fetch['name'];
-                            $_SESSION['show_otp_modal'] = true;
-                            $_SESSION['info'] = "Please verify your email first. New OTP has been sent.";
-                            
-                            // Redirect to prevent form resubmission
-                            header('Location: ' . $_SERVER['PHP_SELF']);
-                            exit();
-                        } else {
-                            error_log("❌ Failed to send OTP to unverified user: $email");
-                            $errors['email'] = "Please verify your email. Failed to send OTP. Please try again.";
-                        }
-                    } else {
-                        $errors['email'] = "Database error. Please try again.";
-                    }
+                        <table style='width: 100%; border-collapse: collapse;'>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280; width: 40%;'>Booking Reference:</td>
+                                <td style='padding: 12px 0; color: #111827;'>#$bookingRef</td>
+                            </tr>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Event Type:</td>
+                                <td style='padding: 12px 0; color: #111827;'>$safe_event_type</td>
+                            </tr>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Celebrant:</td>
+                                <td style='padding: 12px 0; color: #111827;'>$safe_celebrant</td>
+                            </tr>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Event Date:</td>
+                                <td style='padding: 12px 0; color: #111827;'>$eventDate</td>
+                            </tr>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Event Time:</td>
+                                <td style='padding: 12px 0; color: #111827;'>$startTime - $endTime</td>
+                            </tr>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Location:</td>
+                                <td style='padding: 12px 0; color: #111827;'>$safe_location</td>
+                            </tr>
+                            <tr style='border-bottom: 1px solid #E5E7EB;'>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Number of Guests:</td>
+                                <td style='padding: 12px 0; color: #111827;'>{$booking['guest_count']} persons</td>
+                            </tr>
+                            <tr>
+                                <td style='padding: 12px 0; font-weight: bold; color: #6B7280;'>Package:</td>
+                                <td style='padding: 12px 0; color: #111827;'>$safe_package</td>
+                            </tr>
+                        </table>
+                    </div>
                     
-                } else if($fetch['status'] == 'verified' && password_verify($password, $fetch_pass)){
-                    // Successful login
-                    $_SESSION['user_id'] = $fetch['id'];
-                    $_SESSION['username'] = $fetch['name'];
-                    $_SESSION['name'] = $fetch['name'];
-                    $_SESSION['email'] = $email;
-                    $_SESSION['avatar_url'] = $fetch['avatar_url'] ?? '';
+                    <!-- Total Amount -->
+                    <div style='background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); color: white; padding: 25px; text-align: center; border-radius: 12px; margin: 25px 0;'>
+                        <p style='margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;'>Total Amount</p>
+                        <p style='margin: 0; font-size: 42px; font-weight: bold; letter-spacing: 1px;'>₱$total_price</p>
+                        <p style='margin: 10px 0 0 0; font-size: 13px; opacity: 0.9;'>For {$booking['guest_count']} guests</p>
+                    </div>
                     
-                    header('Location: dashboard.php');
-                    exit();
-                } else {
-                    $errors['email'] = "Incorrect email or password.";
-                }
-            } else {
-                $errors['email'] = "Email not registered. Please sign up first.";
-            }
-        } catch(PDOException $e) {
-            error_log("Signin error: " . $e->getMessage());
-            $errors['email'] = "Database error occurred.";
-        }
-    } else {
-        $errors['email'] = "Enter a valid email address!";
+                    <p style='margin-top: 30px; color: #374151;'>
+                        Best regards,<br>
+                        <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong>
+                    </p>
+                </div>
+                
+                <!-- Footer -->
+                <div style='background: #F9FAFB; padding: 20px; text-align: center; border-top: 1px solid #E5E7EB;'>
+                    <p style='margin: 0; font-size: 12px; color: #6B7280;'>
+                        © " . date('Y') . " Zaf's Kitchen. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+
+        $mail->send();
+        error_log("Approval email sent to {$booking['email']} for booking #$bookingRef");
+        return true;
+        
+    } catch (Exception $e) {
+        error_log("Approval email failed: " . $mail->ErrorInfo);
+        return false;
     }
 }
 
-// FORGOT PASSWORD
-if(isset($_POST['forgot-password'])){
-    $email = trim($_POST['email']);
-    
-    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-        try {
-            $check_email = "SELECT * FROM usertable WHERE email = :email AND status = 'verified'";
-            $stmt = $conn->prepare($check_email);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-            
-            if($stmt->rowCount() > 0){
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+// ✅ Function to send booking rejection email
+function sendBookingRejectionEmail($booking, $rejection_reason) {
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'zafskitchen95@gmail.com';
+        $mail->Password   = 'edsrxcmgytunsawi';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
+
+        $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+        $mail->addAddress($booking['email'], htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8'));
+        $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+
+        $eventDate = date('F d, Y', strtotime($booking['event_date']));
+        $bookingRef = str_pad($booking['id'], 6, '0', STR_PAD_LEFT);
+        
+        $safe_name = htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8');
+        $safe_celebrant = htmlspecialchars($booking['celebrant_name'], ENT_QUOTES, 'UTF-8');
+        $safe_event_type = htmlspecialchars(ucfirst($booking['event_type']), ENT_QUOTES, 'UTF-8');
+        $safe_reason = htmlspecialchars($rejection_reason, ENT_QUOTES, 'UTF-8');
+
+        $mail->isHTML(true);
+        $mail->Subject = "Booking Update - Ref #$bookingRef - Zaf's Kitchen";
+        
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <title>Booking Update</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+            <div style='max-width: 650px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
                 
-                $reset_token = generateResetToken();
-                $reset_expiry = date('Y-m-d H:i:s', strtotime('+30 minutes'));
+                <div style='background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%); padding: 40px 20px; text-align: center; border-radius: 12px 12px 0 0;'>
+                    <h1 style='color: white; margin: 0; font-size: 28px;'>Booking Update</h1>
+                    <p style='color: #FEE2E2; margin: 10px 0 0 0; font-size: 14px;'>Reference #$bookingRef</p>
+                </div>
                 
-                $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry WHERE email = :email";
-                $token_stmt = $conn->prepare($update_token);
-                $token_stmt->bindParam(':token', $reset_token);
-                $token_stmt->bindParam(':expiry', $reset_expiry);
-                $token_stmt->bindParam(':email', $email);
-                
-                if($token_stmt->execute()){
-                    $reset_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset-password.php?token=" . $reset_token;
+                <div style='padding: 30px;'>
+                    <p style='font-size: 16px; margin-bottom: 20px;'>Dear <strong>$safe_name</strong>,</p>
                     
-                    if(sendPasswordResetEmail($email, $reset_link, $user['name'])){
-                        $_SESSION['forgot_success'] = "Password reset link sent to your email.";
-                        $_SESSION['show_forgot_success'] = true;
-                    } else {
-                        $errors['forgot-error'] = "Failed to send email. Please try again.";
-                    }
-                } else {
-                    $errors['forgot-error'] = "Failed to process request.";
-                }
-            } else {
-                $_SESSION['forgot_success'] = "If this email exists, a reset link will be sent.";
-                $_SESSION['show_forgot_success'] = true;
-            }
-        } catch(PDOException $e) {
-            error_log("Forgot password error: " . $e->getMessage());
-            $errors['forgot-error'] = "Database error occurred.";
-        }
-    } else {
-        $errors['forgot-error'] = "Enter a valid email address.";
+                    <p style='font-size: 16px; line-height: 1.6; margin-bottom: 20px;'>
+                        We regret to inform you that your booking request for <strong>$safe_celebrant's $safe_event_type</strong> 
+                        on <strong>$eventDate</strong> could not be approved at this time.
+                    </p>
+                    
+                    <div style='background: #FEE2E2; border-left: 5px solid #DC2626; padding: 20px; margin: 25px 0; border-radius: 8px;'>
+                        <p style='margin: 0 0 10px 0; font-size: 16px; font-weight: bold; color: #991B1B;'>Reason:</p>
+                        <p style='margin: 0; font-size: 15px; color: #7F1D1D; line-height: 1.6;'>$safe_reason</p>
+                    </div>
+                    
+                    <p style='margin-top: 30px; color: #374151;'>
+                        Best regards,<br>
+                        <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong>
+                    </p>
+                </div>
+                
+                <div style='background: #F9FAFB; padding: 20px; text-align: center; border-top: 1px solid #E5E7EB;'>
+                    <p style='margin: 0; font-size: 12px; color: #6B7280;'>© " . date('Y') . " Zaf's Kitchen. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+
+        $mail->send();
+        error_log("Rejection email sent to {$booking['email']} for booking #$bookingRef");
+        return true;
+        
+    } catch (Exception $e) {
+        error_log("Rejection email failed: " . $mail->ErrorInfo);
+        return false;
     }
 }
 
-if(isset($_POST['login-now'])){
-    header('Location: auth.php');
-    exit();
-}
-?>
+// ⚠️ IMPORTANT: NO CLOSING PHP TAG - This prevents whitespace issues!
