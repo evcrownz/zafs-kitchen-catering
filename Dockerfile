@@ -1,11 +1,22 @@
 FROM php:8.2-apache
 
-# Install PostgreSQL extensions and Composer dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    unzip \
-    git \
-    && docker-php-ext-install pdo pdo_pgsql
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        libpq-dev \
+        libzip-dev \
+        zip \
+        unzip \
+        git \
+    && docker-php-ext-install -j$(nproc) \
+        pdo \
+        pdo_pgsql \
+        pgsql \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Verify PostgreSQL
+RUN php -m | grep -i pdo_pgsql || (echo "❌ pdo_pgsql not installed!" && exit 1)
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -16,38 +27,49 @@ RUN a2enmod rewrite headers
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first for better caching
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts
-
-# Copy application files
+# Copy files
 COPY . .
 
-# Copy and make the startup script executable
-COPY docker-start.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-start.sh
+# Clean install dependencies
+RUN rm -rf vendor composer.lock && \
+    composer require phpmailer/phpmailer:^7.0 --no-interaction --optimize-autoloader && \
+    composer require google/apiclient:^2.15 --no-interaction --optimize-autoloader && \
+    composer dump-autoload --optimize
 
-# Create Apache configuration
-RUN echo '<VirtualHost *:${PORT}>' > /etc/apache2/sites-available/000-default.conf && \
-    echo '    ServerAdmin zafskitchen95@gmail.com' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    DocumentRoot /var/www/html' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    <Directory /var/www/html>' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '        Options Indexes FollowSymLinks' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '        AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '        Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    ErrorLog ${APACHE_LOG_DIR}/error.log' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+# Verify Google Client
+RUN php -r "require 'vendor/autoload.php'; \
+    if (class_exists('Google_Client')) { \
+        echo '✅ Google_Client available\n'; \
+    } else { \
+        echo '❌ Google_Client NOT found\n'; \
+        exit(1); \
+    }"
 
-# Fix permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
-# Expose port (Railway will override this)
-EXPOSE ${PORT:-80}
+# Production PHP config
+RUN { \
+        echo 'display_errors = Off'; \
+        echo 'log_errors = On'; \
+        echo 'error_log = /var/log/apache2/php_errors.log'; \
+        echo 'session.cookie_httponly = 1'; \
+        echo 'session.use_strict_mode = 1'; \
+    } > /usr/local/etc/php/conf.d/production.ini
 
-# Use startup script as entrypoint
-CMD ["/usr/local/bin/docker-start.sh"]
+# Apache config for Railway
+ENV PORT=8080
+RUN sed -i 's/Listen 80/Listen ${PORT}/g' /etc/apache2/ports.conf && \
+    sed -i 's/:80/:${PORT}/g' /etc/apache2/sites-available/000-default.conf
+
+# Directory config
+RUN echo '<Directory /var/www/html/>' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    Options -Indexes +FollowSymLinks' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '    Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
+    echo '</Directory>' >> /etc/apache2/sites-available/000-default.conf
+
+EXPOSE ${PORT}
+
+CMD ["apache2-foreground"]

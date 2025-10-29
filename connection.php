@@ -2,23 +2,45 @@
 $DATABASE_URL = getenv('DATABASE_URL');
 
 if (!$DATABASE_URL) {
-    die("DATABASE_URL environment variable not set");
+    error_log("❌ DATABASE_URL not set");
+    die("Database configuration error");
 }
 
 try {
-    $conn = new PDO($DATABASE_URL);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-    echo "✅ Successfully connected to database";
+    $url = parse_url($DATABASE_URL);
+    
+    if (!$url) {
+        throw new Exception("Invalid DATABASE_URL format");
+    }
+    
+    $host = $url['host'] ?? '';
+    $port = $url['port'] ?? 5432;
+    $dbname = ltrim($url['path'] ?? '', '/');
+    $user = $url['user'] ?? '';
+    $password = $url['pass'] ?? '';
+    
+    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require";
+    
+    // Check pgsql driver
+    $available_drivers = PDO::getAvailableDrivers();
+    
+    if (!in_array('pgsql', $available_drivers)) {
+        throw new Exception("PostgreSQL PDO driver not installed!");
+    }
+    
+    $conn = new PDO($dsn, $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false
+    ]);
+    
+    // Log success (not displayed)
+    error_log("✅ Connected to PostgreSQL: $dbname");
+    
 } catch(PDOException $e) {
-
-    echo "<pre>";
-    echo "❌ Connection failed: " . $e->getMessage() . "\n\n";
-    echo "🔍 DATABASE_URL Used:\n" . $DATABASE_URL . "\n";
-    echo "📦 Raw ENV Value:\n" . getenv('DATABASE_URL') . "\n";
-    echo "</pre>";
-    exit;
+    error_log("❌ DB Connection Failed: " . $e->getMessage());
+    die("Database connection error");
+} catch(Exception $e) {
+    error_log("❌ Config Error: " . $e->getMessage());
+    die("Configuration error");
 }
-
-?>
