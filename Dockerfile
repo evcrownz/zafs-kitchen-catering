@@ -19,7 +19,15 @@ RUN chmod +x /usr/local/bin/docker-start.sh
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-EXPOSE 80
+# Add ServerName and dynamic port for Railway
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+    && echo "Listen ${PORT}" >> /etc/apache2/ports.conf
 
-# Use startup script instead of direct apache2-foreground
+# (optional but helps Apache find right root)
+RUN sed -i 's|/var/www/html|/var/www/html|g' /etc/apache2/sites-available/000-default.conf
+
+# No need to expose a fixed port; Railway sets it automatically
+# EXPOSE 80   <-- remove this line
+
+# Use startup script
 CMD ["/usr/local/bin/docker-start.sh"]
