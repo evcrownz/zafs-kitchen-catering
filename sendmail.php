@@ -32,7 +32,7 @@
             $mail->Username   = 'zafskitchen95@gmail.com';
             $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
-            $mail->Port       = 465;
+            $mail->Port       = 587;
 
             // Recipients
             $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
@@ -127,7 +127,7 @@
             $mail->Username   = 'zafskitchen95@gmail.com';
             $mail->Password   = 'edsrxcmgytunsawi';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            $mail->Port       = 465;
+            $mail->Port       = 587;
 
             $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
             $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
@@ -202,7 +202,7 @@ function sendBookingApprovalEmail($booking) {
         $mail->Username   = 'zafskitchen95@gmail.com';
         $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
+        $mail->Port       = 587;
 
         // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
@@ -355,7 +355,7 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         $mail->Username   = 'zafskitchen95@gmail.com';
         $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
+        $mail->Port       = 587;
 
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
         $mail->addAddress($booking['email'], htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8'));
