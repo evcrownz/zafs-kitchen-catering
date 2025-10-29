@@ -19,50 +19,35 @@
     }
 
     // Function to send OTP email
-function sendOTPEmail($email, $otp, $name) {
-    $mail = new PHPMailer(true);
+        function sendOTPEmail($email, $otp, $name) {
+            $mail = new PHPMailer(true);
 
-    try {
-        // ✅ FIXED SMTP Settings
-        $mail->SMTPDebug = 2; // Debug output
-        $mail->Debugoutput = function($str, $level) {
-            error_log("PHPMailer: $str");
-        };
-        
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'zafskitchen95@gmail.com';
-        $mail->Password   = 'edsrxcmgytunsawi'; // ⚠️ USE APP PASSWORD
-        
-        // ✅ CRITICAL FIX: Use port 587 instead of 465
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        
-        // ✅ Add SSL options for Railway/XAMPP compatibility
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            )
-        );
-        
-        $mail->Timeout    = 30;
+            try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            
+            // Consider moving these to environment variables or config file
+            $mail->Username   = 'zafskitchen95@gmail.com';
+            $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
+            $mail->Port       = 465;
 
-        // Recipients
-        $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
-        $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
-        $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+            // Recipients
+            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8')); // Sanitize name
+            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
 
-        // Content (keep existing HTML body)
-        $mail->isHTML(true);
-        $mail->Subject = 'Email Verification - Zaf\'s Kitchen';
-        
-        $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-        $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
-        
-        $mail->Body = "
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Email Verification - Zaf\'s Kitchen';
+            
+            // Sanitize variables for HTML output
+            $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
+            
+            $mail->Body = "
             <!DOCTYPE html>
             <html>
             <head>
@@ -140,16 +125,9 @@ function sendOTPEmail($email, $otp, $name) {
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'zafskitchen95@gmail.com';
-            $mail->Password   = 'abcd efgh ijkl mnop';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
-            $mail->SMTPOptions = array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                )
-            );
+            $mail->Password   = 'edsrxcmgytunsawi';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
 
             $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
             $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
@@ -222,16 +200,9 @@ function sendBookingApprovalEmail($booking) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'zafskitchen95@gmail.com';
-        $mail->Password   = 'abcd efgh ijkl mnop';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            )
-        );
+        $mail->Password   = 'edsrxcmgytunsawi';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
 
         // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
@@ -382,7 +353,7 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'zafskitchen95@gmail.com';
-        $mail->Password   = 'abcd efgh ijkl mnop';
+        $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
