@@ -1,11 +1,13 @@
 FROM php:8.2-apache
 
-# Install PostgreSQL extensions and Composer dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
     git \
-    && docker-php-ext-install pdo pdo_pgsql
+    && docker-php-ext-install pdo pdo_pgsql \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -16,38 +18,21 @@ RUN a2enmod rewrite headers
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first for better caching
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts
-
 # Copy application files
-COPY . .
+COPY . /var/www/html/
 
-# Copy and make the startup script executable
-COPY docker-start.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-start.sh
-
-# Create Apache configuration
-RUN echo '<VirtualHost *:${PORT}>' > /etc/apache2/sites-available/000-default.conf && \
-    echo '    ServerAdmin zafskitchen95@gmail.com' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    DocumentRoot /var/www/html' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    <Directory /var/www/html>' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '        Options Indexes FollowSymLinks' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '        AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '        Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    </Directory>' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    ErrorLog ${APACHE_LOG_DIR}/error.log' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined' >> /etc/apache2/sites-available/000-default.conf && \
-    echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
+# Install PHP dependencies
+RUN if [ -f composer.json ]; then composer install --no-dev --optimize-autoloader; fi
 
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Expose port (Railway will override this)
-EXPOSE ${PORT:-80}
+# Make startup script executable
+RUN chmod +x /var/www/html/docker-start.sh
 
-# Use startup script as entrypoint
-CMD ["/usr/local/bin/docker-start.sh"]
+# Expose default port
+EXPOSE 80
+
+# Start Apache with custom script
+CMD ["/var/www/html/docker-start.sh"]
