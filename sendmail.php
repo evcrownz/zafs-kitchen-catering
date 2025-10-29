@@ -19,10 +19,10 @@
     }
 
     // Function to send OTP email
-    function sendOTPEmail($email, $otp, $name) {
-        $mail = new PHPMailer(true);
+        function sendOTPEmail($email, $otp, $name) {
+            $mail = new PHPMailer(true);
 
-        try {
+            try {
             // Server settings
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
@@ -30,7 +30,7 @@
             
             // Consider moving these to environment variables or config file
             $mail->Username   = 'zafskitchen95@gmail.com';
-            $mail->Password   = 'abcd efgh ijkl mnop'; // Consider using environment variable
+            $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
             $mail->Port       = 465;
 
@@ -125,7 +125,7 @@
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'zafskitchen95@gmail.com';
-            $mail->Password   = 'abcd efgh ijkl mnop';
+            $mail->Password   = 'edsrxcmgytunsawi';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
 
@@ -200,7 +200,7 @@ function sendBookingApprovalEmail($booking) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'zafskitchen95@gmail.com';
-        $mail->Password   = 'abcd efgh ijkl mnop';
+        $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
@@ -353,7 +353,7 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'zafskitchen95@gmail.com';
-        $mail->Password   = 'abcd efgh ijkl mnop';
+        $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
