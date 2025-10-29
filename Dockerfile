@@ -5,7 +5,9 @@ RUN apt-get update && \
     apt-get install -y \
         libpq-dev \
         libzip-dev \
+        zip \
         unzip \
+        git \
     && docker-php-ext-install -j$(nproc) \
         pdo \
         pdo_pgsql \
@@ -25,15 +27,27 @@ RUN a2enmod rewrite
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files
-COPY composer.* ./
-RUN composer install --no-dev --no-scripts --no-interaction --ignore-platform-reqs || echo "Composer install completed with warnings"
+# Copy composer files first for better caching
+COPY composer.json composer.lock* ./
+
+# Install dependencies with verbose output
+RUN composer install --no-dev --no-scripts --no-interaction --optimize-autoloader -vvv && \
+    composer dump-autoload --optimize && \
+    echo "✅ Composer dependencies installed" && \
+    ls -la vendor/
 
 # Copy application files
 COPY . .
 
+# Verify vendor directory exists and has Google client
+RUN if [ ! -d "vendor/google/apiclient" ]; then \
+        echo "❌ Google API Client not found! Reinstalling..." && \
+        composer require google/apiclient --no-interaction; \
+    fi
+
 # Set proper permissions
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
 
 # Configure Apache for Railway's PORT variable
 ENV PORT=80
@@ -46,6 +60,11 @@ RUN echo '<Directory /var/www/html/>' >> /etc/apache2/sites-available/000-defaul
     echo '    AllowOverride All' >> /etc/apache2/sites-available/000-default.conf && \
     echo '    Require all granted' >> /etc/apache2/sites-available/000-default.conf && \
     echo '</Directory>' >> /etc/apache2/sites-available/000-default.conf
+
+# Health check
+RUN php -r "require 'vendor/autoload.php'; echo '✅ Autoload works\n';" || echo "❌ Autoload failed"
+
+EXPOSE ${PORT}
 
 # Start Apache
 CMD ["apache2-foreground"]
