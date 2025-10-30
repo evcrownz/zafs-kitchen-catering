@@ -16,7 +16,8 @@
   "require": {
     "php": ">=8.0",
     "sendgrid/sendgrid": "^8.1",
-    "vlucas/phpdotenv": "^5.6"
+    "vlucas/phpdotenv": "^5.6",
+    "google/apiclient": "^2.15"
   },
   "config": {
     "optimize-autoloader": true,

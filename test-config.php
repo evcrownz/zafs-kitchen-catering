@@ -40,10 +40,16 @@ if (file_exists('vendor/autoload.php')) {
         echo "<span class='error'>❌ SendGrid class NOT found</span><br>";
     }
     
-    if (class_exists('\PHPMailer\PHPMailer\PHPMailer')) {
-        echo "<span class='success'>✅ PHPMailer class loaded</span><br>";
+    if (class_exists('Google_Client') || class_exists('Google\Client')) {
+        echo "<span class='success'>✅ Google API Client loaded</span><br>";
     } else {
-        echo "<span class='error'>❌ PHPMailer class NOT found</span><br>";
+        echo "<span class='error'>❌ Google API Client NOT found</span><br>";
+    }
+    
+    if (class_exists('Dotenv\Dotenv')) {
+        echo "<span class='success'>✅ Dotenv loaded</span><br>";
+    } else {
+        echo "<span class='error'>❌ Dotenv NOT found</span><br>";
     }
 } else {
     echo "<span class='error'>❌ Vendor directory not found - run composer install</span><br>";
@@ -80,8 +86,23 @@ try {
     echo "<span class='error'>❌ SendGrid error: " . $e->getMessage() . "</span><br>";
 }
 
-echo "<h2>6. File Permissions</h2>";
-$files = ['sendmail.php', 'connection.php', 'controllerUserData.php', 'helpers.php'];
+echo "<h2>6. Google OAuth Test</h2>";
+try {
+    if (class_exists('Google_Client')) {
+        $client = new Google_Client();
+        echo "<span class='success'>✅ Google_Client instantiated successfully</span><br>";
+    } elseif (class_exists('Google\Client')) {
+        $client = new Google\Client();
+        echo "<span class='success'>✅ Google\Client instantiated successfully</span><br>";
+    } else {
+        echo "<span class='error'>❌ Google Client class not found</span><br>";
+    }
+} catch (Exception $e) {
+    echo "<span class='error'>❌ Google Client error: " . $e->getMessage() . "</span><br>";
+}
+
+echo "<h2>7. File Permissions</h2>";
+$files = ['sendmail.php', 'connection.php', 'controllerUserData.php', 'helpers.php', 'google-oauth-config.php'];
 foreach ($files as $file) {
     if (file_exists($file)) {
         echo "<span class='success'>✅ $file exists</span><br>";
@@ -90,7 +111,7 @@ foreach ($files as $file) {
     }
 }
 
-echo "<h2>7. PHP Info</h2>";
+echo "<h2>8. PHP Info</h2>";
 echo "PHP Version: " . PHP_VERSION . "<br>";
 echo "Server: " . $_SERVER['SERVER_SOFTWARE'] . "<br>";
 echo "Document Root: " . $_SERVER['DOCUMENT_ROOT'] . "<br>";
