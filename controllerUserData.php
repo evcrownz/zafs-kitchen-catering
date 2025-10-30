@@ -199,7 +199,7 @@ if(isset($_POST['signup'])){
             if($insert_stmt->execute()){
                 $email_sent = sendOTPEmail($email, $otp, $name);
                 
-                if($email_sent) {
+                if($email_sent === true) {
                     $_SESSION['email'] = $email;
                     $_SESSION['name'] = $name;
                     $_SESSION['show_otp_modal'] = true;
@@ -209,6 +209,7 @@ if(isset($_POST['signup'])){
                     exit();
                 } else {
                     $errors['email'] = "Account created but failed to send OTP. Please contact support.";
+                    error_log("Failed to send OTP email for: $email");
                 }
             } else {
                 $errors['db-error'] = "Failed to create account!";
@@ -246,7 +247,7 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
             if($stmt->execute()){
                 $email_sent = sendOTPEmail($email, $new_otp, $name);
                 
-                if($email_sent) {
+                if($email_sent === true) {
                     if(isset($_POST['action'])){
                         header('Content-Type: application/json');
                         echo json_encode(['success' => true, 'message' => 'New OTP sent successfully']);
@@ -314,7 +315,7 @@ if(isset($_POST['signin'])){
                     if($update_stmt->execute()){
                         $email_sent = sendOTPEmail($email, $new_otp, $fetch['name']);
                         
-                        if($email_sent) {
+                        if($email_sent === true) {
                             $_SESSION['email'] = $email;
                             $_SESSION['name'] = $fetch['name'];
                             $_SESSION['show_otp_modal'] = true;
