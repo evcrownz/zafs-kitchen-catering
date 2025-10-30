@@ -14,10 +14,5 @@
   "require": {
     "phpmailer/phpmailer": "^7.0",
     "google/apiclient": "^2.15"
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "php -r \"echo '✅ Dependencies installed successfully!\\n';\""
-    ]
   }
 }
