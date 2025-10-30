@@ -30,6 +30,12 @@ fi
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
 
+# Enable PHP error logging
+echo "✅ Enabling PHP error logging..."
+echo "display_errors = On" > /usr/local/etc/php/conf.d/error-logging.ini
+echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini
+echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/error-logging.ini
+
 echo "✅ Application ready"
 echo "🌐 Starting Apache on port ${PORT:-8080}"
 
