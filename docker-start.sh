@@ -11,6 +11,12 @@ fi
 
 echo "✅ DATABASE_URL is configured"
 
+# Check environment variables
+echo "Checking environment variables..."
+echo "SENDGRID_API_KEY: $([ -n "$SENDGRID_API_KEY" ] && echo "Set" || echo "Missing")"
+echo "SENDER_EMAIL: $([ -n "$SENDER_EMAIL" ] && echo "Set" || echo "Missing")"
+echo "SENDER_NAME: $([ -n "$SENDER_NAME" ] && echo "Set" || echo "Missing")"
+
 # Check PostgreSQL PDO driver
 php -m | grep -i pdo_pgsql > /dev/null
 if [ $? -eq 0 ]; then
@@ -26,13 +32,20 @@ if [ ! -d "vendor" ]; then
     composer install --no-dev --optimize-autoloader
 fi
 
+# Test PHP files
+echo "Testing PHP files..."
+php -l connection.php || echo "❌ connection.php has syntax errors"
+php -l sendmail.php || echo "❌ sendmail.php has syntax errors"
+php -l controllerUserData.php || echo "❌ controllerUserData.php has syntax errors"
+
 # Set correct permissions
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
 
-# Enable PHP error logging
-echo "✅ Enabling PHP error logging..."
+# Enable FULL error display for debugging
+echo "✅ Enabling full error logging..."
 echo "display_errors = On" > /usr/local/etc/php/conf.d/error-logging.ini
+echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini
 echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini
 echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/error-logging.ini
 
