@@ -1,194 +1,194 @@
 <?php
 
-    // Include PHPMailer
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
-    require 'vendor/autoload.php';
+// Include PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php';
 
-    $email = "";
-    $name = "";
-    $errors = array();
+$email = "";
+$name = "";
+$errors = array();
 
-    function generateOTP($length = 6) {
-        // More secure OTP generation
-        $otp = '';
-        for ($i = 0; $i < $length; $i++) {
-            $otp .= random_int(0, 9);
-        }
-        return $otp;
+function generateOTP($length = 6) {
+    // More secure OTP generation
+    $otp = '';
+    for ($i = 0; $i < $length; $i++) {
+        $otp .= random_int(0, 9);
     }
+    return $otp;
+}
 
-    // Function to send OTP email
-        function sendOTPEmail($email, $otp, $name) {
-            $mail = new PHPMailer(true);
+// Function to send OTP email
+function sendOTPEmail($email, $otp, $name) {
+    $mail = new PHPMailer(true);
 
-            try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            
-            // Consider moving these to environment variables or config file
-            $mail->Username   = 'zafskitchen95@gmail.com';
-            $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
-            $mail->Port       = 465;
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        
+        // Consider moving these to environment variables or config file
+        $mail->Username   = 'zafskitchen95@gmail.com';
+        $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
+        $mail->Port       = 465;
 
-            // Recipients
-            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
-            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8')); // Sanitize name
-            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+        // Recipients
+        $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+        $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8')); // Sanitize name
+        $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
 
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'Email Verification - Zaf\'s Kitchen';
-            
-            // Sanitize variables for HTML output
-            $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-            $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
-            
-            $mail->Body = "
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Email Verification</title>
-            </head>
-            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
-                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
-                    <div style='text-align: center; margin-bottom: 30px;'>
-                        <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
-                    </div>
-                    
-                    <h2 style='color: #E75925; margin-bottom: 20px;'>Welcome to Zaf's Kitchen!</h2>
-                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
-                    <p style='margin-bottom: 20px;'>Thank you for signing up! Please use the following verification code to complete your registration:</p>
-                    
-                    <div style='background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; text-align: center; margin: 30px 0; border-radius: 12px; border-left: 5px solid #E75925;'>
-                        <p style='margin: 0 0 10px 0; font-size: 14px; color: #666;'>Your Verification Code:</p>
-                        <h1 style='color: #E75925; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);'>$safe_otp</h1>
-                    </div>
-                    
-                    <div style='background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0;'>
-                        <p style='margin: 0; color: #856404;'><strong>Important:</strong> This code will expire in <strong>10 minutes</strong> for security purposes.</p>
-                    </div>
-                    
-                    <p style='margin-bottom: 20px;'>If you didn't create an account with us, please ignore this email.</p>
-                    
-                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
-                        <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
-                            This is an automated message from Zaf's Kitchen.<br>
-                            Please do not reply to this email.<br>
-                            <br>
-                            © " . date('Y') . " Zaf's Kitchen. All rights reserved.
-                        </p>
-                    </div>
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Email Verification - Zaf\'s Kitchen';
+        
+        // Sanitize variables for HTML output
+        $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
+        
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Email Verification</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+            <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
+                <div style='text-align: center; margin-bottom: 30px;'>
+                    <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
                 </div>
-            </body>
-            </html>
-            ";
-
-            // Alternative plain text version for email clients that don't support HTML
-            $mail->AltBody = "
-            Welcome to Zaf's Kitchen!
-            
-            Hello $safe_name,
-            
-            Thank you for signing up! Please use the following verification code to complete your registration:
-            
-            Verification Code: $safe_otp
-            
-            This code will expire in 10 minutes for security purposes.
-            
-            If you didn't create an account with us, please ignore this email.
-            
-            This is an automated message from Zaf's Kitchen.
-            ";
-
-            $mail->send();
-            return true;
-            
-        } catch (Exception $e) {
-            // Log the error for debugging (don't expose to user)
-            error_log("PHPMailer Error: " . $mail->ErrorInfo);
-            return false;
-        }
-    }
-
-    // Function to send password reset email (bonus function)
-    function sendPasswordResetEmail($email, $reset_link, $name) {
-        $mail = new PHPMailer(true);
-
-        try {
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'zafskitchen95@gmail.com';
-            $mail->Password   = 'edsrxcmgytunsawi';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            $mail->Port       = 465;
-
-            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
-            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
-            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
-
-            $mail->isHTML(true);
-            $mail->Subject = 'Password Reset - Zaf\'s Kitchen';
-            
-            $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-            $safe_link = htmlspecialchars($reset_link, ENT_QUOTES, 'UTF-8');
-            
-            $mail->Body = "
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <title>Password Reset</title>
-            </head>
-            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
-                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
-                    <div style='text-align: center; margin-bottom: 30px;'>
-                        <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
-                    </div>
-                    
-                    <h2 style='color: #E75925; margin-bottom: 20px;'>Password Reset Request</h2>
-                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
-                    <p style='margin-bottom: 20px;'>We received a request to reset your password. Click the button below to create a new password:</p>
-                    
-                    <div style='text-align: center; margin: 30px 0;'>
-                        <a href='$safe_link' style='background-color: #E75925; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;'>Reset Password</a>
-                    </div>
-                    
-                    <p style='margin-bottom: 20px;'>If the button doesn't work, copy and paste this link into your browser:</p>
-                    <p style='word-break: break-all; color: #666; font-size: 14px; margin-bottom: 20px;'>$safe_link</p>
-                    
-                    <div style='background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 15px; margin: 20px 0;'>
-                        <p style='margin: 0; color: #721c24;'><strong>Security Notice:</strong> If you didn't request this password reset, please ignore this email. Your password will remain unchanged.</p>
-                    </div>
-                    
-                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
-                        <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
-                            This is an automated message from Zaf's Kitchen.<br>
-                            Please do not reply to this email.<br>
-                            <br>
-                            © " . date('Y') . " Zaf's Kitchen. All rights reserved.
-                        </p>
-                    </div>
+                
+                <h2 style='color: #E75925; margin-bottom: 20px;'>Welcome to Zaf's Kitchen!</h2>
+                <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
+                <p style='margin-bottom: 20px;'>Thank you for signing up! Please use the following verification code to complete your registration:</p>
+                
+                <div style='background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; text-align: center; margin: 30px 0; border-radius: 12px; border-left: 5px solid #E75925;'>
+                    <p style='margin: 0 0 10px 0; font-size: 14px; color: #666;'>Your Verification Code:</p>
+                    <h1 style='color: #E75925; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);'>$safe_otp</h1>
                 </div>
-            </body>
-            </html>
-            ";
+                
+                <div style='background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                    <p style='margin: 0; color: #856404;'><strong>Important:</strong> This code will expire in <strong>10 minutes</strong> for security purposes.</p>
+                </div>
+                
+                <p style='margin-bottom: 20px;'>If you didn't create an account with us, please ignore this email.</p>
+                
+                <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
+                    <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
+                        This is an automated message from Zaf's Kitchen.<br>
+                        Please do not reply to this email.<br>
+                        <br>
+                        © " . date('Y') . " Zaf's Kitchen. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
 
-            $mail->send();
-            return true;
-            
-        } catch (Exception $e) {
-            error_log("PHPMailer Error: " . $mail->ErrorInfo);
-            return false;
-        }
+        // Alternative plain text version for email clients that don't support HTML
+        $mail->AltBody = "
+        Welcome to Zaf's Kitchen!
+        
+        Hello $safe_name,
+        
+        Thank you for signing up! Please use the following verification code to complete your registration:
+        
+        Verification Code: $safe_otp
+        
+        This code will expire in 10 minutes for security purposes.
+        
+        If you didn't create an account with us, please ignore this email.
+        
+        This is an automated message from Zaf's Kitchen.
+        ";
+
+        $mail->send();
+        return true;
+        
+    } catch (Exception $e) {
+        // Log the error for debugging (don't expose to user)
+        error_log("PHPMailer Error: " . $mail->ErrorInfo);
+        return false;
     }
+}
+
+// Function to send password reset email (bonus function)
+function sendPasswordResetEmail($email, $reset_link, $name) {
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'zafskitchen95@gmail.com';
+        $mail->Password   = 'edsrxcmgytunsawi';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
+
+        $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+        $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
+        $mail->addReplyTo('afskitchen95@gmail.com', "Zaf's Kitchen Support");
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Password Reset - Zaf\'s Kitchen';
+        
+        $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        $safe_link = htmlspecialchars($reset_link, ENT_QUOTES, 'UTF-8');
+        
+        $mail->Body = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Password Reset</title>
+        </head>
+        <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+            <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
+                <div style='text-align: center; margin-bottom: 30px;'>
+                    <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
+                </div>
+                
+                <h2 style='color: #E75925; margin-bottom: 20px;'>Password Reset Request</h2>
+                <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
+                <p style='margin-bottom: 20px;'>We received a request to reset your password. Click the button below to create a new password:</p>
+                
+                <div style='text-align: center; margin: 30px 0;'>
+                    <a href='$safe_link' style='background-color: #E75925; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;'>Reset Password</a>
+                </div>
+                
+                <p style='margin-bottom: 20px;'>If the button doesn't work, copy and paste this link into your browser:</p>
+                <p style='word-break: break-all; color: #666; font-size: 14px; margin-bottom: 20px;'>$safe_link</p>
+                
+                <div style='background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                    <p style='margin: 0; color: #721c24;'><strong>Security Notice:</strong> If you didn't request this password reset, please ignore this email. Your password will remain unchanged.</p>
+                </div>
+                
+                <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
+                    <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
+                        This is an automated message from Zaf's Kitchen.<br>
+                        Please do not reply to this email.<br>
+                        <br>
+                        © " . date('Y') . " Zaf's Kitchen. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+
+        $mail->send();
+        return true;
+        
+    } catch (Exception $e) {
+        error_log("PHPMailer Error: " . $mail->ErrorInfo);
+        return false;
+    }
+}
 
 // ✅ Function to send booking approval email
 function sendBookingApprovalEmail($booking) {
@@ -317,15 +317,42 @@ function sendBookingApprovalEmail($booking) {
                         <p style='margin: 10px 0 0 0; font-size: 13px; opacity: 0.9;'>For {$booking['guest_count']} guests</p>
                     </div>
                     
+                    <!-- Payment Instructions -->
+                    <div style='background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 20px; margin: 25px 0; border-radius: 8px;'>
+                        <h3 style='color: #1E40AF; margin: 0 0 15px 0; font-size: 18px;'>💳 Payment Instructions</h3>
+                        <ol style='margin: 0; padding-left: 20px; color: #1E3A8A;'>
+                            <li style='margin-bottom: 8px;'>Contact us to confirm payment method</li>
+                            <li style='margin-bottom: 8px;'>Send your downpayment within 20 hours</li>
+                            <li style='margin-bottom: 8px;'>Email payment proof to: <strong>zafskitchen95@gmail.com</strong></li>
+                            <li style='margin-bottom: 8px;'>Wait for payment confirmation</li>
+                        </ol>
+                    </div>
+                    
+                    <!-- Contact Information -->
+                    <div style='background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 25px 0;'>
+                        <h3 style='color: #DC2626; margin: 0 0 15px 0; font-size: 18px;'>📞 Contact Information</h3>
+                        <p style='margin: 5px 0; color: #374151;'><strong>Phone:</strong> +63 912 345 6789</p>
+                        <p style='margin: 5px 0; color: #374151;'><strong>Email:</strong> zafskitchen95@gmail.com</p>
+                        <p style='margin: 5px 0; color: #374151;'><strong>Business Hours:</strong> Monday - Sunday, 8:00 AM - 8:00 PM</p>
+                    </div>
+                    
+                    <p style='font-size: 16px; line-height: 1.6; margin: 30px 0 20px 0;'>
+                        We're excited to make your event memorable! If you have any questions, please don't hesitate to contact us.
+                    </p>
+                    
                     <p style='margin-top: 30px; color: #374151;'>
                         Best regards,<br>
-                        <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong>
+                        <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong><br>
+                        <em style='color: #6B7280;'>Creating Memorable Celebrations</em>
                     </p>
                 </div>
                 
                 <!-- Footer -->
                 <div style='background: #F9FAFB; padding: 20px; text-align: center; border-top: 1px solid #E5E7EB;'>
-                    <p style='margin: 0; font-size: 12px; color: #6B7280;'>
+                    <p style='margin: 0 0 5px 0; font-size: 12px; color: #6B7280;'>
+                        This is an automated email from Zaf's Kitchen Catering Services
+                    </p>
+                    <p style='margin: 0; font-size: 12px; color: #9CA3AF;'>
                         © " . date('Y') . " Zaf's Kitchen. All rights reserved.
                     </p>
                 </div>
@@ -400,6 +427,23 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
                         <p style='margin: 0; font-size: 15px; color: #7F1D1D; line-height: 1.6;'>$safe_reason</p>
                     </div>
                     
+                    <div style='background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 20px; margin: 25px 0; border-radius: 8px;'>
+                        <h3 style='color: #1E40AF; margin: 0 0 15px 0; font-size: 18px;'>💡 What You Can Do</h3>
+                        <ul style='margin: 0; padding-left: 20px; color: #1E3A8A;'>
+                            <li style='margin-bottom: 8px;'>Choose an alternative date</li>
+                            <li style='margin-bottom: 8px;'>Adjust your requirements</li>
+                            <li style='margin-bottom: 8px;'>Contact us to discuss options</li>
+                            <li>Submit a new booking request</li>
+                        </ul>
+                    </div>
+                    
+                    <div style='background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 25px 0;'>
+                        <h3 style='color: #DC2626; margin: 0 0 15px 0; font-size: 18px;'>📞 Need Help?</h3>
+                        <p style='margin: 5px 0; color: #374151;'>We're here to help find the perfect solution!</p>
+                        <p style='margin: 10px 0 5px 0; color: #374151;'><strong>Phone:</strong> +63 912 345 6789</p>
+                        <p style='margin: 5px 0; color: #374151;'><strong>Email:</strong> zafskitchen95@gmail.com</p>
+                    </div>
+                    
                     <p style='margin-top: 30px; color: #374151;'>
                         Best regards,<br>
                         <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong>
@@ -423,5 +467,5 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         return false;
     }
 }
+?>
 
-// ⚠️ IMPORTANT: NO CLOSING PHP TAG - This prevents whitespace issues!
