@@ -23,6 +23,12 @@ function sendOTPEmail($email, $otp, $name) {
     $mail = new PHPMailer(true);
 
     try {
+        // Enable verbose debug output
+        $mail->SMTPDebug = 2; // Show detailed debug info
+        $mail->Debugoutput = function($str, $level) {
+            error_log("PHPMailer Debug [$level]: $str");
+        };
+        
         // Server settings
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
@@ -31,6 +37,7 @@ function sendOTPEmail($email, $otp, $name) {
         $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
+        $mail->Timeout    = 30; // 30 second timeout
 
         // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");

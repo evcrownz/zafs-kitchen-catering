@@ -109,6 +109,8 @@ if(isset($_POST['check'])) {
             $entered_otp .= isset($_POST["otp$i"]) ? trim($_POST["otp$i"]) : '';
         }
 
+        error_log("🔍 OTP Verification Attempt: Email=$email, Entered OTP=$entered_otp");
+
         try {
             $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > NOW()";
             $stmt = $conn->prepare($check_otp);
@@ -117,6 +119,8 @@ if(isset($_POST['check'])) {
             $stmt->execute();
 
             if($stmt->rowCount() > 0){
+                error_log("✅ OTP Verified Successfully for $email");
+                
                 $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL WHERE email = :email";
                 $update_stmt = $conn->prepare($update_status);
                 $update_stmt->bindParam(':email', $email);
@@ -131,10 +135,13 @@ if(isset($_POST['check'])) {
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     exit();
                 } else {
+                    error_log("❌ Failed to update user status for $email");
                     $errors['otp-error'] = 'Failed to update account. Please try again.';
                     $_SESSION['show_otp_modal'] = true;
                 }
             } else {
+                error_log("❌ OTP Verification Failed: Invalid or expired OTP for $email");
+                
                 $check_expired = "SELECT * FROM usertable WHERE email = :email AND code = :otp";
                 $expired_stmt = $conn->prepare($check_expired);
                 $expired_stmt->bindParam(':email', $email);
@@ -149,6 +156,7 @@ if(isset($_POST['check'])) {
                 $_SESSION['show_otp_modal'] = true;
             }
         } catch(PDOException $e) {
+            error_log("❌ Database error during OTP verification: " . $e->getMessage());
             $errors['otp-error'] = 'Database error occurred.';
             $_SESSION['show_otp_modal'] = true;
         }
@@ -161,6 +169,8 @@ if(isset($_POST['signup'])){
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
+
+    error_log("📝 Signup Attempt: Name=$name, Email=$email");
 
     if($password !== $cpassword){
         $errors['password'] = "Confirm password not matched!";
@@ -177,6 +187,7 @@ if(isset($_POST['signup'])){
         $stmt->execute();
         
         if($stmt->rowCount() > 0){
+            error_log("❌ Signup Failed: Email $email already exists");
             $errors['email'] = "Email already exists!";
         }
 
@@ -185,6 +196,8 @@ if(isset($_POST['signup'])){
             $otp = generateOTP();
             $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
             $status = "unverified";
+
+            error_log("🔑 Generated OTP for $email: $otp (Expires: $otp_expiry)");
 
             $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry)
                             VALUES (:name, :email, :password, :status, :code, :otp_expiry)";
@@ -197,9 +210,14 @@ if(isset($_POST['signup'])){
             $insert_stmt->bindParam(':otp_expiry', $otp_expiry);
 
             if($insert_stmt->execute()){
+                error_log("✅ User created successfully: $email");
+                error_log("📧 Attempting to send OTP email to $email...");
+                
                 $email_sent = sendOTPEmail($email, $otp, $name);
                 
-                if($email_sent === true) {
+                if($email_sent) {
+                    error_log("✅ OTP Email sent successfully to $email");
+                    
                     $_SESSION['email'] = $email;
                     $_SESSION['name'] = $name;
                     $_SESSION['show_otp_modal'] = true;
@@ -208,14 +226,16 @@ if(isset($_POST['signup'])){
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     exit();
                 } else {
+                    error_log("❌ CRITICAL: OTP Email failed to send to $email");
                     $errors['email'] = "Account created but failed to send OTP. Please contact support.";
-                    error_log("Failed to send OTP email for: $email");
                 }
             } else {
+                error_log("❌ Failed to insert user into database: $email");
                 $errors['db-error'] = "Failed to create account!";
             }
         }
     } catch(PDOException $e) {
+        error_log("❌ Database error during signup: " . $e->getMessage());
         $errors['db-error'] = "Database error occurred.";
     }
 }
@@ -223,6 +243,7 @@ if(isset($_POST['signup'])){
 // RESEND OTP
 if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] == 'resend-otp')){
     if(!isset($_SESSION['email'])){
+        error_log("❌ Resend OTP Failed: No email in session");
         if(isset($_POST['action'])){
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Session expired.']);
@@ -237,6 +258,8 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
         $new_otp = generateOTP();
         $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
         
+        error_log("🔄 Resending OTP to $email: $new_otp (Expires: $otp_expiry)");
+        
         try {
             $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
             $stmt = $conn->prepare($update_otp);
@@ -245,9 +268,11 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
             $stmt->bindParam(':email', $email);
             
             if($stmt->execute()){
+                error_log("📧 Attempting to resend OTP email to $email...");
                 $email_sent = sendOTPEmail($email, $new_otp, $name);
                 
-                if($email_sent === true) {
+                if($email_sent) {
+                    error_log("✅ Resend OTP Email successful for $email");
                     if(isset($_POST['action'])){
                         header('Content-Type: application/json');
                         echo json_encode(['success' => true, 'message' => 'New OTP sent successfully']);
@@ -259,6 +284,7 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
                         exit();
                     }
                 } else {
+                    error_log("❌ CRITICAL: Resend OTP Email failed for $email");
                     if(isset($_POST['action'])){
                         header('Content-Type: application/json');
                         echo json_encode(['success' => false, 'message' => 'Failed to send OTP']);
@@ -270,6 +296,7 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
                 }
             }
         } catch(PDOException $e) {
+            error_log("❌ Database error during resend OTP: " . $e->getMessage());
             if(isset($_POST['action'])){
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'Database error']);
@@ -282,7 +309,7 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
     }
 }
 
-// SIGNIN - FIXED VERSION
+// SIGNIN
 if(isset($_POST['signin'])){    
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -298,11 +325,9 @@ if(isset($_POST['signin'])){
                 $fetch = $stmt->fetch(PDO::FETCH_ASSOC);
                 $fetch_pass = $fetch['password'];
                 
-                // ✅ FIX: Check password FIRST before doing anything
                 if(!password_verify($password, $fetch_pass)){
                     $errors['email'] = "Incorrect email or password.";
                 } else if($fetch['status'] == 'unverified'){
-                    // Password is correct, but account is unverified
                     $new_otp = generateOTP();
                     $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
                     
@@ -315,7 +340,7 @@ if(isset($_POST['signin'])){
                     if($update_stmt->execute()){
                         $email_sent = sendOTPEmail($email, $new_otp, $fetch['name']);
                         
-                        if($email_sent === true) {
+                        if($email_sent) {
                             $_SESSION['email'] = $email;
                             $_SESSION['name'] = $fetch['name'];
                             $_SESSION['show_otp_modal'] = true;
@@ -331,7 +356,6 @@ if(isset($_POST['signin'])){
                     }
                     
                 } else if($fetch['status'] == 'verified'){
-                    // Password correct and account verified - Login successful
                     $_SESSION['user_id'] = $fetch['id'];
                     $_SESSION['username'] = $fetch['name'];
                     $_SESSION['name'] = $fetch['name'];
