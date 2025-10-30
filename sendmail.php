@@ -18,8 +18,7 @@ function generateOTP($length = 6) {
     return $otp;
 }
 
-<<<<<<< HEAD
-// Function to send OTP email - FIXED VERSION
+// Function to send OTP email
 function sendOTPEmail($email, $otp, $name) {
     $mail = new PHPMailer(true);
 
@@ -28,29 +27,10 @@ function sendOTPEmail($email, $otp, $name) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        
-        // Consider moving these to environment variables or config file
         $mail->Username   = 'zafskitchen95@gmail.com';
         $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
-=======
-    // Function to send OTP email
-        function sendOTPEmail($email, $otp, $name) {
-            $mail = new PHPMailer(true);
-
-            try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            
-            // Consider moving these to environment variables or config file
-            $mail->Username   = 'zafskitchen95@gmail.com';
-            $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
-            $mail->Port       = 465;
->>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0
 
         // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
@@ -107,7 +87,6 @@ function sendOTPEmail($email, $otp, $name) {
         </html>
         ";
 
-        // Alternative plain text version for email clients that don't support HTML
         $mail->AltBody = "
         Welcome to Zaf's Kitchen!
         
@@ -124,7 +103,6 @@ function sendOTPEmail($email, $otp, $name) {
         This is an automated message from Zaf's Kitchen.
         ";
 
-        // ✅ FIXED: Send email and return proper boolean value
         if ($mail->send()) {
             error_log("OTP email sent successfully to: $email");
             return true;
@@ -134,7 +112,6 @@ function sendOTPEmail($email, $otp, $name) {
         }
         
     } catch (Exception $e) {
-        // Log the error for debugging (don't expose to user)
         error_log("PHPMailer Exception for $email: " . $e->getMessage());
         error_log("PHPMailer Error Info: " . $mail->ErrorInfo);
         return false;
@@ -154,15 +131,9 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
-<<<<<<< HEAD
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
         $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
         $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
-=======
-            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
-            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
-            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
->>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0
 
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset - Zaf\'s Kitchen';
@@ -226,12 +197,11 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
     }
 }
 
-// ✅ Function to send booking approval email
+// Function to send booking approval email
 function sendBookingApprovalEmail($booking) {
     $mail = new PHPMailer(true);
 
     try {
-        // Server settings
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
@@ -240,19 +210,16 @@ function sendBookingApprovalEmail($booking) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
-        // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
         $mail->addAddress($booking['email'], htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8'));
         $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
 
-        // Format dates and times
         $eventDate = date('F d, Y (l)', strtotime($booking['event_date']));
         $startTime = date('g:i A', strtotime($booking['start_time']));
         $endTime = date('g:i A', strtotime($booking['end_time']));
         $paymentDeadline = date('F d, Y g:i A', strtotime('+20 hours'));
         $bookingRef = str_pad($booking['id'], 6, '0', STR_PAD_LEFT);
         
-        // Sanitize variables
         $safe_name = htmlspecialchars($booking['name'], ENT_QUOTES, 'UTF-8');
         $safe_celebrant = htmlspecialchars($booking['celebrant_name'], ENT_QUOTES, 'UTF-8');
         $safe_event_type = htmlspecialchars(ucfirst($booking['event_type']), ENT_QUOTES, 'UTF-8');
@@ -260,7 +227,6 @@ function sendBookingApprovalEmail($booking) {
         $safe_package = htmlspecialchars(ucfirst(str_replace('_', ' ', $booking['food_package'])), ENT_QUOTES, 'UTF-8');
         $total_price = number_format($booking['total_price'], 2);
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = "🎉 Your Booking is APPROVED! - Ref #$bookingRef - Zaf's Kitchen";
         
@@ -275,13 +241,11 @@ function sendBookingApprovalEmail($booking) {
         <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
             <div style='max-width: 650px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
                 
-                <!-- Header -->
                 <div style='background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); padding: 40px 20px; text-align: center; border-radius: 12px 12px 0 0;'>
                     <h1 style='color: white; margin: 0; font-size: 32px;'>🎉 BOOKING APPROVED!</h1>
                     <p style='color: #FEE2E2; margin: 10px 0 0 0; font-size: 16px;'>Congratulations! Your event is confirmed</p>
                 </div>
                 
-                <!-- Main Content -->
                 <div style='padding: 30px;'>
                     <p style='font-size: 16px; margin-bottom: 20px;'>Dear <strong>$safe_name</strong>,</p>
                     
@@ -290,7 +254,6 @@ function sendBookingApprovalEmail($booking) {
                         <span style='color: #10B981; font-weight: bold;'>APPROVED</span>! ✅
                     </p>
                     
-                    <!-- Payment Deadline Alert -->
                     <div style='background: #FEF3C7; border-left: 5px solid #F59E0B; padding: 20px; margin: 25px 0; border-radius: 8px;'>
                         <p style='margin: 0 0 10px 0; font-size: 18px; font-weight: bold; color: #92400E;'>
                             ⚠️ IMPORTANT: Payment Deadline
@@ -304,7 +267,6 @@ function sendBookingApprovalEmail($booking) {
                         </p>
                     </div>
                     
-                    <!-- Booking Details -->
                     <div style='background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: 12px; padding: 25px; margin: 25px 0;'>
                         <h2 style='color: #DC2626; margin: 0 0 20px 0; font-size: 20px; border-bottom: 2px solid #DC2626; padding-bottom: 10px;'>
                             📋 Booking Details
@@ -346,7 +308,6 @@ function sendBookingApprovalEmail($booking) {
                         </table>
                     </div>
                     
-                    <!-- Total Amount -->
                     <div style='background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%); color: white; padding: 25px; text-align: center; border-radius: 12px; margin: 25px 0;'>
                         <p style='margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;'>Total Amount</p>
                         <p style='margin: 0; font-size: 42px; font-weight: bold; letter-spacing: 1px;'>₱$total_price</p>
@@ -359,7 +320,6 @@ function sendBookingApprovalEmail($booking) {
                     </p>
                 </div>
                 
-                <!-- Footer -->
                 <div style='background: #F9FAFB; padding: 20px; text-align: center; border-top: 1px solid #E5E7EB;'>
                     <p style='margin: 0; font-size: 12px; color: #6B7280;'>
                         © " . date('Y') . " Zaf's Kitchen. All rights reserved.
@@ -384,7 +344,7 @@ function sendBookingApprovalEmail($booking) {
     }
 }
 
-// ✅ Function to send booking rejection email
+// Function to send booking rejection email
 function sendBookingRejectionEmail($booking, $rejection_reason) {
     $mail = new PHPMailer(true);
 
@@ -467,9 +427,3 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         return false;
     }
 }
-<<<<<<< HEAD
-?>
-=======
-
-// ⚠️ IMPORTANT: NO CLOSING PHP TAG - This prevents whitespace issues!
->>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0

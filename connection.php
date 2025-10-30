@@ -43,8 +43,4 @@ try {
 } catch(Exception $e) {
     error_log("❌ Config Error: " . $e->getMessage());
     die("Configuration error");
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0
