@@ -32,9 +32,12 @@ COPY docker-start.sh /usr/local/bin/docker-start.sh
 RUN chmod +x /usr/local/bin/docker-start.sh
 
 # Copy composer files first
-COPY composer.json composer.lock* ./
+COPY composer.json ./
 
-# Install ALL dependencies from composer.json
+# 🔧 FIX: Remove old composer.lock and regenerate
+RUN rm -f composer.lock
+
+# Install ALL dependencies from composer.json (will generate fresh composer.lock)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Copy all files
@@ -43,7 +46,7 @@ COPY . .
 # Verify installations
 RUN php -r "require 'vendor/autoload.php'; \
     echo 'Checking installations...\n'; \
-    echo 'PHPMailer: ' . (class_exists('PHPMailer\PHPMailer\PHPMailer') ? '✅' : '❌') . '\n'; \
+    echo 'SendGrid: ' . (class_exists('SendGrid') ? '✅' : '❌') . '\n'; \
     echo 'Google_Client: ' . (class_exists('Google_Client') ? '✅' : '❌') . '\n'; \
     echo 'Dotenv: ' . (class_exists('Dotenv\Dotenv') ? '✅' : '❌') . '\n';"
 
