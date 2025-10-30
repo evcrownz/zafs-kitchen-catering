@@ -5,7 +5,7 @@ require_once "sendmail.php";
 echo "<h1>Email Test Script</h1>";
 echo "<p>Testing OTP email functionality...</p>";
 
-$test_email = "your-test-email@gmail.com"; // CHANGE THIS TO YOUR EMAIL
+$test_email = "agbojames00@gmail.com"; // CHANGE THIS TO YOUR EMAIL
 $test_name = "Test User";
 $test_otp = "123456";
 
