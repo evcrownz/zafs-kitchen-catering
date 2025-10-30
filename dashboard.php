@@ -1,13 +1,13 @@
-            <?php 
-            session_start();
-                require_once 'connection.php';
-                
-                // ✅ CHECK IF USER IS LOGGED IN
-                    if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
-                        // User is not logged in, redirect to auth.php
-                        header('Location: auth.php');
-                        exit();
-                    }
+<?php
+session_start();
+require_once 'connection.php';
+
+// ✅ CHECK IF USER IS LOGGED IN
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
+    // User is not logged in, redirect to auth.php
+    header('Location: auth.php');
+    exit();
+}
 
                 // Handle booking submission
                 if ($_POST && isset($_POST['action']) && $_POST['action'] === 'book_event') {

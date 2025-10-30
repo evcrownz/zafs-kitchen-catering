@@ -1,13 +1,13 @@
 <?php return array(
     'root' => array(
         'name' => 'vendor/zafs_kitchen',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '10ba5adf7172e6c81f0381d39e8d0291476e84a6',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'af2bce1ce153316b2d66a80dc7d23bcf2e846c1a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => false,
+        'dev' => true,
     ),
     'versions' => array(
         'phpmailer/phpmailer' => array(
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'vendor/zafs_kitchen' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '10ba5adf7172e6c81f0381d39e8d0291476e84a6',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'af2bce1ce153316b2d66a80dc7d23bcf2e846c1a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

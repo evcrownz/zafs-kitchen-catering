@@ -18,7 +18,7 @@ function generateOTP($length = 6) {
     return $otp;
 }
 
-// Function to send OTP email
+// Function to send OTP email - FIXED VERSION
 function sendOTPEmail($email, $otp, $name) {
     $mail = new PHPMailer(true);
 
@@ -30,13 +30,13 @@ function sendOTPEmail($email, $otp, $name) {
         
         // Consider moving these to environment variables or config file
         $mail->Username   = 'zafskitchen95@gmail.com';
-        $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
+        $mail->Password   = 'edsrxcmgytunsawi';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
         // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
-        $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8')); // Sanitize name
+        $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
         $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
 
         // Content
@@ -106,17 +106,24 @@ function sendOTPEmail($email, $otp, $name) {
         This is an automated message from Zaf's Kitchen.
         ";
 
-        $mail->send();
-        return true;
+        // ✅ FIXED: Send email and return proper boolean value
+        if ($mail->send()) {
+            error_log("OTP email sent successfully to: $email");
+            return true;
+        } else {
+            error_log("Failed to send OTP email to: $email - " . $mail->ErrorInfo);
+            return false;
+        }
         
     } catch (Exception $e) {
         // Log the error for debugging (don't expose to user)
-        error_log("PHPMailer Error: " . $mail->ErrorInfo);
+        error_log("PHPMailer Exception for $email: " . $e->getMessage());
+        error_log("PHPMailer Error Info: " . $mail->ErrorInfo);
         return false;
     }
 }
 
-// Function to send password reset email (bonus function)
+// Function to send password reset email
 function sendPasswordResetEmail($email, $reset_link, $name) {
     $mail = new PHPMailer(true);
 
@@ -131,7 +138,7 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
 
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
         $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
-        $mail->addReplyTo('afskitchen95@gmail.com', "Zaf's Kitchen Support");
+        $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
 
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset - Zaf\'s Kitchen';
@@ -181,11 +188,16 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
         </html>
         ";
 
-        $mail->send();
-        return true;
+        if ($mail->send()) {
+            error_log("Password reset email sent successfully to: $email");
+            return true;
+        } else {
+            error_log("Failed to send password reset email to: $email - " . $mail->ErrorInfo);
+            return false;
+        }
         
     } catch (Exception $e) {
-        error_log("PHPMailer Error: " . $mail->ErrorInfo);
+        error_log("PHPMailer Exception for password reset to $email: " . $e->getMessage());
         return false;
     }
 }
@@ -361,12 +373,16 @@ function sendBookingApprovalEmail($booking) {
         </html>
         ";
 
-        $mail->send();
-        error_log("Approval email sent to {$booking['email']} for booking #$bookingRef");
-        return true;
+        if ($mail->send()) {
+            error_log("Approval email sent to {$booking['email']} for booking #$bookingRef");
+            return true;
+        } else {
+            error_log("Approval email failed for booking #$bookingRef: " . $mail->ErrorInfo);
+            return false;
+        }
         
     } catch (Exception $e) {
-        error_log("Approval email failed: " . $mail->ErrorInfo);
+        error_log("Approval email exception for booking #{$booking['id']}: " . $e->getMessage());
         return false;
     }
 }
@@ -458,14 +474,17 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         </html>
         ";
 
-        $mail->send();
-        error_log("Rejection email sent to {$booking['email']} for booking #$bookingRef");
-        return true;
+        if ($mail->send()) {
+            error_log("Rejection email sent to {$booking['email']} for booking #$bookingRef");
+            return true;
+        } else {
+            error_log("Rejection email failed for booking #$bookingRef: " . $mail->ErrorInfo);
+            return false;
+        }
         
     } catch (Exception $e) {
-        error_log("Rejection email failed: " . $mail->ErrorInfo);
+        error_log("Rejection email exception for booking #{$booking['id']}: " . $e->getMessage());
         return false;
     }
 }
 ?>
-
