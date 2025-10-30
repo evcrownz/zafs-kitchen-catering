@@ -31,23 +31,21 @@ WORKDIR /var/www/html
 COPY docker-start.sh /usr/local/bin/docker-start.sh
 RUN chmod +x /usr/local/bin/docker-start.sh
 
+# Copy composer files first
+COPY composer.json composer.lock* ./
+
+# Install ALL dependencies from composer.json
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
 # Copy all files
 COPY . .
 
-# Clean install dependencies
-RUN rm -rf vendor composer.lock && \
-    composer require phpmailer/phpmailer:^7.0 --no-interaction --optimize-autoloader && \
-    composer require google/apiclient:^2.15 --no-interaction --optimize-autoloader && \
-    composer dump-autoload --optimize
-
-# Verify Google Client
+# Verify installations
 RUN php -r "require 'vendor/autoload.php'; \
-    if (class_exists('Google_Client')) { \
-        echo '✅ Google_Client available\n'; \
-    } else { \
-        echo '❌ Google_Client NOT found\n'; \
-        exit(1); \
-    }"
+    echo 'Checking installations...\n'; \
+    echo 'PHPMailer: ' . (class_exists('PHPMailer\PHPMailer\PHPMailer') ? '✅' : '❌') . '\n'; \
+    echo 'Google_Client: ' . (class_exists('Google_Client') ? '✅' : '❌') . '\n'; \
+    echo 'Dotenv: ' . (class_exists('Dotenv\Dotenv') ? '✅' : '❌') . '\n';"
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && \
@@ -58,6 +56,7 @@ RUN { \
         echo 'display_errors = Off'; \
         echo 'log_errors = On'; \
         echo 'error_log = /var/log/apache2/php_errors.log'; \
+        echo 'error_reporting = E_ALL'; \
         echo 'session.cookie_httponly = 1'; \
         echo 'session.use_strict_mode = 1'; \
     } > /usr/local/etc/php/conf.d/production.ini
