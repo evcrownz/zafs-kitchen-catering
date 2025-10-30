@@ -1,47 +1,29 @@
 <?php
 require 'vendor/autoload.php';
 
-use Dotenv\Dotenv;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-echo "<h2>Testing SendGrid Configuration</h2>";
+$apiKey = getenv('SENDGRID_API_KEY');
+$senderEmail = getenv('SENDER_EMAIL');
 
-// Check if variables are loaded
-echo "SENDGRID_API_KEY: " . (isset($_ENV['SENDGRID_API_KEY']) ? '✅ Loaded' : '❌ Missing') . "<br>";
-echo "SENDER_EMAIL: " . (isset($_ENV['SENDER_EMAIL']) ? $_ENV['SENDER_EMAIL'] : '❌ Missing') . "<br>";
-echo "SENDER_NAME: " . (isset($_ENV['SENDER_NAME']) ? $_ENV['SENDER_NAME'] : '❌ Missing') . "<br><br>";
+echo "API Key: " . ($apiKey ? "EXISTS (length: " . strlen($apiKey) . ")" : "MISSING") . "\n";
+echo "Sender: " . ($senderEmail ?: "MISSING") . "\n";
 
-if (!isset($_ENV['SENDGRID_API_KEY']) || !isset($_ENV['SENDER_EMAIL'])) {
-    die("❌ Environment variables not loaded properly!");
-}
+// Test SendGrid directly
+$email = new \SendGrid\Mail\Mail();
+$email->setFrom($senderEmail, "Zaf's Kitchen");
+$email->setSubject("Test Email");
+$email->addTo("your-test-email@gmail.com", "Test User");
+$email->addContent("text/plain", "This is a test");
 
-// Try sending test email
-$mail = new PHPMailer(true);
+$sendgrid = new \SendGrid($apiKey);
 
 try {
-    $mail->isSMTP();
-    $mail->Host = 'smtp.sendgrid.net';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'apikey';
-    $mail->Password = $_ENV['SENDGRID_API_KEY'];
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
-    $mail->SMTPDebug = 2; // Enable verbose debug output
-
-    $mail->setFrom($_ENV['SENDER_EMAIL'], $_ENV['SENDER_NAME']);
-    $mail->addAddress('YOUR_TEST_EMAIL@gmail.com'); // Change this to your email
-    
-    $mail->isHTML(true);
-    $mail->Subject = 'SendGrid Test';
-    $mail->Body = 'This is a test email from SendGrid!';
-
-    $mail->send();
-    echo "<br><br>✅ Email sent successfully!";
+    $response = $sendgrid->send($email);
+    echo "Status Code: " . $response->statusCode() . "\n";
+    echo "Body: " . $response->body() . "\n";
+    echo "Headers: " . print_r($response->headers(), true) . "\n";
 } catch (Exception $e) {
-    echo "<br><br>❌ Error: {$mail->ErrorInfo}";
+    echo "Error: " . $e->getMessage() . "\n";
 }
-?>

@@ -1,25 +1,41 @@
-{
-  "name": "vendor/zafs_kitchen",
-  "autoload": {
-    "psr-4": {
-      "Vendor\\ZafsKitchen\\": "src/"
+<?php
+require 'vendor/autoload.php';
+
+echo "=== SendGrid Test ===\n\n";
+
+$apiKey = getenv('SENDGRID_API_KEY');
+$sender = getenv('SENDER_EMAIL');
+
+echo "1. API Key: " . ($apiKey ? "✅ EXISTS (length: " . strlen($apiKey) . ")" : "❌ MISSING") . "\n";
+echo "2. Sender: " . ($sender ?: "❌ MISSING") . "\n\n";
+
+if (!$apiKey || !$sender) {
+    die("❌ Environment variables not set!\n");
+}
+
+// Test actual sending
+$email = new \SendGrid\Mail\Mail();
+$email->setFrom($sender, "Zaf's Kitchen Test");
+$email->setSubject("Railway SendGrid Test");
+$email->addTo("zafskitchen95@gmail.com", "Test Recipient"); // Send to yourself
+$email->addContent("text/plain", "This is a test email from Railway deployment at " . date('Y-m-d H:i:s'));
+
+$sendgrid = new \SendGrid($apiKey);
+
+try {
+    $response = $sendgrid->send($email);
+    
+    echo "3. SendGrid Response:\n";
+    echo "   Status Code: " . $response->statusCode() . "\n";
+    echo "   Body: " . $response->body() . "\n";
+    echo "   Headers: " . print_r($response->headers(), true) . "\n";
+    
+    if ($response->statusCode() == 202) {
+        echo "\n✅ SUCCESS! Check your email inbox.\n";
+    } else {
+        echo "\n❌ FAILED! Status code: " . $response->statusCode() . "\n";
     }
-  },
-  "authors": [
-    {
-      "name": "Cronics Zayn",
-      "email": "zafskitchen95@gmail.com"
-    }
-  ],
-  "require": {
-    "phpmailer/phpmailer": "^7.0",
-    "google/apiclient": "^2.15",
-    "sendgrid/sendgrid": "*",
-    "vlucas/phpdotenv": "^5.6"
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "php -r \"echo '✅ Dependencies installed successfully!\\n';\""
-    ]
-  }
+    
+} catch (Exception $e) {
+    echo "❌ ERROR: " . $e->getMessage() . "\n";
 }
