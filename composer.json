@@ -13,16 +13,12 @@
   ],
   "require": {
     "phpmailer/phpmailer": "^7.0",
-<<<<<<< HEAD
-    "google/apiclient": "^2.15"
-=======
     "google/apiclient": "^2.15",
-    "sendgrid/sendgrid": "^8.1"
+    "sendgrid/sendgrid": "*"
   },
   "scripts": {
     "post-install-cmd": [
       "php -r \"echo '✅ Dependencies installed successfully!\\n';\""
     ]
->>>>>>> 5442415 (change)
   }
 }
