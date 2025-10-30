@@ -18,6 +18,7 @@ function generateOTP($length = 6) {
     return $otp;
 }
 
+<<<<<<< HEAD
 // Function to send OTP email - FIXED VERSION
 function sendOTPEmail($email, $otp, $name) {
     $mail = new PHPMailer(true);
@@ -33,6 +34,23 @@ function sendOTPEmail($email, $otp, $name) {
         $mail->Password   = 'edsrxcmgytunsawi';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
+=======
+    // Function to send OTP email
+        function sendOTPEmail($email, $otp, $name) {
+            $mail = new PHPMailer(true);
+
+            try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            
+            // Consider moving these to environment variables or config file
+            $mail->Username   = 'zafskitchen95@gmail.com';
+            $mail->Password   = 'edsrxcmgytunsawi'; // Consider using environment variable
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // More explicit
+            $mail->Port       = 465;
+>>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0
 
         // Recipients
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
@@ -136,9 +154,15 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
+<<<<<<< HEAD
         $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
         $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
         $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+=======
+            $mail->setFrom('zafskitchen95@gmail.com', "Zaf's Kitchen");
+            $mail->addAddress($email, htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
+            $mail->addReplyTo('zafskitchen95@gmail.com', "Zaf's Kitchen Support");
+>>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0
 
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset - Zaf\'s Kitchen';
@@ -329,42 +353,15 @@ function sendBookingApprovalEmail($booking) {
                         <p style='margin: 10px 0 0 0; font-size: 13px; opacity: 0.9;'>For {$booking['guest_count']} guests</p>
                     </div>
                     
-                    <!-- Payment Instructions -->
-                    <div style='background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 20px; margin: 25px 0; border-radius: 8px;'>
-                        <h3 style='color: #1E40AF; margin: 0 0 15px 0; font-size: 18px;'>💳 Payment Instructions</h3>
-                        <ol style='margin: 0; padding-left: 20px; color: #1E3A8A;'>
-                            <li style='margin-bottom: 8px;'>Contact us to confirm payment method</li>
-                            <li style='margin-bottom: 8px;'>Send your downpayment within 20 hours</li>
-                            <li style='margin-bottom: 8px;'>Email payment proof to: <strong>zafskitchen95@gmail.com</strong></li>
-                            <li style='margin-bottom: 8px;'>Wait for payment confirmation</li>
-                        </ol>
-                    </div>
-                    
-                    <!-- Contact Information -->
-                    <div style='background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 25px 0;'>
-                        <h3 style='color: #DC2626; margin: 0 0 15px 0; font-size: 18px;'>📞 Contact Information</h3>
-                        <p style='margin: 5px 0; color: #374151;'><strong>Phone:</strong> +63 912 345 6789</p>
-                        <p style='margin: 5px 0; color: #374151;'><strong>Email:</strong> zafskitchen95@gmail.com</p>
-                        <p style='margin: 5px 0; color: #374151;'><strong>Business Hours:</strong> Monday - Sunday, 8:00 AM - 8:00 PM</p>
-                    </div>
-                    
-                    <p style='font-size: 16px; line-height: 1.6; margin: 30px 0 20px 0;'>
-                        We're excited to make your event memorable! If you have any questions, please don't hesitate to contact us.
-                    </p>
-                    
                     <p style='margin-top: 30px; color: #374151;'>
                         Best regards,<br>
-                        <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong><br>
-                        <em style='color: #6B7280;'>Creating Memorable Celebrations</em>
+                        <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong>
                     </p>
                 </div>
                 
                 <!-- Footer -->
                 <div style='background: #F9FAFB; padding: 20px; text-align: center; border-top: 1px solid #E5E7EB;'>
-                    <p style='margin: 0 0 5px 0; font-size: 12px; color: #6B7280;'>
-                        This is an automated email from Zaf's Kitchen Catering Services
-                    </p>
-                    <p style='margin: 0; font-size: 12px; color: #9CA3AF;'>
+                    <p style='margin: 0; font-size: 12px; color: #6B7280;'>
                         © " . date('Y') . " Zaf's Kitchen. All rights reserved.
                     </p>
                 </div>
@@ -443,23 +440,6 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
                         <p style='margin: 0; font-size: 15px; color: #7F1D1D; line-height: 1.6;'>$safe_reason</p>
                     </div>
                     
-                    <div style='background: #EFF6FF; border-left: 5px solid #3B82F6; padding: 20px; margin: 25px 0; border-radius: 8px;'>
-                        <h3 style='color: #1E40AF; margin: 0 0 15px 0; font-size: 18px;'>💡 What You Can Do</h3>
-                        <ul style='margin: 0; padding-left: 20px; color: #1E3A8A;'>
-                            <li style='margin-bottom: 8px;'>Choose an alternative date</li>
-                            <li style='margin-bottom: 8px;'>Adjust your requirements</li>
-                            <li style='margin-bottom: 8px;'>Contact us to discuss options</li>
-                            <li>Submit a new booking request</li>
-                        </ul>
-                    </div>
-                    
-                    <div style='background: #F3F4F6; padding: 20px; border-radius: 8px; margin: 25px 0;'>
-                        <h3 style='color: #DC2626; margin: 0 0 15px 0; font-size: 18px;'>📞 Need Help?</h3>
-                        <p style='margin: 5px 0; color: #374151;'>We're here to help find the perfect solution!</p>
-                        <p style='margin: 10px 0 5px 0; color: #374151;'><strong>Phone:</strong> +63 912 345 6789</p>
-                        <p style='margin: 5px 0; color: #374151;'><strong>Email:</strong> zafskitchen95@gmail.com</p>
-                    </div>
-                    
                     <p style='margin-top: 30px; color: #374151;'>
                         Best regards,<br>
                         <strong style='color: #DC2626;'>Zaf's Kitchen Team</strong>
@@ -487,4 +467,9 @@ function sendBookingRejectionEmail($booking, $rejection_reason) {
         return false;
     }
 }
+<<<<<<< HEAD
 ?>
+=======
+
+// ⚠️ IMPORTANT: NO CLOSING PHP TAG - This prevents whitespace issues!
+>>>>>>> 40347ab06a8a9db74d54026ede5a2af0b7e3b1e0

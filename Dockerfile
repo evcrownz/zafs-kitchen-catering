@@ -72,4 +72,5 @@ RUN echo '<Directory /var/www/html/>' >> /etc/apache2/sites-available/000-defaul
 
 EXPOSE ${PORT}
 
-CMD ["apache2-foreground"]
+# Use startup script as entrypoint
+CMD ["/usr/local/bin/docker-start.sh"]
