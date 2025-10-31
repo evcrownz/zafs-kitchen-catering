@@ -1,4 +1,10 @@
-<?php require_once "controllerUserData.php"; ?>
+<?php require_once "controllerUserData.php";
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +22,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
     
+    /* LHF Ascribe Font - Download the OTF file and place it in your fonts folder */
     @font-face {
         font-family: 'LHF Ascribe';
         src: url('fonts/CR_LHF-Ascribe-Regular-Regular-otf-400.otf') format('opentype'),
@@ -52,6 +59,7 @@ body {
   overflow: hidden;
 }
 
+/* Dark overlay */
 body::before {
   content: "";
   position: fixed;
@@ -64,6 +72,8 @@ body::before {
   pointer-events: none; 
 }
 
+
+/* Navigation Styles */
 .navbar {
     position: fixed;
     top: 0;
@@ -294,6 +304,7 @@ form{
     color: #888;
 }
 
+/* OTP Input Styles */
 .otp-container {
     display: flex;
     justify-content: center;
@@ -423,7 +434,11 @@ form{
     left: -250%;
     width: 300%;
     height: 100%;
-    background-image: linear-gradient(#DC2626, #991B1B);
+    
+    background-image: linear-gradient(
+        #DC2626,
+        #991B1B
+    );
     border-radius: 150px;
     z-index: 2;
     transition: 1.4s ease-in-out;
@@ -498,6 +513,7 @@ form{
     color: #B91C1C;
 }
 
+/* Success message styles */
 .success-message {
     background: #d4edda;
     color: #155724;
@@ -518,6 +534,7 @@ form{
     display: none;
 }
 
+/* Mobile Navigation */
 @media screen and (max-width: 768px) {
     .navbar {
         padding: 15px 20px;
@@ -573,6 +590,7 @@ form{
         background: transparent;
         mix-blend-mode: screen;
     }
+ 
 }
 
 @media screen and (max-width: 650px) {
@@ -612,7 +630,7 @@ form{
         width: 100%;
         height: 2200px;
         border-radius: 20vw;
-        background: #DC2626;
+         background: #DC2626;
     }
 
     .container.active .toggle-box::before,
@@ -622,7 +640,7 @@ form{
         left: 0;
     }
 
-    .container h4 {
+      .container h4 {
         font-weight: 300;
         font-size: small;
     }
@@ -634,6 +652,7 @@ form{
     .container p {
         font-size: 14px;
         margin-bottom: 5px;
+      
     }
 
     .toggle-panel{
@@ -720,6 +739,8 @@ form{
         height: 35px;
         font-size: 14px;
     }
+
+    
 }
 
 .modal-error-overlay {
@@ -756,7 +777,7 @@ form{
     max-width: 450px;
     text-align: left;
     color: #2c3e50;
-    border: 2px solid #991B1B;
+    border: 2px solidrgb(#991B1B);
     box-shadow: 
         0 20px 60px rgba(220, 38, 38, 0.15),
         0 8px 25px rgba(0, 0, 0, 0.1),
@@ -890,6 +911,7 @@ form{
     line-height: 1;
 }
 
+/* Add a subtle glow effect */
 .modal-error-content {
     animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
                subtleGlow 4s ease-in-out infinite alternate;
@@ -910,6 +932,7 @@ form{
     }
 }
 
+/* Mobile responsiveness */
 @media screen and (max-width: 480px) {
     .modal-error-content {
         width: 95%;
@@ -939,6 +962,28 @@ form{
     }
 }
 
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    .modal-error-overlay {
+        background: rgba(0, 0, 0, 0.9);
+    }
+    
+    .modal-error-content {
+        background: linear-gradient(145deg, #2c3e50 0%, #34495e 100%);
+        color:rgb(255, 255, 255);
+        border-color: #DC2626;
+    }
+    
+    .modal-error-content ul li {
+        background: rgba(231, 77, 60, 0.53);
+    }
+    
+    .modal-error-content ul li:hover {
+        background: rgba(220, 38, 38, 0.2);
+    }
+}
+
+/* Loading Screen Styles */
 #loading-screen {
     position: fixed;
     top: 0;
@@ -1049,8 +1094,7 @@ form{
     }
 }
 
-/* Continue from Part 1... */
-
+/* OTP Modal Overlay */
 .otp-modal-overlay {
     position: fixed;
     top: 0;
@@ -1066,6 +1110,18 @@ form{
     animation: fadeInOverlay 0.3s ease-out;
 }
 
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+}
+
+/* OTP Modal Content */
 .otp-modal-content {
     background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
     padding: 40px 35px 35px;
@@ -1085,6 +1141,13 @@ form{
     animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
+@keyframes popIn {
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Animated border effect */
 .otp-modal-content::before {
     content: '';
     position: absolute;
@@ -1099,6 +1162,12 @@ form{
     animation: gradientShift 3s ease infinite;
 }
 
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* OTP Modal Header */
 .otp-modal-content h2 {
     margin-bottom: 15px;
     color: #2c3e50;
@@ -1122,11 +1191,29 @@ form{
     50% { transform: translateY(-5px); }
 }
 
+/* OTP Instruction Text */
+.otp-instruction {
+    font-size: 15px;
+    color: #555;
+    font-weight: 400;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
 .otp-instruction span {
     color: #DC2626;
     font-weight: 600;
 }
 
+/* OTP Input Container */
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+/* OTP Input Fields */
 .otp-input {
     width: 50px;
     height: 50px;
@@ -1156,11 +1243,67 @@ form{
     box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
 }
 
+.otp-input:invalid {
+    border-color: #DC2626;
+    background: #ffeaea;
+}
+
+/* OTP Timer */
+.otp-timer {
+    font-size: 14px;
+    color: #666;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
 #countdown {
     color: #DC2626;
     font-weight: 700;
 }
 
+/* Resend Link */
+.resend-link {
+    color: #DC2626;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+}
+
+.resend-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background: #DC2626;
+    transition: width 0.3s ease;
+}
+
+.resend-link:hover {
+    color: #B91C1C;
+    transform: translateY(-1px);
+}
+
+.resend-link:hover::after {
+    width: 100%;
+}
+
+.resend-link.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.resend-link.disabled:hover::after {
+    width: 0;
+}
+
+/* OTP Verify Button */
 .otp-verify-btn {
     width: 100%;
     height: 45px;
@@ -1199,6 +1342,11 @@ form{
     left: 100%;
 }
 
+.otp-verify-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(220, 38, 38, 0.3);
+}
+
 .otp-verify-btn:disabled {
     background: #ccc;
     cursor: not-allowed;
@@ -1206,6 +1354,7 @@ form{
     box-shadow: none;
 }
 
+/* OTP Error and Success Messages */
 .otp-error {
     background: linear-gradient(145deg, #f8d7da, #f5c6cb);
     color: #721c24;
@@ -1215,6 +1364,7 @@ form{
     border: 1px solid #f5c6cb;
     font-size: 14px;
     font-weight: 500;
+    position: relative;
     animation: slideIn 0.3s ease;
 }
 
@@ -1232,6 +1382,7 @@ form{
     border: 1px solid #c3e6cb;
     font-size: 14px;
     font-weight: 500;
+    position: relative;
     animation: slideIn 0.3s ease;
 }
 
@@ -1251,122 +1402,275 @@ form{
     }
 }
 
-.custom-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.custom-modal.fade-in {
-    opacity: 1;
-}
-
-.custom-modal-content {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    animation: slideIn 0.5s ease-out;
-}
-
-.custom-modal-header {
+/* Close Button */
+.otp-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+    background: white;
+    border: 2px solid #DC2626;
+    border-radius: 50%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #eee;
-}
-
-.custom-modal-header h5 {
-    margin: 0;
-    font-size: 20px;
-    color: #333;
-    font-weight: bold;
-}
-
-.close-btn {
-    font-size: 24px;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.close-btn:hover {
-    color: #333;
-}
-
-.custom-modal-body {
-    font-size: 16px;
-    color: #555;
-    margin-top: 20px;
-    line-height: 1.5;
-}
-
-.custom-modal-footer {
-    margin-top: 30px;
-}
-
-.custom-btn {
-    padding: 12px 30px;
+    justify-content: center;
     font-size: 18px;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
+    font-weight: bold;
+    color: #DC2626;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: all 0.3s ease;
+    z-index: 10001;
 }
 
-.custom-btn:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
+.otp-close-btn:hover {
+    background: #DC2626;
+    color: white;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
 }
 
-.custom-btn:focus {
-    outline: none;
+.otp-close-btn::before {
+    content: '×';
+    font-size: 20px;
+    line-height: 1;
 }
 
+/* Subtle glow effect */
+.otp-modal-content {
+    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
+               subtleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes subtleGlow {
+    from {
+        box-shadow: 
+            0 20px 60px rgba(220, 38, 38, 0.15),
+            0 8px 25px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+    to {
+        box-shadow: 
+            0 20px 60px rgba(220, 38, 38, 0.25),
+            0 8px 25px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+}
+
+/* Mobile Responsive Design */
 @media screen and (max-width: 768px) {
     .otp-modal-content {
         width: 95%;
         padding: 35px 25px 30px;
         border-radius: 16px;
+        max-width: none;
+        margin: 20px;
+    }
+    
+    .otp-modal-content h2 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+    
+    .otp-instruction {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .otp-container {
+        gap: 8px;
+        margin: 20px 0;
     }
     
     .otp-input {
         width: 45px;
         height: 45px;
         font-size: 18px;
+        border-radius: 10px;
+    }
+    
+    .otp-verify-btn {
+        height: 42px;
+        font-size: 15px;
+        margin: 18px 0 12px 0;
+    }
+    
+    .otp-close-btn {
+        width: 32px;
+        height: 32px;
+        top: 12px;
+        right: 15px;
+        font-size: 16px;
     }
 }
 
 @media screen and (max-width: 480px) {
     .otp-modal-content {
         padding: 30px 20px 25px;
+        border-radius: 12px;
+    }
+    
+    .otp-modal-content h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    
+    .otp-instruction {
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+    
+    .otp-container {
+        gap: 6px;
+        margin: 18px 0;
     }
     
     .otp-input {
         width: 40px;
         height: 40px;
         font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    .otp-verify-btn {
+        height: 40px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+    
+    .otp-timer, .resend-link {
+        font-size: 13px;
+    }
+    
+    .otp-error, .otp-success {
+        font-size: 13px;
+        padding: 10px;
     }
 }
+
+@media screen and (max-width: 360px) {
+    .otp-container {
+        gap: 4px;
+    }
+    
+    .otp-input {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+}
+
+    /* The modal background overlay */
+    .custom-modal {
+        display: none; /* Initially hidden */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Darker background */
+        justify-content: center; /* Horizontally center the modal */
+        align-items: center; /* Vertically center the modal */
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .custom-modal.fade-in {
+        opacity: 1;
+    }
+
+    /* Modal content box */
+    .custom-modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 450px; /* Set max width to make the modal look elegant */
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for a "floating" effect */
+        animation: slideIn 0.5s ease-out;
+    }
+
+    /* Slide-in animation for the modal */
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Modal header styling */
+    .custom-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #eee;
+    }
+
+    .custom-modal-header h5 {
+        margin: 0;
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    /* Close button (X) */
+    .close-btn {
+        font-size: 24px;
+        color: #aaa;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .close-btn:hover {
+        color: #333;
+    }
+
+    /* Modal body styling */
+    .custom-modal-body {
+        font-size: 16px;
+        color: #555;
+        margin-top: 20px;
+        line-height: 1.5;
+    }
+
+    /* Footer styling */
+    .custom-modal-footer {
+        margin-top: 30px;
+    }
+
+    /* "Okay" button styling */
+    .custom-btn {
+        padding: 12px 30px;
+        font-size: 18px;
+        color: white;
+        background-color: #4CAF50; /* Green color */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    /* Button hover effect */
+    .custom-btn:hover {
+        background-color: #45a049; /* Darker green */
+        transform: scale(1.05); /* Slight scale-up effect */
+    }
+
+    .custom-btn:focus {
+        outline: none;
+    }
 </style>
 
 <body>
-    <!-- Navigation Bar -->
+  <!-- Navigation Bar -->
     <nav class="navbar">
         <a href="#" class="logo">
             <div class="logo-icon">
@@ -1415,7 +1719,10 @@ form{
             </div>
         </div>
     </div>
-    <?php unset($_SESSION['verification_success']); ?>
+    <?php
+    // Clear the session message after displaying the modal
+    unset($_SESSION['verification_success']);
+    ?>
     <?php endif; ?>
 
     <!-- Reset Success Modal -->
@@ -1434,7 +1741,9 @@ form{
             </div>
         </div>
     </div>
-    <?php unset($_SESSION['reset_success']); ?>
+    <?php
+    unset($_SESSION['reset_success']);
+    ?>
     <?php endif; ?>
 
     <!-- Forgot Password Success Modal -->
@@ -1472,12 +1781,14 @@ form{
             <h2>Verify Your Email</h2>
             <p class="otp-instruction">We've sent a 6-digit verification code to <span id="userEmail"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?></span></p>
             
+            <!-- Show success messages -->
             <?php if(isset($_SESSION['info'])): ?>
                 <div class="otp-success" style="display: block;">
                     <?php echo $_SESSION['info']; unset($_SESSION['info']); ?>
                 </div>
             <?php endif; ?>
             
+            <!-- Show OTP errors here -->
             <?php if(isset($errors['otp-error'])): ?>
                 <div class="otp-error" style="display: block;">
                     <?php echo $errors['otp-error']; ?>
@@ -1504,6 +1815,7 @@ form{
                 <button type="submit" name="check" class="btn otp-verify-btn" id="verifyBtn" disabled>Verify OTP</button>
             </form>
             
+            <!-- Separate form for resend OTP -->
             <form id="resendForm" method="POST" action="" style="display: inline;">
                 <button type="submit" name="resend-otp" class="resend-link disabled" id="resendOtp">Resend OTP</button>
             </form>
@@ -1565,7 +1877,7 @@ form{
             </form>
         </div>
 
-        <!-- Loading Screen -->
+        <!-- Enhanced Loading Screen -->
         <div id="loading-screen" style="display:none;">
             <div class="loading-container">
                 <div class="spinner"></div>
@@ -1584,6 +1896,7 @@ form{
                 <h1>Reset Password</h1>
                 <h4>Enter your email address and we'll send you a link to reset your password</h4>
                 
+                <!-- Show forgot password errors -->
                 <?php if(isset($errors['forgot-error'])): ?>
                     <div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc3545;">
                         <i class="bx bx-error-circle"></i>
@@ -1601,6 +1914,7 @@ form{
         </div>
 
         <div class="toggle-box">
+            <!-- Left Panel (Welcome Back) -->
             <div class="toggle-panel toggle-left">
                 <h1>Welcome back!</h1>
                 <h4>Sign in to Zaf's Kitchen to manage <br>your catering events</h4>
@@ -1608,6 +1922,7 @@ form{
                 <button class="btn signup-btn">Signup</button>
             </div>
 
+            <!-- Right Panel (Join Now) -->
             <div class="toggle-panel toggle-right">
                 <h1>Join now!</h1>
                 <h4>let Zaf's Kitchen Bring flavor to your<br> celebrations</h4>
@@ -1617,508 +1932,390 @@ form{
         </div>
     </div>
 
-<script>
-// ====== MODAL HANDLERS - SUCCESS & ERROR MODALS ======
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Page loaded - Initializing all modals and handlers');
+    <script>
+        // Show modals based on PHP conditions
+        <?php if(isset($_SESSION['verification_success'])): ?>
+            window.onload = function() {
+                document.getElementById('successModal').style.display = 'flex';
+                setTimeout(function() {
+                    document.getElementById('successModal').classList.add('fade-in');
+                }, 50);
+            }
+        <?php endif; ?>
 
-    // ====== SUCCESS MODAL (Email Verification) ======
-    <?php if(isset($_SESSION['verification_success'])): ?>
-        const successModal = document.getElementById('successModal');
-        if (successModal) {
-            successModal.style.display = 'flex';
-            setTimeout(() => successModal.classList.add('fade-in'), 50);
-            console.log('✅ Showing verification success modal');
-        }
-    <?php endif; ?>
-
-    // Success Modal Close Handlers
-    const successModal = document.getElementById('successModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const closeModal = document.getElementById('closeModal');
-    
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', function() {
-            successModal.classList.remove('fade-in');
-            setTimeout(() => successModal.style.display = 'none', 300);
-        });
-    }
-    
-    if (closeModal) {
-        closeModal.addEventListener('click', function() {
-            successModal.classList.remove('fade-in');
-            setTimeout(() => successModal.style.display = 'none', 300);
-        });
-    }
-
-    // ====== RESET SUCCESS MODAL ======
-    <?php if(isset($_SESSION['reset_success'])): ?>
-        const resetModal = document.getElementById('resetSuccessModal');
-        if (resetModal) {
-            resetModal.style.display = 'flex';
-            console.log('✅ Showing reset success modal');
-        }
-    <?php endif; ?>
-
-    const resetModal = document.getElementById('resetSuccessModal');
-    const closeResetBtn = document.getElementById('closeResetModalBtn');
-    const closeResetX = document.getElementById('closeResetModal');
-    
-    if (closeResetBtn) {
-        closeResetBtn.addEventListener('click', function() {
-            resetModal.style.display = 'none';
-        });
-    }
-    
-    if (closeResetX) {
-        closeResetX.addEventListener('click', function() {
-            resetModal.style.display = 'none';
-        });
-    }
-
-    // ====== FORGOT PASSWORD SUCCESS MODAL ======
-    <?php if(isset($_SESSION['show_forgot_success'])): ?>
-        const forgotModal = document.getElementById('forgotSuccessModal');
-        if (forgotModal) {
-            forgotModal.style.display = 'flex';
-            console.log('✅ Showing forgot password success modal');
-        }
-    <?php endif; ?>
-
-    const forgotModal = document.getElementById('forgotSuccessModal');
-    const closeForgotBtn = document.getElementById('closeForgotModalBtn');
-    const closeForgotX = document.getElementById('closeForgotModal');
-    
-    if (closeForgotBtn) {
-        closeForgotBtn.addEventListener('click', function() {
-            forgotModal.style.display = 'none';
-        });
-    }
-    
-    if (closeForgotX) {
-        closeForgotX.addEventListener('click', function() {
-            forgotModal.style.display = 'none';
-        });
-    }
-
-    // ====== LOADING SCREEN FOR SIGNUP ======
-    const signupForm = document.querySelector(".form-box.signup form");
-    const loadingScreen = document.getElementById("loading-screen");
-    
-    if (signupForm && loadingScreen) {
-        signupForm.addEventListener("submit", function() {
-            console.log('📝 Signup form submitted - showing loading screen');
-            loadingScreen.style.display = "flex";
-        });
-    }
-
-    // ====== OTP MODAL INITIALIZATION ======
-    const showOTPModal = <?php echo (isset($_SESSION['show_otp_modal']) && $_SESSION['show_otp_modal']) ? 'true' : 'false'; ?>;
-    const hasOTPError = <?php echo isset($errors['otp-error']) ? 'true' : 'false'; ?>;
-    
-    if (showOTPModal || hasOTPError) {
-        console.log('🔐 OTP Modal should be shown');
-        showOTPModalFunction();
-    }
-    
-    // Initialize OTP functionality
-    initializeOTPInputs();
-    initializeResendButton();
-});
-
-// ====== CLOSE ERROR MODAL ======
-function closeErrorModal() {
-    const modal = document.getElementById("errorModal");
-    if (modal) {
-        console.log('❌ Closing error modal');
-        modal.style.display = "none";
-    }
-}
-
-// ====== OTP MODAL SHOW FUNCTION ======
-function showOTPModalFunction() {
-    const modal = document.getElementById('otpModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        console.log('✅ OTP Modal displayed');
-        
-        const firstInput = document.querySelector('.otp-input[data-index="0"]');
-        if (firstInput) {
-            setTimeout(() => {
-                firstInput.focus();
-                console.log('🎯 First OTP input focused');
-            }, 100);
-        }
-        
-        startCountdown();
-    } else {
-        console.error('❌ OTP Modal element not found in DOM');
-    }
-}
-
-// ====== HIDE OTP MODAL ======
-function hideOTPModal() {
-    const modal = document.getElementById('otpModal');
-    if (modal) {
-        modal.style.display = 'none';
-        console.log('🔒 OTP Modal hidden');
-    }
-    
-    if (countdownInterval) {
-        clearInterval(countdownInterval);
-    }
-    
-    localStorage.removeItem('otp_expiry');
-}
-
-// ====== FORM TOGGLE FUNCTIONALITY ======
-document.addEventListener('DOMContentLoaded', function() {
-    const container = document.querySelector('.container');
-    const signupBtn = document.querySelector('.signup-btn');
-    const signinBtn = document.querySelector('.signin-btn');
-    const forgotPasswordLink = document.querySelector('.forgot-password-link');
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            console.log('🍔 Hamburger menu toggled');
-        });
-
-        document.querySelectorAll('.nav-menu li a').forEach(link => {
-            link.addEventListener('click', function() {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+        <?php if(isset($_SESSION['reset_success'])): ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('resetSuccessModal').style.display = 'flex';
             });
-        });
-    }
+        <?php endif; ?>
 
-    if (signupBtn) {
-        signupBtn.addEventListener('click', () => {
-            container.classList.remove('forgot-active');
-            container.classList.add('active');
-            console.log('📝 Switched to signup form');
-        });
-    }
+        <?php if(isset($_SESSION['show_forgot_success'])): ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('forgotSuccessModal').style.display = 'flex';
+            });
+        <?php endif; ?>
 
-    if (signinBtn) {
-        signinBtn.addEventListener('click', () => {
-            container.classList.remove('active', 'forgot-active');
-            console.log('🔐 Switched to signin form');
-        });
-    }
+        <?php if((isset($_SESSION['show_otp_modal']) && $_SESSION['show_otp_modal'] === true) || isset($errors['otp-error'])): ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                showOTPModal();
+            });
+            <?php unset($_SESSION['show_otp_modal']); ?>
+        <?php endif; ?>
 
-    if (forgotPasswordLink) {
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            container.classList.remove('active');
-            container.classList.add('forgot-active');
-            console.log('🔑 Switched to forgot password form');
-        });
-    }
+        // Modal close handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Success modal handlers
+            const successModal = document.getElementById('successModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const closeModal = document.getElementById('closeModal');
+            
+            if(closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    successModal.classList.remove('fade-in');
+                    setTimeout(function() { 
+                        successModal.style.display = 'none';
+                    }, 300);
+                });
+            }
+            
+            if(closeModal) {
+                closeModal.addEventListener('click', function() {
+                    successModal.classList.remove('fade-in');
+                    setTimeout(function() {
+                        successModal.style.display = 'none';
+                    }, 300);
+                });
+            }
 
-    const otpModal = document.getElementById('otpModal');
-    const expiry = localStorage.getItem('otp_expiry');
-    if (otpModal && otpModal.style.display !== 'none' && expiry) {
-        const now = Date.now();
-        if (now < parseInt(expiry)) {
-            startCountdown();
-            console.log('⏰ Resuming countdown timer');
-        } else {
-            localStorage.removeItem('otp_expiry');
+            // Reset success modal handlers
+            const resetModal = document.getElementById('resetSuccessModal');
+            const closeResetBtn = document.getElementById('closeResetModalBtn');
+            const closeResetX = document.getElementById('closeResetModal');
+            
+            if(closeResetBtn) {
+                closeResetBtn.addEventListener('click', function() {
+                    resetModal.style.display = 'none';
+                });
+            }
+            
+            if(closeResetX) {
+                closeResetX.addEventListener('click', function() {
+                    resetModal.style.display = 'none';
+                });
+            }
+
+            // Forgot password success modal handlers
+            const forgotModal = document.getElementById('forgotSuccessModal');
+            const closeForgotBtn = document.getElementById('closeForgotModalBtn');
+            const closeForgotX = document.getElementById('closeForgotModal');
+            
+            if(closeForgotBtn) {
+                closeForgotBtn.addEventListener('click', function() {
+                    forgotModal.style.display = 'none';
+                });
+            }
+            
+            if(closeForgotX) {
+                closeForgotX.addEventListener('click', function() {
+                    forgotModal.style.display = 'none';
+                });
+            }
+
+            // Loading screen for signup
+            const form = document.querySelector(".form-box.signup form");
+            const loadingScreen = document.getElementById("loading-screen");
+            
+            if(form && loadingScreen) {
+                form.addEventListener("submit", function () {
+                    loadingScreen.style.display = "flex";
+                });
+            }
+        });
+
+        // Close error modal function
+        function closeErrorModal() {
+            const modal = document.getElementById("errorModal");
+            if (modal) modal.style.display = "none";
         }
-    }
-});
 
-// ====== OTP INPUT FUNCTIONALITY ======
-function initializeOTPInputs() {
-    const otpInputs = document.querySelectorAll('.otp-input');
-    const verifyBtn = document.getElementById('verifyBtn');
-    
-    if (!otpInputs.length) {
-        console.warn('⚠️ No OTP inputs found');
-        return;
-    }
-    
-    console.log(`✅ Initializing ${otpInputs.length} OTP inputs`);
-
-    otpInputs.forEach((input, index) => {
-        input.addEventListener('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-            
-            if (this.value.length > 1) {
-                this.value = this.value.slice(0, 1);
+        // Show OTP modal function
+        function showOTPModal() {
+            const modal = document.getElementById("otpModal");
+            if (modal) {
+                modal.style.display = "flex";
+                startCountdown();
             }
-            
-            if (this.value.length === 1) {
-                this.classList.add('filled');
-                
-                if (index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
-                }
-            } else {
-                this.classList.remove('filled');
-            }
-            
-            checkOTPComplete();
-        });
+        }
 
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Backspace') {
-                e.preventDefault();
-                
-                if (this.value === '' && index > 0) {
-                    otpInputs[index - 1].focus();
-                    otpInputs[index - 1].value = '';
-                    otpInputs[index - 1].classList.remove('filled');
+        // Hide OTP modal function
+        function hideOTPModal() {
+            const modal = document.getElementById("otpModal");
+            if (modal) modal.style.display = "none";
+        }
+    </script>
+    
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.container');
+            const signupBtn = document.querySelector('.signup-btn');
+            const signinBtn = document.querySelector('.signin-btn');
+            const forgotPasswordLink = document.querySelector('.forgot-password-link');
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+
+            // Hamburger menu toggle
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');             
+                });
+
+                document.querySelectorAll('.nav-menu li a').forEach(link => {
+                    link.addEventListener('click', function () {
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                    });
+                });
+            }
+
+            // Form toggles
+            if (signupBtn) {
+                signupBtn.addEventListener('click', () => {
+                    container.classList.remove('forgot-active');
+                    container.classList.add('active');
+                });
+            }
+
+            if (signinBtn) {
+                signinBtn.addEventListener('click', () => {
+                    container.classList.remove('active', 'forgot-active');
+                });
+            }
+
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    container.classList.remove('active');
+                    container.classList.add('forgot-active');
+                });
+            }
+
+            // Initialize OTP modal
+            initializeOTPModal();
+
+            // Start countdown if OTP modal is visible and not yet expired
+            const otpModal = document.getElementById('otpModal');
+            const expiry = localStorage.getItem('otp_expiry');
+            if (otpModal && otpModal.style.display !== 'none' && expiry) {
+                const now = Date.now();
+                if (now < parseInt(expiry)) {
+                    startCountdown(); // Resume countdown
                 } else {
-                    this.value = '';
-                    this.classList.remove('filled');
+                    localStorage.removeItem('otp_expiry');
                 }
-                
-                checkOTPComplete();
-            } else if (e.key === 'ArrowLeft' && index > 0) {
-                otpInputs[index - 1].focus();
-            } else if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
-                otpInputs[index + 1].focus();
             }
         });
 
-        input.addEventListener('paste', function(e) {
-            e.preventDefault();
-            
-            const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
-            
-            if (pastedData.length === 6) {
-                console.log('📋 Pasting 6-digit OTP');
-                
-                otpInputs.forEach((input, i) => {
-                    input.value = pastedData[i] || '';
-                    if (pastedData[i]) {
-                        input.classList.add('filled');
+        // OTP Modal Logic
+        function initializeOTPModal() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const resendBtn = document.getElementById('resendOtp');
+            const resendForm = document.getElementById('resendForm');
+
+            if (!otpInputs.length) return;
+
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', function () {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    if (this.value.length > 1) this.value = this.value.slice(0, 1);
+                    this.classList.toggle('filled', this.value.length === 1);
+                    if (this.value && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                    checkOTPComplete();
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Backspace') {
+                        if (this.value === '' && index > 0) {
+                            otpInputs[index - 1].focus();
+                            otpInputs[index - 1].value = '';
+                            otpInputs[index - 1].classList.remove('filled');
+                        } else {
+                            this.value = '';
+                            this.classList.remove('filled');
+                        }
+                        checkOTPComplete();
+                    } else if (e.key === 'ArrowLeft' && index > 0) {
+                        otpInputs[index - 1].focus();
+                    } else if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
                     }
                 });
-                
-                checkOTPComplete();
-                
+
+                input.addEventListener('paste', function (e) {
+                    e.preventDefault();
+                    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+                    if (pastedData.length === 6) {
+                        otpInputs.forEach((input, i) => {
+                            input.value = pastedData[i] || '';
+                            input.classList.toggle('filled', !!pastedData[i]);
+                        });
+                        checkOTPComplete();
+                        verifyBtn.focus();
+                    }
+                });
+
+                input.addEventListener('focus', function () {
+                    this.select();
+                });
+            });
+
+            if (resendForm) {
+                resendForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    if (!resendBtn.classList.contains('disabled')) {
+                        resendOTP();
+                    }
+                });
+            }
+
+            function checkOTPComplete() {
+                const complete = Array.from(otpInputs).every(input => input.value.length === 1);
                 if (verifyBtn) {
-                    verifyBtn.focus();
+                    verifyBtn.disabled = !complete;
+                    verifyBtn.classList.toggle('enabled', complete);
                 }
             }
-        });
-
-        input.addEventListener('focus', function() {
-            this.select();
-        });
-    });
-
-    function checkOTPComplete() {
-        const allFilled = Array.from(otpInputs).every(input => input.value.length === 1);
-        
-        if (verifyBtn) {
-            verifyBtn.disabled = !allFilled;
-            
-            if (allFilled) {
-                verifyBtn.classList.add('enabled');
-                console.log('✅ All OTP digits entered');
-            } else {
-                verifyBtn.classList.remove('enabled');
-            }
         }
-    }
-}
 
-// ====== RESEND BUTTON FUNCTIONALITY ======
-function initializeResendButton() {
-    const resendForm = document.getElementById('resendForm');
-    const resendBtn = document.getElementById('resendOtp');
-    
-    if (resendForm && resendBtn) {
-        resendForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!resendBtn.classList.contains('disabled')) {
-                console.log('🔄 Resend OTP button clicked');
-                resendOTP();
-            } else {
-                console.log('⏳ Resend button is disabled - countdown active');
-            }
-        });
-    }
-}
+        // Countdown timer
+        let countdownInterval;
 
-// ====== COUNTDOWN TIMER ======
-let countdownInterval;
+        function startCountdown() {
+            const resendBtn = document.getElementById('resendOtp');
+            const countdownElement = document.getElementById('countdown');
+            const timerElement = document.getElementById('timer');
 
-function startCountdown() {
-    const resendBtn = document.getElementById('resendOtp');
-    const countdownElement = document.getElementById('countdown');
-    const timerElement = document.getElementById('timer');
-    
-    if (countdownInterval) {
-        clearInterval(countdownInterval);
-    }
-    
-    console.log('⏰ Starting countdown timer');
-    
-    let expiryTime = localStorage.getItem('otp_expiry');
-    
-    if (!expiryTime || Date.now() >= parseInt(expiryTime)) {
-        expiryTime = Date.now() + 60000;
-        localStorage.setItem('otp_expiry', expiryTime);
-        console.log('⏱️ New countdown: 60 seconds');
-    } else {
-        const remaining = Math.floor((parseInt(expiryTime) - Date.now()) / 1000);
-        console.log(`⏱️ Resuming countdown: ${remaining} seconds remaining`);
-    }
-    
-    if (resendBtn) {
-        resendBtn.classList.add('disabled');
-        resendBtn.style.pointerEvents = 'none';
-    }
-    
-    function updateCountdown() {
-        const remaining = Math.floor((parseInt(expiryTime) - Date.now()) / 1000);
-        
-        if (remaining >= 0) {
-            if (countdownElement) {
-                countdownElement.textContent = remaining;
-            }
-        }
-        
-        if (remaining <= 0) {
             clearInterval(countdownInterval);
-            
-            if (timerElement) {
-                timerElement.innerHTML = '<span style="color: #DC2626; font-weight: bold;">You can now resend OTP</span>';
+
+            let expiryTime = localStorage.getItem('otp_expiry');
+            if (!expiryTime) {
+                expiryTime = Date.now() + 60000;
+                localStorage.setItem('otp_expiry', expiryTime);
+            } else {
+                expiryTime = parseInt(expiryTime);
             }
-            
+
+            function updateCountdown() {
+                const remaining = Math.floor((expiryTime - Date.now()) / 1000);
+
+                if (remaining >= 0 && countdownElement) {
+                    countdownElement.textContent = remaining;
+                }
+
+                if (remaining <= 0) {
+                    clearInterval(countdownInterval);
+                    if (timerElement) {
+                        timerElement.innerHTML = '<span style="color: #DC2626; font-weight: bold;">You can now resend OTP</span>';
+                    }
+                    if (resendBtn) {
+                        resendBtn.classList.remove('disabled');
+                        resendBtn.style.pointerEvents = 'auto';
+                        resendBtn.innerHTML = 'Resend OTP';
+                    }
+                    localStorage.removeItem('otp_expiry');
+                }
+            }
+
+            updateCountdown(); // first run
+            countdownInterval = setInterval(updateCountdown, 1000);
+
             if (resendBtn) {
-                resendBtn.classList.remove('disabled');
-                resendBtn.style.pointerEvents = 'auto';
+                resendBtn.classList.add('disabled');
+                resendBtn.style.pointerEvents = 'none';
                 resendBtn.innerHTML = 'Resend OTP';
             }
-            
-            localStorage.removeItem('otp_expiry');
-            console.log('✅ Countdown finished - resend available');
         }
-    }
-    
-    updateCountdown();
-    countdownInterval = setInterval(updateCountdown, 1000);
-}
 
-// ====== RESEND OTP FUNCTION ======
-function resendOTP() {
-    const resendBtn = document.getElementById('resendOtp');
-    const otpError = document.getElementById('otpError');
-    const otpSuccess = document.getElementById('otpSuccess');
-    
-    console.log('📧 Resending OTP...');
-    
-    if (resendBtn) {
-        resendBtn.disabled = true;
-        resendBtn.textContent = 'Sending...';
-    }
-    
-    if (otpError) otpError.style.display = 'none';
-    if (otpSuccess) otpSuccess.style.display = 'none';
-    
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'action=resend-otp'
-    })
-    .then(response => {
-        console.log('📨 Response received');
-        return response.json();
-    })
-    .then(data => {
-        console.log('✉️ Resend response:', data);
-        
-        if (data.success) {
-            showOTPMessage(data.message, 'success');
-            clearOTPInputs();
-            
-            localStorage.setItem('otp_expiry', Date.now() + 60000);
-            startCountdown();
-        } else {
-            showOTPMessage(data.message, 'error');
+        // Resend OTP
+        function resendOTP() {
+            const resendBtn = document.getElementById('resendOtp');
+            showLoadingState(resendBtn, 'Sending...');
+
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'action=resend-otp'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    hideLoadingState(resendBtn);
+                    if (data.success) {
+                        showOTPMessage(data.message, 'success');
+                        clearOTPInputs();
+                        localStorage.setItem('otp_expiry', Date.now() + 60000); // reset timer
+                        startCountdown();
+                    } else {
+                        showOTPMessage(data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    hideLoadingState(resendBtn);
+                    document.getElementById('resendForm').submit();
+                });
         }
-        
-        if (resendBtn) {
-            resendBtn.disabled = false;
-            resendBtn.textContent = 'Resend OTP';
+
+        // Utility Functions
+        function showLoadingState(element, loadingText = 'Loading...') {
+            if (element) {
+                element.disabled = true;
+                element.dataset.originalText = element.innerHTML;
+                element.innerHTML = `<span class="spinner"></span> ${loadingText}`;
+            }
         }
-    })
-    .catch(error => {
-        console.error('❌ Resend OTP error:', error);
-        console.log('🔄 Falling back to form submission');
-        
-        document.getElementById('resendForm').submit();
-    });
-}
 
-// ====== CLEAR OTP INPUTS ======
-function clearOTPInputs() {
-    const otpInputs = document.querySelectorAll('.otp-input');
-    const verifyBtn = document.getElementById('verifyBtn');
-    
-    console.log('🧹 Clearing OTP inputs');
-    
-    otpInputs.forEach((input, index) => {
-        setTimeout(() => {
-            input.value = '';
-            input.classList.remove('filled');
-        }, index * 50);
-    });
-    
-    if (verifyBtn) {
-        verifyBtn.disabled = true;
-        verifyBtn.classList.remove('enabled');
-    }
-    
-    setTimeout(() => {
-        if (otpInputs[0]) {
-            otpInputs[0].focus();
+        function hideLoadingState(element) {
+            if (element && element.dataset.originalText) {
+                element.disabled = false;
+                element.innerHTML = element.dataset.originalText;
+                delete element.dataset.originalText;
+            }
         }
-    }, 300);
-}
 
-// ====== SHOW OTP MESSAGE ======
-function showOTPMessage(message, type) {
-    const errorElement = document.getElementById('otpError');
-    const successElement = document.getElementById('otpSuccess');
-    
-    console.log(`💬 Showing ${type} message: ${message}`);
-    
-    if (errorElement) errorElement.style.display = 'none';
-    if (successElement) successElement.style.display = 'none';
-    
-    if (type === 'error' && errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-        
-        setTimeout(() => {
-            errorElement.style.display = 'none';
-        }, 5000);
-    } else if (type === 'success' && successElement) {
-        successElement.textContent = message;
-        successElement.style.display = 'block';
-        
-        setTimeout(() => {
-            successElement.style.display = 'none';
-        }, 5000);
-    }
-}
+        function clearOTPInputs() {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            otpInputs.forEach((input, index) => {
+                setTimeout(() => {
+                    input.value = '';
+                    input.classList.remove('filled');
+                    input.classList.add('shake');
+                    setTimeout(() => input.classList.remove('shake'), 500);
+                }, index * 50);
+            });
 
-// ====== INITIALIZATION COMPLETE ======
-console.log('✅ All JavaScript initialized successfully');
-</script>
+            setTimeout(() => {
+                if (otpInputs[0]) otpInputs[0].focus();
+            }, 300);
+        }
 
+        function showOTPMessage(message, type) {
+            const errorElement = document.getElementById('otpError');
+            const successElement = document.getElementById('otpSuccess');
+
+            if (errorElement) errorElement.style.display = 'none';
+            if (successElement) successElement.style.display = 'none';
+
+            if (type === 'error' && errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            } else if (type === 'success' && successElement) {
+                successElement.textContent = message;
+                successElement.style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
