@@ -68,8 +68,8 @@ $mail->Host = 'smtp.gmail.com';
 $mail->SMTPAuth = true;
 $mail->Username = trim($username);
 $mail->Password = trim($password);
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-$mail->Port = 587;
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // SSL instead of STARTTLS
+$mail->Port = 465; // Port 465 instead of 587
 $mail->Timeout = 30;
 
 echo "✅ SMTP configured\n";
