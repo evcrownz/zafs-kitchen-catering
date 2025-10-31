@@ -34,19 +34,19 @@ RUN chmod +x /usr/local/bin/docker-start.sh
 # Copy composer files first
 COPY composer.json ./
 
-# 🔧 FIX: Remove old composer.lock and regenerate
+# Remove old composer.lock and regenerate
 RUN rm -f composer.lock
 
-# Install ALL dependencies from composer.json (will generate fresh composer.lock)
+# Install ALL dependencies from composer.json
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Copy all files
 COPY . .
 
-# Verify installations
+# ✅ UPDATED: Verify Resend installation
 RUN php -r "require 'vendor/autoload.php'; \
     echo 'Checking installations...\n'; \
-    echo 'SendGrid: ' . (class_exists('SendGrid') ? '✅' : '❌') . '\n'; \
+    echo 'Resend: ' . (class_exists('Resend\Client') ? '✅' : '❌') . '\n'; \
     echo 'Google_Client: ' . (class_exists('Google_Client') ? '✅' : '❌') . '\n'; \
     echo 'Dotenv: ' . (class_exists('Dotenv\Dotenv') ? '✅' : '❌') . '\n';"
 
