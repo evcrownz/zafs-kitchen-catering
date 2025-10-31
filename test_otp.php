@@ -1,19 +1,18 @@
 <?php
+// test_otp.php - SIMPLE TEST LANG
+require 'vendor/autoload.php';
 require 'sendmail.php';
 
-echo "<h2>OTP TEST</h2>";
-echo "<pre>";
+echo "📧 Testing OTP Email...\n";
 
-$result = sendOTPEmail("test@test.com", "123456", "Test User");
+// PALITAN MO ITO NG GMAIL MO!
+$my_email = "agbojames00@gmail.com"; 
 
-if ($result) {
-    echo "✅ SUCCESS: OTP system working!\n";
-    echo "🔢 OTP: 123456\n"; 
-    echo "📧 Email attempted to send to agbojames00@gmail.com\n";
-    echo "🚀 Users can now sign up and verify!\n";
+$result = sendOTPEmail($my_email, "123456", "Test User");
+
+if($result) {
+    echo "✅ SUCCESS! Check Gmail mo!\n";
 } else {
-    echo "❌ FAILED\n";
+    echo "❌ FAILED! Ayusin muna Railway variables.\n";
 }
-
-echo "</pre>";
 ?>

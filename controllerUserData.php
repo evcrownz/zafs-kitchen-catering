@@ -1,5 +1,13 @@
 <?php 
 date_default_timezone_set('Asia/Manila');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Load environment variables
+require 'vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 session_start();
 require "connection.php";
@@ -97,23 +105,21 @@ if(isset($_GET['code'])) {
     }
 }
 
-// Verify OTP - IMPROVED VERSION
+// Verify OTP
 if(isset($_POST['check'])) {
     $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
     
     if(empty($email)) {
         $errors['otp-error'] = 'Session expired. Please sign up again.';
     } else {
-        // Get OTP from form
         $entered_otp = '';
         for ($i = 1; $i <= 6; $i++) {
             $entered_otp .= isset($_POST["otp$i"]) ? trim($_POST["otp$i"]) : '';
         }
 
-        error_log("🔍 OTP Verification: Email=$email, OTP=$entered_otp");
+        error_log("🔍 OTP Verification Attempt: Email=$email, Entered OTP=$entered_otp");
 
         try {
-            // Check if OTP is valid and not expired
             $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > NOW()";
             $stmt = $conn->prepare($check_otp);
             $stmt->bindParam(':email', $email);
@@ -123,7 +129,6 @@ if(isset($_POST['check'])) {
             if($stmt->rowCount() > 0){
                 error_log("✅ OTP Verified Successfully for $email");
                 
-                // Update user status to verified and clear OTP
                 $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL WHERE email = :email";
                 $update_stmt = $conn->prepare($update_status);
                 $update_stmt->bindParam(':email', $email);
@@ -132,22 +137,19 @@ if(isset($_POST['check'])) {
                     $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
                     $_SESSION['name'] = $user_data['name'];
                     $_SESSION['email'] = $email;
-                    
-                    // Clear OTP modal flag
                     unset($_SESSION['show_otp_modal']);
-                    
+
                     $_SESSION['verification_success'] = 'Email verified successfully! You can now sign in.';
                     header('Location: ' . $_SERVER['PHP_SELF']);
                     exit();
                 } else {
-                    error_log("❌ Failed to update user status");
-                    $errors['otp-error'] = 'Failed to verify account. Please try again.';
+                    error_log("❌ Failed to update user status for $email");
+                    $errors['otp-error'] = 'Failed to update account. Please try again.';
                     $_SESSION['show_otp_modal'] = true;
                 }
             } else {
-                error_log("❌ Invalid OTP for $email");
+                error_log("❌ OTP Verification Failed: Invalid or expired OTP for $email");
                 
-                // Check if OTP exists but expired
                 $check_expired = "SELECT * FROM usertable WHERE email = :email AND code = :otp";
                 $expired_stmt = $conn->prepare($check_expired);
                 $expired_stmt->bindParam(':email', $email);
@@ -162,8 +164,8 @@ if(isset($_POST['check'])) {
                 $_SESSION['show_otp_modal'] = true;
             }
         } catch(PDOException $e) {
-            error_log("❌ Database error: " . $e->getMessage());
-            $errors['otp-error'] = 'System error. Please try again.';
+            error_log("❌ Database error during OTP verification: " . $e->getMessage());
+            $errors['otp-error'] = 'Database error occurred.';
             $_SESSION['show_otp_modal'] = true;
         }
     }
@@ -222,7 +224,7 @@ if(isset($_POST['signup'])){
                 $email_sent = sendOTPEmail($email, $otp, $name);
                 
                 if($email_sent) {
-    error_log("✅ OTP $otp generated for $email - Check logs for OTP");
+                    error_log("✅ OTP Email sent successfully to $email");
                     
                     $_SESSION['email'] = $email;
                     $_SESSION['name'] = $name;

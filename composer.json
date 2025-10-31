@@ -5,24 +5,25 @@
     "require": {
         "php": ">=8.0",
         "ext-curl": "*",
-        "ext-openssl": "*", 
         "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
         "ext-pdo": "*",
-        "ext-mbstring": "*"
+        "google/apiclient": "^2.18.4",
+        "phpmailer/phpmailer": "^6.9",
+        "vlucas/phpdotenv": "*"
     },
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        },
-        "files": [
-            "sendmail.php"
-        ]
+        }
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "platform-check": false
+        "platform-check": false,
+        "process-timeout": 600
     },
     "minimum-stability": "stable",
     "prefer-stable": true
