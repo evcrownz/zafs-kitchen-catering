@@ -3,6 +3,17 @@ date_default_timezone_set('Asia/Manila');
 
 session_start();
 require "connection.php";
+
+// ✅ Load autoloader only once at the top
+if (!class_exists('Resend\Resend')) {
+    $vendorPath = __DIR__ . '/vendor/autoload.php';
+    if (file_exists($vendorPath)) {
+        require_once $vendorPath;
+    } else {
+        error_log("❌ Vendor autoloader not found at: $vendorPath");
+    }
+}
+
 require_once __DIR__ . "/sendmail.php";
 require_once "google-oauth-config.php";
 
