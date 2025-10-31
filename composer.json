@@ -4,7 +4,8 @@
   "type": "project",
   "require": {
     "php": ">=8.0",
-    "resend/resend-php": "^0.23"
+    "resend/resend-php": "*",
+    "google/apiclient": "*"
   },
   "config": {
     "optimize-autoloader": true,
