@@ -9,8 +9,6 @@ require 'vendor/autoload.php';
 // Load environment variables safely
 
 
-
-
 session_start();
 require "connection.php";
 require_once "sendmail.php";
