@@ -6,7 +6,8 @@
         "php": ">=8.0",
         "resend/resend-php": "^0.10.0",
         "google/apiclient": "^2.15",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "phpmailer/phpmailer": "^6.8"
     },
     "autoload": {
         "psr-4": {
