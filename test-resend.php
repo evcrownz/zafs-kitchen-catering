@@ -43,7 +43,7 @@ try {
     
     $result = $resend->emails->send([
         'from' => $sender_name . ' <' . $sender_email . '>',
-        'to' => ['YOUR_EMAIL_HERE@gmail.com'], // ⚠️ PALITAN MO TO!
+        'to' => ['agbojames00@gmail.com'], // ⚠️ PALITAN MO TO!
         'subject' => 'Test Email from Resend.io',
         'html' => '<h1>✅ Success!</h1><p>Resend.io is working correctly!</p>',
         'text' => 'Success! Resend.io is working correctly!'
