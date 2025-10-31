@@ -14,8 +14,6 @@ echo "✅ DATABASE_URL is configured"
 # Check environment variables
 echo "Checking environment variables..."
 echo "RESEND_API_KEY: $([ -n "$RESEND_API_KEY" ] && echo "Set" || echo "Missing")"
-echo "SENDER_EMAIL: $([ -n "$SENDER_EMAIL" ] && echo "Set" || echo "Missing")"
-echo "SENDER_NAME: $([ -n "$SENDER_NAME" ] && echo "Set" || echo "Missing")"
 
 # Check PostgreSQL PDO driver
 php -m | grep -i pdo_pgsql > /dev/null
@@ -42,14 +40,15 @@ php -l controllerUserData.php || echo "❌ controllerUserData.php has syntax err
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
 
-# Enable FULL error display and logging
-echo "✅ Enabling full error logging..."
+# ✅ ENABLE FULL ERROR DISPLAY FOR DEBUGGING
+echo "✅ Enabling FULL error logging and display..."
 cat > /usr/local/etc/php/conf.d/error-logging.ini << EOF
 display_errors = On
 display_startup_errors = On
 log_errors = On
 error_reporting = E_ALL
 error_log = /proc/self/fd/2
+html_errors = On
 EOF
 
 echo "✅ Application ready"
