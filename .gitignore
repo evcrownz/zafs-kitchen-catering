@@ -1,5 +1,3 @@
-# Ignore environment variables
 .env
-
-# Ignore vendor (optional kung may composer install ka)
 /vendor/
+/node_modules/
