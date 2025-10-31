@@ -1616,3 +1616,509 @@ form{
             </div>
         </div>
     </div>
+
+<script>
+// ====== MODAL HANDLERS - SUCCESS & ERROR MODALS ======
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Page loaded - Initializing all modals and handlers');
+
+    // ====== SUCCESS MODAL (Email Verification) ======
+    <?php if(isset($_SESSION['verification_success'])): ?>
+        const successModal = document.getElementById('successModal');
+        if (successModal) {
+            successModal.style.display = 'flex';
+            setTimeout(() => successModal.classList.add('fade-in'), 50);
+            console.log('✅ Showing verification success modal');
+        }
+    <?php endif; ?>
+
+    // Success Modal Close Handlers
+    const successModal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeModal = document.getElementById('closeModal');
+    
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            successModal.classList.remove('fade-in');
+            setTimeout(() => successModal.style.display = 'none', 300);
+        });
+    }
+    
+    if (closeModal) {
+        closeModal.addEventListener('click', function() {
+            successModal.classList.remove('fade-in');
+            setTimeout(() => successModal.style.display = 'none', 300);
+        });
+    }
+
+    // ====== RESET SUCCESS MODAL ======
+    <?php if(isset($_SESSION['reset_success'])): ?>
+        const resetModal = document.getElementById('resetSuccessModal');
+        if (resetModal) {
+            resetModal.style.display = 'flex';
+            console.log('✅ Showing reset success modal');
+        }
+    <?php endif; ?>
+
+    const resetModal = document.getElementById('resetSuccessModal');
+    const closeResetBtn = document.getElementById('closeResetModalBtn');
+    const closeResetX = document.getElementById('closeResetModal');
+    
+    if (closeResetBtn) {
+        closeResetBtn.addEventListener('click', function() {
+            resetModal.style.display = 'none';
+        });
+    }
+    
+    if (closeResetX) {
+        closeResetX.addEventListener('click', function() {
+            resetModal.style.display = 'none';
+        });
+    }
+
+    // ====== FORGOT PASSWORD SUCCESS MODAL ======
+    <?php if(isset($_SESSION['show_forgot_success'])): ?>
+        const forgotModal = document.getElementById('forgotSuccessModal');
+        if (forgotModal) {
+            forgotModal.style.display = 'flex';
+            console.log('✅ Showing forgot password success modal');
+        }
+    <?php endif; ?>
+
+    const forgotModal = document.getElementById('forgotSuccessModal');
+    const closeForgotBtn = document.getElementById('closeForgotModalBtn');
+    const closeForgotX = document.getElementById('closeForgotModal');
+    
+    if (closeForgotBtn) {
+        closeForgotBtn.addEventListener('click', function() {
+            forgotModal.style.display = 'none';
+        });
+    }
+    
+    if (closeForgotX) {
+        closeForgotX.addEventListener('click', function() {
+            forgotModal.style.display = 'none';
+        });
+    }
+
+    // ====== LOADING SCREEN FOR SIGNUP ======
+    const signupForm = document.querySelector(".form-box.signup form");
+    const loadingScreen = document.getElementById("loading-screen");
+    
+    if (signupForm && loadingScreen) {
+        signupForm.addEventListener("submit", function() {
+            console.log('📝 Signup form submitted - showing loading screen');
+            loadingScreen.style.display = "flex";
+        });
+    }
+
+    // ====== OTP MODAL INITIALIZATION ======
+    const showOTPModal = <?php echo (isset($_SESSION['show_otp_modal']) && $_SESSION['show_otp_modal']) ? 'true' : 'false'; ?>;
+    const hasOTPError = <?php echo isset($errors['otp-error']) ? 'true' : 'false'; ?>;
+    
+    if (showOTPModal || hasOTPError) {
+        console.log('🔐 OTP Modal should be shown');
+        showOTPModalFunction();
+    }
+    
+    // Initialize OTP functionality
+    initializeOTPInputs();
+    initializeResendButton();
+});
+
+// ====== CLOSE ERROR MODAL ======
+function closeErrorModal() {
+    const modal = document.getElementById("errorModal");
+    if (modal) {
+        console.log('❌ Closing error modal');
+        modal.style.display = "none";
+    }
+}
+
+// ====== OTP MODAL SHOW FUNCTION ======
+function showOTPModalFunction() {
+    const modal = document.getElementById('otpModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        console.log('✅ OTP Modal displayed');
+        
+        const firstInput = document.querySelector('.otp-input[data-index="0"]');
+        if (firstInput) {
+            setTimeout(() => {
+                firstInput.focus();
+                console.log('🎯 First OTP input focused');
+            }, 100);
+        }
+        
+        startCountdown();
+    } else {
+        console.error('❌ OTP Modal element not found in DOM');
+    }
+}
+
+// ====== HIDE OTP MODAL ======
+function hideOTPModal() {
+    const modal = document.getElementById('otpModal');
+    if (modal) {
+        modal.style.display = 'none';
+        console.log('🔒 OTP Modal hidden');
+    }
+    
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+    
+    localStorage.removeItem('otp_expiry');
+}
+
+// ====== FORM TOGGLE FUNCTIONALITY ======
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.querySelector('.container');
+    const signupBtn = document.querySelector('.signup-btn');
+    const signinBtn = document.querySelector('.signin-btn');
+    const forgotPasswordLink = document.querySelector('.forgot-password-link');
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            console.log('🍔 Hamburger menu toggled');
+        });
+
+        document.querySelectorAll('.nav-menu li a').forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
+
+    if (signupBtn) {
+        signupBtn.addEventListener('click', () => {
+            container.classList.remove('forgot-active');
+            container.classList.add('active');
+            console.log('📝 Switched to signup form');
+        });
+    }
+
+    if (signinBtn) {
+        signinBtn.addEventListener('click', () => {
+            container.classList.remove('active', 'forgot-active');
+            console.log('🔐 Switched to signin form');
+        });
+    }
+
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.classList.remove('active');
+            container.classList.add('forgot-active');
+            console.log('🔑 Switched to forgot password form');
+        });
+    }
+
+    const otpModal = document.getElementById('otpModal');
+    const expiry = localStorage.getItem('otp_expiry');
+    if (otpModal && otpModal.style.display !== 'none' && expiry) {
+        const now = Date.now();
+        if (now < parseInt(expiry)) {
+            startCountdown();
+            console.log('⏰ Resuming countdown timer');
+        } else {
+            localStorage.removeItem('otp_expiry');
+        }
+    }
+});
+
+// ====== OTP INPUT FUNCTIONALITY ======
+function initializeOTPInputs() {
+    const otpInputs = document.querySelectorAll('.otp-input');
+    const verifyBtn = document.getElementById('verifyBtn');
+    
+    if (!otpInputs.length) {
+        console.warn('⚠️ No OTP inputs found');
+        return;
+    }
+    
+    console.log(`✅ Initializing ${otpInputs.length} OTP inputs`);
+
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            
+            if (this.value.length > 1) {
+                this.value = this.value.slice(0, 1);
+            }
+            
+            if (this.value.length === 1) {
+                this.classList.add('filled');
+                
+                if (index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            } else {
+                this.classList.remove('filled');
+            }
+            
+            checkOTPComplete();
+        });
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace') {
+                e.preventDefault();
+                
+                if (this.value === '' && index > 0) {
+                    otpInputs[index - 1].focus();
+                    otpInputs[index - 1].value = '';
+                    otpInputs[index - 1].classList.remove('filled');
+                } else {
+                    this.value = '';
+                    this.classList.remove('filled');
+                }
+                
+                checkOTPComplete();
+            } else if (e.key === 'ArrowLeft' && index > 0) {
+                otpInputs[index - 1].focus();
+            } else if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+        });
+
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            
+            const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+            
+            if (pastedData.length === 6) {
+                console.log('📋 Pasting 6-digit OTP');
+                
+                otpInputs.forEach((input, i) => {
+                    input.value = pastedData[i] || '';
+                    if (pastedData[i]) {
+                        input.classList.add('filled');
+                    }
+                });
+                
+                checkOTPComplete();
+                
+                if (verifyBtn) {
+                    verifyBtn.focus();
+                }
+            }
+        });
+
+        input.addEventListener('focus', function() {
+            this.select();
+        });
+    });
+
+    function checkOTPComplete() {
+        const allFilled = Array.from(otpInputs).every(input => input.value.length === 1);
+        
+        if (verifyBtn) {
+            verifyBtn.disabled = !allFilled;
+            
+            if (allFilled) {
+                verifyBtn.classList.add('enabled');
+                console.log('✅ All OTP digits entered');
+            } else {
+                verifyBtn.classList.remove('enabled');
+            }
+        }
+    }
+}
+
+// ====== RESEND BUTTON FUNCTIONALITY ======
+function initializeResendButton() {
+    const resendForm = document.getElementById('resendForm');
+    const resendBtn = document.getElementById('resendOtp');
+    
+    if (resendForm && resendBtn) {
+        resendForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!resendBtn.classList.contains('disabled')) {
+                console.log('🔄 Resend OTP button clicked');
+                resendOTP();
+            } else {
+                console.log('⏳ Resend button is disabled - countdown active');
+            }
+        });
+    }
+}
+
+// ====== COUNTDOWN TIMER ======
+let countdownInterval;
+
+function startCountdown() {
+    const resendBtn = document.getElementById('resendOtp');
+    const countdownElement = document.getElementById('countdown');
+    const timerElement = document.getElementById('timer');
+    
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+    
+    console.log('⏰ Starting countdown timer');
+    
+    let expiryTime = localStorage.getItem('otp_expiry');
+    
+    if (!expiryTime || Date.now() >= parseInt(expiryTime)) {
+        expiryTime = Date.now() + 60000;
+        localStorage.setItem('otp_expiry', expiryTime);
+        console.log('⏱️ New countdown: 60 seconds');
+    } else {
+        const remaining = Math.floor((parseInt(expiryTime) - Date.now()) / 1000);
+        console.log(`⏱️ Resuming countdown: ${remaining} seconds remaining`);
+    }
+    
+    if (resendBtn) {
+        resendBtn.classList.add('disabled');
+        resendBtn.style.pointerEvents = 'none';
+    }
+    
+    function updateCountdown() {
+        const remaining = Math.floor((parseInt(expiryTime) - Date.now()) / 1000);
+        
+        if (remaining >= 0) {
+            if (countdownElement) {
+                countdownElement.textContent = remaining;
+            }
+        }
+        
+        if (remaining <= 0) {
+            clearInterval(countdownInterval);
+            
+            if (timerElement) {
+                timerElement.innerHTML = '<span style="color: #DC2626; font-weight: bold;">You can now resend OTP</span>';
+            }
+            
+            if (resendBtn) {
+                resendBtn.classList.remove('disabled');
+                resendBtn.style.pointerEvents = 'auto';
+                resendBtn.innerHTML = 'Resend OTP';
+            }
+            
+            localStorage.removeItem('otp_expiry');
+            console.log('✅ Countdown finished - resend available');
+        }
+    }
+    
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+// ====== RESEND OTP FUNCTION ======
+function resendOTP() {
+    const resendBtn = document.getElementById('resendOtp');
+    const otpError = document.getElementById('otpError');
+    const otpSuccess = document.getElementById('otpSuccess');
+    
+    console.log('📧 Resending OTP...');
+    
+    if (resendBtn) {
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Sending...';
+    }
+    
+    if (otpError) otpError.style.display = 'none';
+    if (otpSuccess) otpSuccess.style.display = 'none';
+    
+    fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'action=resend-otp'
+    })
+    .then(response => {
+        console.log('📨 Response received');
+        return response.json();
+    })
+    .then(data => {
+        console.log('✉️ Resend response:', data);
+        
+        if (data.success) {
+            showOTPMessage(data.message, 'success');
+            clearOTPInputs();
+            
+            localStorage.setItem('otp_expiry', Date.now() + 60000);
+            startCountdown();
+        } else {
+            showOTPMessage(data.message, 'error');
+        }
+        
+        if (resendBtn) {
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend OTP';
+        }
+    })
+    .catch(error => {
+        console.error('❌ Resend OTP error:', error);
+        console.log('🔄 Falling back to form submission');
+        
+        document.getElementById('resendForm').submit();
+    });
+}
+
+// ====== CLEAR OTP INPUTS ======
+function clearOTPInputs() {
+    const otpInputs = document.querySelectorAll('.otp-input');
+    const verifyBtn = document.getElementById('verifyBtn');
+    
+    console.log('🧹 Clearing OTP inputs');
+    
+    otpInputs.forEach((input, index) => {
+        setTimeout(() => {
+            input.value = '';
+            input.classList.remove('filled');
+        }, index * 50);
+    });
+    
+    if (verifyBtn) {
+        verifyBtn.disabled = true;
+        verifyBtn.classList.remove('enabled');
+    }
+    
+    setTimeout(() => {
+        if (otpInputs[0]) {
+            otpInputs[0].focus();
+        }
+    }, 300);
+}
+
+// ====== SHOW OTP MESSAGE ======
+function showOTPMessage(message, type) {
+    const errorElement = document.getElementById('otpError');
+    const successElement = document.getElementById('otpSuccess');
+    
+    console.log(`💬 Showing ${type} message: ${message}`);
+    
+    if (errorElement) errorElement.style.display = 'none';
+    if (successElement) successElement.style.display = 'none';
+    
+    if (type === 'error' && errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        
+        setTimeout(() => {
+            errorElement.style.display = 'none';
+        }, 5000);
+    } else if (type === 'success' && successElement) {
+        successElement.textContent = message;
+        successElement.style.display = 'block';
+        
+        setTimeout(() => {
+            successElement.style.display = 'none';
+        }, 5000);
+    }
+}
+
+// ====== INITIALIZATION COMPLETE ======
+console.log('✅ All JavaScript initialized successfully');
+</script>
+
+</body>
+</html>
