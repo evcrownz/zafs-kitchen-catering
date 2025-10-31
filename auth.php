@@ -12,7 +12,6 @@ ini_set('display_startup_errors', 1);
 require_once "controllerUserData.php";
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
