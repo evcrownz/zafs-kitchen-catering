@@ -2,24 +2,12 @@
   "name": "vendor/zafs_kitchen",
   "description": "Zaf's Kitchen - Catering Management System",
   "type": "project",
-  "authors": [
-    {
-      "name": "Cronics Zayn",
-      "email": "zafskitchen95@gmail.com"
-    }
-  ],
   "require": {
     "php": ">=8.0",
-    "google/apiclient": "^2.15",
-    "phpmailer/phpmailer": "^6.8 || ^7.0",
-    "resend/resend-php": "*"
+    "resend/resend-php": "^0.23"
   },
   "config": {
     "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "allow-plugins": {
-      "php-http/discovery": true
-    }
+    "platform-check": false
   }
 }
