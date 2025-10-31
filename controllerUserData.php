@@ -4,7 +4,6 @@ date_default_timezone_set('Asia/Manila');
 session_start();
 require "connection.php";
 require_once "sendmail.php";
-require_once "google-oauth-config.php";
 
 $email = "";
 $name = "";
