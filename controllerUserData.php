@@ -1,4 +1,19 @@
 <?php 
+// ADD THIS AT THE VERY TOP - Better error logging for Railway
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', 'php://stderr'); // This sends errors to Railway logs
+
+date_default_timezone_set('Asia/Manila');
+session_start();
+
+// Also add this to force immediate logging
+function railLog($message) {
+    error_log("🚨 [Zaf's Kitchen] " . $message);
+}
+
+
 date_default_timezone_set('Asia/Manila');
 
 session_start();
