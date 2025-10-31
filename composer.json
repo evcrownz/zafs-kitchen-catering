@@ -5,13 +5,10 @@
     "require": {
         "php": ">=8.0",
         "ext-curl": "*",
-        "ext-openssl": "*",
+        "ext-openssl": "*", 
         "ext-json": "*",
         "ext-pdo": "*",
-        "ext-mbstring": "*",
-        "resend/resend-php": "^0.10.0",
-        "vlucas/phpdotenv": "^5.5",
-        "phpmailer/phpmailer": "^6.9"
+        "ext-mbstring": "*"
     },
     "autoload": {
         "psr-4": {
@@ -25,13 +22,7 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "platform-check": false,
-        "process-timeout": 600
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "composer dump-autoload -o"
-        ]
+        "platform-check": false
     },
     "minimum-stability": "stable",
     "prefer-stable": true
