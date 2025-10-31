@@ -7,22 +7,10 @@ error_reporting(E_ALL);
 // Load environment variables
 require 'vendor/autoload.php';
 // Load environment variables safely
-if (file_exists(__DIR__ . '/.env')) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
-} else {
-    // Use Railway environment variables directly
-    $_ENV['DB_HOST'] = $_ENV['DB_HOST'] ?? getenv('DB_HOST');
-    $_ENV['DB_NAME'] = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
-    $_ENV['DB_USER'] = $_ENV['DB_USER'] ?? getenv('DB_USER');
-    $_ENV['DB_PASSWORD'] = $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD');
-    $_ENV['BREVO_HOST'] = $_ENV['BREVO_HOST'] ?? getenv('BREVO_HOST');
-    $_ENV['BREVO_PORT'] = $_ENV['BREVO_PORT'] ?? getenv('BREVO_PORT');
-    $_ENV['BREVO_USER'] = $_ENV['BREVO_USER'] ?? getenv('BREVO_USER');
-    $_ENV['BREVO_PASS'] = $_ENV['BREVO_PASS'] ?? getenv('BREVO_PASS');
-    $_ENV['BREVO_FROM'] = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM');
-    $_ENV['BREVO_NAME'] = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME');
-}
+
+
+
+
 session_start();
 require "connection.php";
 require_once "sendmail.php";
