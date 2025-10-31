@@ -8,21 +8,31 @@ function sendOTPEmail($email, $otp, $name) {
     $mail = new PHPMailer(true);
 
     try {
-        // SMTP configuration (read from environment variables)
+        // SMTP configuration for Railway
         $mail->isSMTP();
-        $mail->Host = getenv('SMTP_HOST') ?: 'smtp-relay.brevo.com';
+        $mail->Host = getenv('BREVO_HOST') ?: 'smtp-relay.brevo.com';
         $mail->SMTPAuth = true;
-        $mail->Username = getenv('SMTP_USER');
-        $mail->Password = getenv('SMTP_PASS');
+        $mail->Username = getenv('BREVO_USER');
+        $mail->Password = getenv('BREVO_PASS');
         $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        $mail->Port = getenv('BREVO_PORT') ?: 587;
         $mail->Timeout = 30;
         $mail->SMTPKeepAlive = true;
 
-        // Sender info - USING WORKING FROM ADDRESS
-        $mail->setFrom('crownicsjames@gmail.com', "Zaf's Kitchen");
+        // Debug logging for Railway
+        error_log("📧 Attempting to send OTP email to: $email");
+        error_log("🔧 SMTP Host: " . $mail->Host);
+        error_log("🔧 SMTP Port: " . $mail->Port);
+        error_log("🔧 SMTP User: " . ($mail->Username ? "✓ Set" : "✗ Missing"));
+        error_log("🔧 SMTP Pass: " . ($mail->Password ? "✓ Set" : "✗ Missing"));
+
+        // Sender info - Use environment variable or fallback
+        $fromEmail = getenv('BREVO_FROM') ?: 'crownicsjames@gmail.com';
+        $fromName = getenv('BREVO_NAME') ?: "Zaf's Kitchen";
+        
+        $mail->setFrom($fromEmail, $fromName);
         $mail->addAddress($email, $name);
-        $mail->addReplyTo('crownicsjames@gmail.com', "Zaf's Kitchen");
+        $mail->addReplyTo($fromEmail, $fromName);
 
         // Email content
         $mail->isHTML(true);
@@ -60,6 +70,7 @@ function sendOTPEmail($email, $otp, $name) {
     } catch (Exception $e) {
         error_log("❌ Mailer Error for $email: {$mail->ErrorInfo}");
         error_log("❌ Exception: " . $e->getMessage());
+        error_log("❌ Stack trace: " . $e->getTraceAsString());
         return false;
     }
 }
@@ -68,21 +79,27 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
     $mail = new PHPMailer(true);
 
     try {
-        // SMTP configuration - USING WORKING CREDENTIALS
-       // SMTP configuration (read from environment variables)
+        // SMTP configuration for Railway
         $mail->isSMTP();
-        $mail->Host = getenv('SMTP_HOST') ?: 'smtp-relay.brevo.com';
+        $mail->Host = getenv('BREVO_HOST') ?: 'smtp-relay.brevo.com';
         $mail->SMTPAuth = true;
-        $mail->Username = getenv('SMTP_USER');
-        $mail->Password = getenv('SMTP_PASS');
+        $mail->Username = getenv('BREVO_USER');
+        $mail->Password = getenv('BREVO_PASS');
         $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
+        $mail->Port = getenv('BREVO_PORT') ?: 587;
         $mail->Timeout = 30;
         $mail->SMTPKeepAlive = true;
 
-        // Sender info - USING WORKING FROM ADDRESS
-        $mail->setFrom('crownicsjames@gmail.com', "Zaf's Kitchen");
+        // Debug logging for Railway
+        error_log("📧 Attempting to send password reset email to: $email");
+
+        // Sender info
+        $fromEmail = getenv('BREVO_FROM') ?: 'crownicsjames@gmail.com';
+        $fromName = getenv('BREVO_NAME') ?: "Zaf's Kitchen";
+        
+        $mail->setFrom($fromEmail, $fromName);
         $mail->addAddress($email, $name);
+        $mail->addReplyTo($fromEmail, $fromName);
 
         // Email content
         $mail->isHTML(true);
@@ -111,12 +128,15 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
             </div>
         ";
 
+        $mail->AltBody = "Hello $name,\n\nClick this link to reset your password: $reset_link\n\nThis link will expire in 30 minutes.\n\nIf you didn't request this, please ignore this email.\n\nThank you,\nZaf's Kitchen";
+
         $mail->send();
         error_log("✅ Reset email sent successfully to $email");
         return true;
 
     } catch (Exception $e) {
         error_log("❌ Reset Email Error for $email: {$mail->ErrorInfo}");
+        error_log("❌ Exception: " . $e->getMessage());
         return false;
     }
 }
