@@ -1,10 +1,23 @@
 <?
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
-require_once __DIR__ . "/sendmail.php";
+// ✅ CRITICAL FIX: Use absolute path to avoid multiple includes
+require_once __DIR__ . "/controllerUserData.php";
+
+// ✅ Initialize $errors if not set (prevent undefined variable)
+if (!isset($errors)) {
+    $errors = [];
+}
+
+// ✅ Initialize other variables to prevent undefined warnings
+if (!isset($email)) {
+    $email = '';
+}
+if (!isset($name)) {
+    $name = '';
+}
 ?>
 
 <!DOCTYPE html>
