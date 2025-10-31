@@ -13,7 +13,7 @@ echo "✅ DATABASE_URL is configured"
 
 # Check environment variables
 echo "Checking environment variables..."
-echo "SENDGRID_API_KEY: $([ -n "$SENDGRID_API_KEY" ] && echo "Set" || echo "Missing")"
+echo "RESEND_API_KEY: $([ -n "$RESEND_API_KEY" ] && echo "Set" || echo "Missing")"
 echo "SENDER_EMAIL: $([ -n "$SENDER_EMAIL" ] && echo "Set" || echo "Missing")"
 echo "SENDER_NAME: $([ -n "$SENDER_NAME" ] && echo "Set" || echo "Missing")"
 
@@ -42,12 +42,15 @@ php -l controllerUserData.php || echo "❌ controllerUserData.php has syntax err
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
 
-# Enable FULL error display for debugging
+# Enable FULL error display and logging
 echo "✅ Enabling full error logging..."
-echo "display_errors = On" > /usr/local/etc/php/conf.d/error-logging.ini
-echo "display_startup_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini
-echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini
-echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/error-logging.ini
+cat > /usr/local/etc/php/conf.d/error-logging.ini << EOF
+display_errors = On
+display_startup_errors = On
+log_errors = On
+error_reporting = E_ALL
+error_log = /proc/self/fd/2
+EOF
 
 echo "✅ Application ready"
 echo "🌐 Starting Apache on port ${PORT:-8080}"
