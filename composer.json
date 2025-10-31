@@ -4,8 +4,12 @@
     "type": "project",
     "require": {
         "php": ">=8.0",
+        "ext-curl": "*",
+        "ext-openssl": "*",
+        "ext-json": "*",
+        "ext-pdo": "*",
+        "ext-mbstring": "*",
         "resend/resend-php": "^0.10.0",
-        "google/apiclient": "^2.15",
         "vlucas/phpdotenv": "^5.5",
         "phpmailer/phpmailer": "^6.9"
     },
@@ -21,7 +25,13 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "platform-check": false
+        "platform-check": false,
+        "process-timeout": 600
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "composer dump-autoload -o"
+        ]
     },
     "minimum-stability": "stable",
     "prefer-stable": true

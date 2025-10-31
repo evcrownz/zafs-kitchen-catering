@@ -222,7 +222,7 @@ if(isset($_POST['signup'])){
                 $email_sent = sendOTPEmail($email, $otp, $name);
                 
                 if($email_sent) {
-                    error_log("✅ OTP Email sent successfully to $email");
+    error_log("✅ OTP $otp generated for $email - Check logs for OTP");
                     
                     $_SESSION['email'] = $email;
                     $_SESSION['name'] = $name;
