@@ -10,6 +10,11 @@ function sendOTPEmail($email, $otp, $name) {
     $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
     $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
 
+    // Sanitize inputs
+    $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+    $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
+    $current_year = date('Y');
+
     $data = [
         'sender' => [
             'name' => $fromName,
@@ -28,69 +33,38 @@ function sendOTPEmail($email, $otp, $name) {
             <head>
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-                <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' rel='stylesheet'>
+                <title>Email Verification</title>
             </head>
-            <body style='margin: 0; padding: 0; font-family: \"Poppins\", sans-serif; background-color: #1a1a1a;'>
-                <table role='presentation' style='width: 100%; border-collapse: collapse; background-color: #1a1a1a;'>
-                    <tr>
-                        <td align='center' style='padding: 40px 20px;'>
-                            <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse; background-color: #1a1a1a;'>
-                                
-                                <!-- Welcome Text -->
-                                <tr>
-                                    <td style='padding: 40px 30px 30px 30px; text-align: center;'>
-                                        <h2 style='color: #ff5722; margin: 0; font-size: 26px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Welcome to Zaf's Kitchen!</h2>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Content -->
-                                <tr>
-                                    <td style='padding: 0 30px;'>
-                                        <p style='color: #ffffff; margin: 0 0 10px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>Hello <strong style='font-weight: 600;'>$name</strong>,</p>
-                                        <p style='color: #cccccc; margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>Thank you for signing up! Please use the following verification code to complete your registration:</p>
-                                        
-                                        <!-- OTP Box -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 30px 0;'>
-                                            <tr>
-                                                <td style='background-color: #2d2d2d; padding: 25px; text-align: center; border-radius: 8px; border-left: 4px solid #ff5722;'>
-                                                    <p style='color: #999999; margin: 0 0 12px 0; font-size: 13px; font-family: \"Poppins\", sans-serif; font-weight: 500;'>Your Verification Code:</p>
-                                                    <div style='color: #ff5722; font-size: 36px; font-weight: 700; letter-spacing: 10px; font-family: \"Poppins\", sans-serif; margin: 0;'>$otp</div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <!-- Important Notice -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 25px 0;'>
-                                            <tr>
-                                                <td style='background-color: #3d3d00; padding: 18px; border-radius: 6px; border-left: 4px solid #ffd700;'>
-                                                    <p style='margin: 0; color: #ffd700; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>
-                                                        <strong style='font-weight: 600;'>Important:</strong> This code will expire in <strong style='font-weight: 600;'>10 minutes</strong> for security purposes.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <p style='color: #999999; margin: 25px 0 40px 0; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>If you didn't create an account with us, please ignore this email.</p>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Footer -->
-                                <tr>
-                                    <td style='padding: 30px; border-top: 1px solid #333333;'>
-                                        <p style='margin: 0 0 10px 0; color: #666666; font-size: 13px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
-                                            This is an automated message from Zaf's Kitchen.<br>
-                                            Please do not reply to this email.
-                                        </p>
-                                        <p style='margin: 0; color: #666666; font-size: 12px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
-                                            © 2020 Zaf's Kitchen. All rights reserved.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
+                    <div style='text-align: center; margin-bottom: 30px;'>
+                        <h1 style='color: #DC2626; margin: 0;'>Zaf's Kitchen</h1>
+                    </div>
+                    
+                    <h2 style='color: #DC2626; margin-bottom: 20px;'>Welcome to Zaf's Kitchen!</h2>
+                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
+                    <p style='margin-bottom: 20px;'>Thank you for signing up! Please use the following verification code to complete your registration:</p>
+                    
+                    <div style='background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; text-align: center; margin: 30px 0; border-radius: 12px; border-left: 5px solid #DC2626;'>
+                        <p style='margin: 0 0 10px 0; font-size: 14px; color: #666;'>Your Verification Code:</p>
+                        <h1 style='color: #DC2626; font-size: 36px; letter-spacing: 8px; margin: 0; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);'>$safe_otp</h1>
+                    </div>
+                    
+                    <div style='background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0; color: #856404;'><strong>Important:</strong> This code will expire in <strong>10 minutes</strong> for security purposes.</p>
+                    </div>
+                    
+                    <p style='margin-bottom: 20px;'>If you didn't create an account with us, please ignore this email.</p>
+                    
+                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
+                        <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
+                            This is an automated message from Zaf's Kitchen.<br>
+                            Please do not reply to this email.<br>
+                            <br>
+                            © $current_year Zaf's Kitchen. All rights reserved.
+                        </p>
+                    </div>
+                </div>
             </body>
             </html>
         "
@@ -141,6 +115,11 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
     $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
     $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
 
+    // Sanitize inputs
+    $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+    $safe_link = htmlspecialchars($reset_link, ENT_QUOTES, 'UTF-8');
+    $current_year = date('Y');
+
     $data = [
         'sender' => [
             'name' => $fromName,
@@ -152,82 +131,49 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
                 'name' => $name
             ]
         ],
-        'subject' => 'Password Reset Request - Zaf\'s Kitchen',
+        'subject' => 'Password Reset - Zaf\'s Kitchen',
         'htmlContent' => "
             <!DOCTYPE html>
             <html lang='en'>
             <head>
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-                <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap' rel='stylesheet'>
+                <title>Password Reset</title>
             </head>
-            <body style='margin: 0; padding: 0; font-family: \"Poppins\", sans-serif; background-color: #1a1a1a;'>
-                <table role='presentation' style='width: 100%; border-collapse: collapse; background-color: #1a1a1a;'>
-                    <tr>
-                        <td align='center' style='padding: 40px 20px;'>
-                            <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse; background-color: #1a1a1a;'>
-                                
-                                <!-- Title -->
-                                <tr>
-                                    <td style='padding: 40px 30px 30px 30px; text-align: center;'>
-                                        <h2 style='color: #ff5722; margin: 0; font-size: 26px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Reset Your Password</h2>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Content -->
-                                <tr>
-                                    <td style='padding: 0 30px;'>
-                                        <p style='color: #ffffff; margin: 0 0 10px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>Hello <strong style='font-weight: 600;'>$name</strong>,</p>
-                                        <p style='color: #cccccc; margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>We received a request to reset your password. Click the button below to create a new password:</p>
-                                        
-                                        <!-- CTA Button -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 30px 0;'>
-                                            <tr>
-                                                <td align='center'>
-                                                    <a href='$reset_link' style='display: inline-block; background-color: #ff5722; color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; font-family: \"Poppins\", sans-serif;'>Reset Password</a>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <!-- Important Notice -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 25px 0;'>
-                                            <tr>
-                                                <td style='background-color: #3d3d00; padding: 18px; border-radius: 6px; border-left: 4px solid #ffd700;'>
-                                                    <p style='margin: 0; color: #ffd700; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>
-                                                        <strong style='font-weight: 600;'>Important:</strong> This link will expire in <strong style='font-weight: 600;'>30 minutes</strong> for security purposes.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        
-                                        <p style='color: #999999; margin: 25px 0 0 0; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>If you didn't request a password reset, please ignore this email. Your password will remain unchanged.</p>
-                                        
-                                        <!-- Alternative Link -->
-                                        <p style='margin: 30px 0 40px 0; padding-top: 20px; border-top: 1px solid #333333; color: #999999; font-size: 13px; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
-                                            <strong style='font-weight: 600; color: #cccccc;'>Button not working?</strong><br>
-                                            Copy and paste this link:<br>
-                                            <span style='color: #ff5722; word-break: break-all;'>$reset_link</span>
-                                        </p>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Footer -->
-                                <tr>
-                                    <td style='padding: 30px; border-top: 1px solid #333333;'>
-                                        <p style='margin: 0 0 10px 0; color: #666666; font-size: 13px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
-                                            This is an automated message from Zaf's Kitchen.<br>
-                                            Please do not reply to this email.
-                                        </p>
-                                        <p style='margin: 0; color: #666666; font-size: 12px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
-                                            © 2020 Zaf's Kitchen. All rights reserved.
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
+                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
+                    <div style='text-align: center; margin-bottom: 30px;'>
+                        <h1 style='color: #E75925; margin: 0;'>Zaf's Kitchen</h1>
+                    </div>
+                    
+                    <h2 style='color: #DC2626; margin-bottom: 20px;'>Password Reset Request</h2>
+                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
+                    <p style='margin-bottom: 20px;'>We received a request to reset your password. Click the button below to create a new password:</p>
+                    
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <a href='$safe_link' style='background-color: #DC2626; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;'>Reset Password</a>
+                    </div>
+                    
+                    <p style='margin-bottom: 20px;'>If the button doesn't work, copy and paste this link into your browser:</p>
+                    <p style='word-break: break-all; color: #666; font-size: 14px; margin-bottom: 20px;'>$safe_link</p>
+                    
+                    <div style='background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0; color: #856404;'><strong>Important:</strong> This link will expire in <strong>30 minutes</strong> for security purposes.</p>
+                    </div>
+                    
+                    <div style='background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; padding: 15px; margin: 20px 0;'>
+                        <p style='margin: 0; color: #721c24;'><strong>Security Notice:</strong> If you didn't request this password reset, please ignore this email. Your password will remain unchanged.</p>
+                    </div>
+                    
+                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
+                        <p style='font-size: 12px; color: #666; text-align: center; margin: 0;'>
+                            This is an automated message from Zaf's Kitchen.<br>
+                            Please do not reply to this email.<br>
+                            <br>
+                            © $current_year Zaf's Kitchen. All rights reserved.
+                        </p>
+                    </div>
+                </div>
             </body>
             </html>
         "
@@ -250,6 +196,7 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
     
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
     
     curl_close($ch);
 
@@ -259,6 +206,9 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
     } else {
         error_log("❌ Brevo API Error for reset email - HTTP Code: $httpCode");
         error_log("❌ Response: " . $result);
+        if ($error) {
+            error_log("❌ cURL Error: " . $error);
+        }
         return false;
     }
 }
