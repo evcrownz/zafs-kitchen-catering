@@ -1,44 +1,28 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'vendor/autoload.php';
-
 function sendOTPEmail($email, $otp, $name) {
-    $mail = new PHPMailer(true);
+    $apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
+    
+    if (!$apiKey) {
+        error_log("❌ BREVO_API_KEY not set");
+        return false;
+    }
 
-    try {
-        // SMTP configuration for Railway
-        $mail->isSMTP();
-        $mail->Host = getenv('BREVO_HOST') ?: 'smtp-relay.brevo.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = getenv('BREVO_USER');
-        $mail->Password = getenv('BREVO_PASS');
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = getenv('BREVO_PORT') ?: 587;
-        $mail->Timeout = 30;
-        $mail->SMTPKeepAlive = true;
+    $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
+    $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
 
-        // Debug logging for Railway
-        error_log("📧 Attempting to send OTP email to: $email");
-        error_log("🔧 SMTP Host: " . $mail->Host);
-        error_log("🔧 SMTP Port: " . $mail->Port);
-        error_log("🔧 SMTP User: " . ($mail->Username ? "✓ Set" : "✗ Missing"));
-        error_log("🔧 SMTP Pass: " . ($mail->Password ? "✓ Set" : "✗ Missing"));
-
-        // Sender info - Use environment variable or fallback
-        $fromEmail = getenv('BREVO_FROM') ?: 'crownicsjames@gmail.com';
-        $fromName = getenv('BREVO_NAME') ?: "Zaf's Kitchen";
-        
-        $mail->setFrom($fromEmail, $fromName);
-        $mail->addAddress($email, $name);
-        $mail->addReplyTo($fromEmail, $fromName);
-
-        // Email content
-        $mail->isHTML(true);
-        $mail->CharSet = 'UTF-8';
-        $mail->Subject = 'Your OTP from Zaf\'s Kitchen';
-        $mail->Body = "
+    $data = [
+        'sender' => [
+            'name' => $fromName,
+            'email' => $fromEmail
+        ],
+        'to' => [
+            [
+                'email' => $email,
+                'name' => $name
+            ]
+        ],
+        'subject' => 'Your OTP from Zaf\'s Kitchen',
+        'htmlContent' => "
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                 <div style='background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); padding: 20px; text-align: center;'>
                     <h1 style='color: white; margin: 0;'>🍽️ Zaf's Kitchen</h1>
@@ -59,53 +43,67 @@ function sendOTPEmail($email, $otp, $name) {
                     </p>
                 </div>
             </div>
-        ";
+        "
+    ];
 
-        $mail->AltBody = "Hello $name,\n\nYour OTP code is: $otp\n\nThis code will expire in 10 minutes.\n\nThank you,\nZaf's Kitchen";
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL, 'https://api.brevo.com/v3/smtp/email');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    
+    $headers = [
+        'accept: application/json',
+        'api-key: ' . $apiKey,
+        'content-type: application/json'
+    ];
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $result = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    
+    curl_close($ch);
 
-        $result = $mail->send();
-        error_log("✅ OTP Email sent successfully to $email");
+    if ($httpCode === 201) {
+        error_log("✅ OTP Email sent successfully to $email via Brevo API");
         return true;
-
-    } catch (Exception $e) {
-        error_log("❌ Mailer Error for $email: {$mail->ErrorInfo}");
-        error_log("❌ Exception: " . $e->getMessage());
-        error_log("❌ Stack trace: " . $e->getTraceAsString());
+    } else {
+        error_log("❌ Brevo API Error for $email - HTTP Code: $httpCode");
+        error_log("❌ Response: " . $result);
+        if ($error) {
+            error_log("❌ cURL Error: " . $error);
+        }
         return false;
     }
 }
 
 function sendPasswordResetEmail($email, $reset_link, $name) {
-    $mail = new PHPMailer(true);
+    $apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
+    
+    if (!$apiKey) {
+        error_log("❌ BREVO_API_KEY not set");
+        return false;
+    }
 
-    try {
-        // SMTP configuration for Railway
-        $mail->isSMTP();
-        $mail->Host = getenv('BREVO_HOST') ?: 'smtp-relay.brevo.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = getenv('BREVO_USER');
-        $mail->Password = getenv('BREVO_PASS');
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = getenv('BREVO_PORT') ?: 587;
-        $mail->Timeout = 30;
-        $mail->SMTPKeepAlive = true;
+    $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
+    $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
 
-        // Debug logging for Railway
-        error_log("📧 Attempting to send password reset email to: $email");
-
-        // Sender info
-        $fromEmail = getenv('BREVO_FROM') ?: 'crownicsjames@gmail.com';
-        $fromName = getenv('BREVO_NAME') ?: "Zaf's Kitchen";
-        
-        $mail->setFrom($fromEmail, $fromName);
-        $mail->addAddress($email, $name);
-        $mail->addReplyTo($fromEmail, $fromName);
-
-        // Email content
-        $mail->isHTML(true);
-        $mail->CharSet = 'UTF-8';
-        $mail->Subject = 'Password Reset Request - Zaf\'s Kitchen';
-        $mail->Body = "
+    $data = [
+        'sender' => [
+            'name' => $fromName,
+            'email' => $fromEmail
+        ],
+        'to' => [
+            [
+                'email' => $email,
+                'name' => $name
+            ]
+        ],
+        'subject' => 'Password Reset Request - Zaf\'s Kitchen',
+        'htmlContent' => "
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                 <div style='background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); padding: 20px; text-align: center;'>
                     <h1 style='color: white; margin: 0;'>🍽️ Zaf's Kitchen</h1>
@@ -126,17 +124,35 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
                     </p>
                 </div>
             </div>
-        ";
+        "
+    ];
 
-        $mail->AltBody = "Hello $name,\n\nClick this link to reset your password: $reset_link\n\nThis link will expire in 30 minutes.\n\nIf you didn't request this, please ignore this email.\n\nThank you,\nZaf's Kitchen";
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_URL, 'https://api.brevo.com/v3/smtp/email');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    
+    $headers = [
+        'accept: application/json',
+        'api-key: ' . $apiKey,
+        'content-type: application/json'
+    ];
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    $result = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+    curl_close($ch);
 
-        $mail->send();
-        error_log("✅ Reset email sent successfully to $email");
+    if ($httpCode === 201) {
+        error_log("✅ Reset email sent successfully to $email via Brevo API");
         return true;
-
-    } catch (Exception $e) {
-        error_log("❌ Reset Email Error for $email: {$mail->ErrorInfo}");
-        error_log("❌ Exception: " . $e->getMessage());
+    } else {
+        error_log("❌ Brevo API Error for reset email - HTTP Code: $httpCode");
+        error_log("❌ Response: " . $result);
         return false;
     }
 }
