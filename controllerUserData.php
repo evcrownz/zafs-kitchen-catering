@@ -170,7 +170,7 @@ if(isset($_POST['signup'])){
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
 
-    error_log("📝 Signup Attempt: Name=$name, Email=$email");
+    error_log("🔍 Signup Attempt: Name=$name, Email=$email");
 
     if($password !== $cpassword){
         $errors['password'] = "Confirm password not matched!";
@@ -197,7 +197,7 @@ if(isset($_POST['signup'])){
             $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
             $status = "unverified";
 
-            error_log("🔑 Generated OTP for $email: $otp (Expires: $otp_expiry)");
+            error_log("🔐 Generated OTP for $email: $otp (Expires: $otp_expiry)");
 
             $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry)
                             VALUES (:name, :email, :password, :status, :code, :otp_expiry)";
@@ -376,9 +376,11 @@ if(isset($_POST['signin'])){
     }
 }
 
-// FORGOT PASSWORD
+// FORGOT PASSWORD - WITH DEBUGGING
 if(isset($_POST['forgot-password'])){
     $email = trim($_POST['email']);
+    
+    error_log("🔍 FORGOT PASSWORD TRIGGERED for: $email");
     
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         try {
@@ -387,11 +389,16 @@ if(isset($_POST['forgot-password'])){
             $stmt->bindParam(':email', $email);
             $stmt->execute();
             
+            error_log("📊 User found count: " . $stmt->rowCount());
+            
             if($stmt->rowCount() > 0){
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 
                 $reset_token = generateResetToken();
                 $reset_expiry = date('Y-m-d H:i:s', strtotime('+30 minutes'));
+                
+                error_log("🔑 Generated Token: $reset_token");
+                error_log("⏰ Expiry: $reset_expiry");
                 
                 $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry WHERE email = :email";
                 $token_stmt = $conn->prepare($update_token);
@@ -400,25 +407,45 @@ if(isset($_POST['forgot-password'])){
                 $token_stmt->bindParam(':email', $email);
                 
                 if($token_stmt->execute()){
+                    error_log("✅ Token saved to database");
+                    
                     $reset_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset-password.php?token=" . $reset_token;
                     
-                    if(sendPasswordResetEmail($email, $reset_link, $user['name'])){
-                        $_SESSION['forgot_success'] = "Password reset link sent to your email.";
+                    error_log("🔗 Reset Link: $reset_link");
+                    error_log("📧 Attempting to send email to: $email");
+                    
+                    $email_result = sendPasswordResetEmail($email, $reset_link, $user['name']);
+                    
+                    error_log("📬 Email send result: " . ($email_result ? 'SUCCESS' : 'FAILED'));
+                    
+                    if($email_result){
+                        error_log("✅ Password reset email sent successfully to $email");
+                        $_SESSION['forgot_success'] = "Password reset link sent to your email. Please check your inbox.";
                         $_SESSION['show_forgot_success'] = true;
+                        header('Location: ' . $_SERVER['PHP_SELF']);
+                        exit();
                     } else {
+                        error_log("❌ CRITICAL: Email sending failed for $email");
                         $errors['forgot-error'] = "Failed to send email. Please try again.";
                     }
                 } else {
+                    error_log("❌ Failed to save token to database");
                     $errors['forgot-error'] = "Failed to process request.";
                 }
             } else {
+                error_log("⚠️ Email not found or not verified: $email");
+                // Security: Don't reveal if email exists or not
                 $_SESSION['forgot_success'] = "If this email exists, a reset link will be sent.";
                 $_SESSION['show_forgot_success'] = true;
+                header('Location: ' . $_SERVER['PHP_SELF']);
+                exit();
             }
         } catch(PDOException $e) {
+            error_log("❌ Database error during forgot password: " . $e->getMessage());
             $errors['forgot-error'] = "Database error occurred.";
         }
     } else {
+        error_log("❌ Invalid email format: $email");
         $errors['forgot-error'] = "Enter a valid email address.";
     }
 }

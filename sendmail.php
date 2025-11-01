@@ -37,17 +37,10 @@ function sendOTPEmail($email, $otp, $name) {
                         <td align='center' style='padding: 40px 20px;'>
                             <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse; background-color: #1a1a1a;'>
                                 
-                                <!-- Header -->
-                                <tr>
-                                    <td style='padding: 40px 30px 30px 30px; text-align: center;'>
-                                        <h1 style='color: #ff5722; margin: 0; font-size: 36px; font-weight: 700; font-family: \"Poppins\", sans-serif;'>Zaf's Kitchen</h1>
-                                    </td>
-                                </tr>
-                                
                                 <!-- Welcome Text -->
                                 <tr>
-                                    <td style='padding: 0 30px 30px 30px; text-align: center;'>
-                                        <h2 style='color: #ff5722; margin: 0; font-size: 28px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Welcome to Zaf's Kitchen!</h2>
+                                    <td style='padding: 40px 30px 30px 30px; text-align: center;'>
+                                        <h2 style='color: #ff5722; margin: 0; font-size: 26px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Welcome to Zaf's Kitchen!</h2>
                                     </td>
                                 </tr>
                                 
@@ -60,9 +53,9 @@ function sendOTPEmail($email, $otp, $name) {
                                         <!-- OTP Box -->
                                         <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 30px 0;'>
                                             <tr>
-                                                <td style='background-color: #2d2d2d; padding: 30px; text-align: center; border-radius: 12px; border-left: 4px solid #ff5722;'>
-                                                    <p style='color: #999999; margin: 0 0 15px 0; font-size: 14px; font-family: \"Poppins\", sans-serif; font-weight: 500;'>Your Verification Code:</p>
-                                                    <div style='color: #ff5722; font-size: 48px; font-weight: 700; letter-spacing: 15px; font-family: \"Poppins\", sans-serif; margin: 0;'>$otp</div>
+                                                <td style='background-color: #2d2d2d; padding: 25px; text-align: center; border-radius: 8px; border-left: 4px solid #ff5722;'>
+                                                    <p style='color: #999999; margin: 0 0 12px 0; font-size: 13px; font-family: \"Poppins\", sans-serif; font-weight: 500;'>Your Verification Code:</p>
+                                                    <div style='color: #ff5722; font-size: 36px; font-weight: 700; letter-spacing: 10px; font-family: \"Poppins\", sans-serif; margin: 0;'>$otp</div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -70,7 +63,7 @@ function sendOTPEmail($email, $otp, $name) {
                                         <!-- Important Notice -->
                                         <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 25px 0;'>
                                             <tr>
-                                                <td style='background-color: #3d3d00; padding: 20px; border-radius: 8px; border-left: 4px solid #ffd700;'>
+                                                <td style='background-color: #3d3d00; padding: 18px; border-radius: 6px; border-left: 4px solid #ffd700;'>
                                                     <p style='margin: 0; color: #ffd700; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>
                                                         <strong style='font-weight: 600;'>Important:</strong> This code will expire in <strong style='font-weight: 600;'>10 minutes</strong> for security purposes.
                                                     </p>
@@ -175,17 +168,10 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
                         <td align='center' style='padding: 40px 20px;'>
                             <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse; background-color: #1a1a1a;'>
                                 
-                                <!-- Header -->
-                                <tr>
-                                    <td style='padding: 40px 30px 30px 30px; text-align: center;'>
-                                        <h1 style='color: #ff5722; margin: 0; font-size: 36px; font-weight: 700; font-family: \"Poppins\", sans-serif;'>Zaf's Kitchen</h1>
-                                    </td>
-                                </tr>
-                                
                                 <!-- Title -->
                                 <tr>
-                                    <td style='padding: 0 30px 30px 30px; text-align: center;'>
-                                        <h2 style='color: #ff5722; margin: 0; font-size: 28px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Reset Your Password</h2>
+                                    <td style='padding: 40px 30px 30px 30px; text-align: center;'>
+                                        <h2 style='color: #ff5722; margin: 0; font-size: 26px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Reset Your Password</h2>
                                     </td>
                                 </tr>
                                 
@@ -207,7 +193,7 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
                                         <!-- Important Notice -->
                                         <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 25px 0;'>
                                             <tr>
-                                                <td style='background-color: #3d3d00; padding: 20px; border-radius: 8px; border-left: 4px solid #ffd700;'>
+                                                <td style='background-color: #3d3d00; padding: 18px; border-radius: 6px; border-left: 4px solid #ffd700;'>
                                                     <p style='margin: 0; color: #ffd700; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>
                                                         <strong style='font-weight: 600;'>Important:</strong> This link will expire in <strong style='font-weight: 600;'>30 minutes</strong> for security purposes.
                                                     </p>
