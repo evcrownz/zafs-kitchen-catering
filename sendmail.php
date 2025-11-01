@@ -29,60 +29,51 @@ function sendOTPEmail($email, $otp, $name) {
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
             </head>
-            <body style='margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; background-color: #f5f5f5;'>
-                <table role='presentation' style='width: 100%; border-collapse: collapse; background-color: #f5f5f5;'>
+            <body style='margin: 0; padding: 0; font-family: \"Poppins\", sans-serif;'>
+                <table role='presentation' style='width: 100%; border-collapse: collapse;'>
                     <tr>
                         <td align='center' style='padding: 40px 20px;'>
-                            <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);'>
+                            <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse;'>
                                 <!-- Header with Logo -->
                                 <tr>
-                                    <td style='background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); padding: 40px 30px; text-align: center;'>
-                                        <img src='cid:logo' alt='Zaf\'s Kitchen' style='width: 120px; height: auto; margin-bottom: 15px;' />
-                                        <h1 style='color: #ffffff; margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;'>Zaf's Kitchen</h1>
+                                    <td style='padding: 40px 30px; text-align: center;'>
+                                        <img src='https://your-domain.com/logo/logo.png' alt='Zaf\'s Kitchen' style='width: 120px; height: auto; margin-bottom: 20px;' />
+                                        <h1 style='color: #DC2626; margin: 0; font-size: 28px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Zaf's Kitchen</h1>
                                     </td>
                                 </tr>
                                 
                                 <!-- Content -->
                                 <tr>
-                                    <td style='padding: 40px 30px;'>
-                                        <h2 style='color: #1f2937; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;'>Email Verification</h2>
-                                        <p style='color: #4b5563; margin: 0 0 15px 0; font-size: 16px; line-height: 1.6;'>Hello <strong style='color: #1f2937;'>$name</strong>,</p>
-                                        <p style='color: #4b5563; margin: 0 0 25px 0; font-size: 16px; line-height: 1.6;'>Thank you for signing up! Please use the verification code below to complete your registration:</p>
+                                    <td style='padding: 0 30px 40px 30px;'>
+                                        <h2 style='color: #1f2937; margin: 0 0 20px 0; font-size: 24px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Email Verification</h2>
+                                        <p style='color: #4b5563; margin: 0 0 15px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>Hello <strong style='color: #1f2937; font-weight: 600;'>$name</strong>,</p>
+                                        <p style='color: #4b5563; margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>Thank you for signing up! Please use the verification code below to complete your registration:</p>
                                         
                                         <!-- OTP Box -->
                                         <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 30px 0;'>
                                             <tr>
-                                                <td style='background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 30px; text-align: center; border-radius: 12px; border: 2px solid #fecaca;'>
-                                                    <div style='color: #DC2626; font-size: 42px; font-weight: 700; letter-spacing: 12px; font-family: \"Courier New\", monospace; margin: 0;'>$otp</div>
+                                                <td style='padding: 30px; text-align: center; border: 2px solid #DC2626; border-radius: 12px;'>
+                                                    <div style='color: #DC2626; font-size: 42px; font-weight: 700; letter-spacing: 12px; font-family: \"Poppins\", sans-serif; margin: 0;'>$otp</div>
                                                 </td>
                                             </tr>
                                         </table>
                                         
-                                        <!-- Info Box -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 25px 0;'>
-                                            <tr>
-                                                <td style='background-color: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;'>
-                                                    <p style='margin: 0; color: #92400e; font-size: 14px; line-height: 1.5;'>
-                                                        <strong style='font-size: 16px;'>⏰ Important:</strong><br>
-                                                        This verification code will expire in <strong>10 minutes</strong>.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        <p style='margin: 25px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'><strong style='color: #DC2626; font-weight: 600;'>⏰ Important:</strong> This verification code will expire in <strong style='font-weight: 600;'>10 minutes</strong>.</p>
                                         
-                                        <p style='color: #6b7280; margin: 25px 0 0 0; font-size: 14px; line-height: 1.6;'>If you didn't create an account with Zaf's Kitchen, you can safely ignore this email.</p>
+                                        <p style='color: #9ca3af; margin: 25px 0 0 0; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>If you didn't create an account with Zaf's Kitchen, you can safely ignore this email.</p>
                                     </td>
                                 </tr>
                                 
                                 <!-- Footer -->
                                 <tr>
-                                    <td style='background-color: #f9fafb; padding: 30px; border-top: 1px solid #e5e7eb;'>
-                                        <p style='margin: 0 0 10px 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5;'>
+                                    <td style='padding: 30px; border-top: 1px solid #e5e7eb;'>
+                                        <p style='margin: 0 0 5px 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
                                             This is an automated message from Zaf's Kitchen.
                                         </p>
-                                        <p style='margin: 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5;'>
-                                            © 2024 Zaf's Kitchen. All rights reserved.
+                                        <p style='margin: 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
+                                            © 2020 Zaf's Kitchen. All rights reserved.
                                         </p>
                                     </td>
                                 </tr>
@@ -159,75 +150,58 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
                 <meta charset='UTF-8'>
                 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
                 <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap' rel='stylesheet'>
             </head>
-            <body style='margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; background-color: #f5f5f5;'>
-                <table role='presentation' style='width: 100%; border-collapse: collapse; background-color: #f5f5f5;'>
+            <body style='margin: 0; padding: 0; font-family: \"Poppins\", sans-serif;'>
+                <table role='presentation' style='width: 100%; border-collapse: collapse;'>
                     <tr>
                         <td align='center' style='padding: 40px 20px;'>
-                            <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);'>
+                            <table role='presentation' style='max-width: 600px; width: 100%; border-collapse: collapse;'>
                                 <!-- Header with Logo -->
                                 <tr>
-                                    <td style='background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); padding: 40px 30px; text-align: center;'>
-                                        <img src='cid:logo' alt='Zaf\'s Kitchen' style='width: 120px; height: auto; margin-bottom: 15px;' />
-                                        <h1 style='color: #ffffff; margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;'>Zaf's Kitchen</h1>
+                                    <td style='padding: 40px 30px; text-align: center;'>
+                                        <img src='https://your-domain.com/logo/logo.png' alt='Zaf\'s Kitchen' style='width: 120px; height: auto; margin-bottom: 20px;' />
+                                        <h1 style='color: #DC2626; margin: 0; font-size: 28px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Zaf's Kitchen</h1>
                                     </td>
                                 </tr>
                                 
                                 <!-- Content -->
                                 <tr>
-                                    <td style='padding: 40px 30px;'>
-                                        <h2 style='color: #1f2937; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;'>Password Reset Request</h2>
-                                        <p style='color: #4b5563; margin: 0 0 15px 0; font-size: 16px; line-height: 1.6;'>Hello <strong style='color: #1f2937;'>$name</strong>,</p>
-                                        <p style='color: #4b5563; margin: 0 0 25px 0; font-size: 16px; line-height: 1.6;'>We received a request to reset your password. Click the button below to create a new password for your account:</p>
+                                    <td style='padding: 0 30px 40px 30px;'>
+                                        <h2 style='color: #1f2937; margin: 0 0 20px 0; font-size: 24px; font-weight: 600; font-family: \"Poppins\", sans-serif;'>Password Reset Request</h2>
+                                        <p style='color: #4b5563; margin: 0 0 15px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>Hello <strong style='color: #1f2937; font-weight: 600;'>$name</strong>,</p>
+                                        <p style='color: #4b5563; margin: 0 0 30px 0; font-size: 16px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>We received a request to reset your password. Click the button below to create a new password for your account:</p>
                                         
                                         <!-- CTA Button -->
                                         <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 30px 0;'>
                                             <tr>
                                                 <td align='center'>
-                                                    <a href='$reset_link' style='display: inline-block; background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%); color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);'>Reset Password</a>
+                                                    <a href='$reset_link' style='display: inline-block; background-color: #DC2626; color: #ffffff; padding: 16px 40px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; font-family: \"Poppins\", sans-serif;'>Reset Password</a>
                                                 </td>
                                             </tr>
                                         </table>
                                         
-                                        <!-- Info Box -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 25px 0;'>
-                                            <tr>
-                                                <td style='background-color: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b;'>
-                                                    <p style='margin: 0; color: #92400e; font-size: 14px; line-height: 1.5;'>
-                                                        <strong style='font-size: 16px;'>⏰ Important:</strong><br>
-                                                        This reset link will expire in <strong>30 minutes</strong> for security reasons.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        <p style='margin: 25px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'><strong style='color: #DC2626; font-weight: 600;'>⏰ Important:</strong> This reset link will expire in <strong style='font-weight: 600;'>30 minutes</strong> for security reasons.</p>
                                         
-                                        <p style='color: #6b7280; margin: 25px 0 0 0; font-size: 14px; line-height: 1.6;'>If you didn't request a password reset, please ignore this email. Your password will remain unchanged.</p>
+                                        <p style='color: #9ca3af; margin: 25px 0 0 0; font-size: 14px; line-height: 1.6; font-family: \"Poppins\", sans-serif;'>If you didn't request a password reset, please ignore this email. Your password will remain unchanged.</p>
                                         
                                         <!-- Alternative Link -->
-                                        <table role='presentation' style='width: 100%; border-collapse: collapse; margin: 30px 0 0 0;'>
-                                            <tr>
-                                                <td style='background-color: #f9fafb; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb;'>
-                                                    <p style='margin: 0 0 10px 0; color: #6b7280; font-size: 13px; line-height: 1.5;'>
-                                                        <strong>Having trouble with the button?</strong><br>
-                                                        Copy and paste this link into your browser:
-                                                    </p>
-                                                    <p style='margin: 0; color: #DC2626; font-size: 12px; word-break: break-all; line-height: 1.5;'>
-                                                        $reset_link
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        <p style='margin: 30px 0 0 0; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 13px; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
+                                            <strong style='font-weight: 600;'>Having trouble with the button?</strong><br>
+                                            Copy and paste this link into your browser:<br>
+                                            <span style='color: #DC2626; word-break: break-all;'>$reset_link</span>
+                                        </p>
                                     </td>
                                 </tr>
                                 
                                 <!-- Footer -->
                                 <tr>
-                                    <td style='background-color: #f9fafb; padding: 30px; border-top: 1px solid #e5e7eb;'>
-                                        <p style='margin: 0 0 10px 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5;'>
+                                    <td style='padding: 30px; border-top: 1px solid #e5e7eb;'>
+                                        <p style='margin: 0 0 5px 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
                                             This is an automated message from Zaf's Kitchen.
                                         </p>
-                                        <p style='margin: 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5;'>
-                                            © 2024 Zaf's Kitchen. All rights reserved.
+                                        <p style='margin: 0; color: #9ca3af; font-size: 13px; text-align: center; line-height: 1.5; font-family: \"Poppins\", sans-serif;'>
+                                            © 2020 Zaf's Kitchen. All rights reserved.
                                         </p>
                                     </td>
                                 </tr>
