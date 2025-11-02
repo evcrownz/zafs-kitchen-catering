@@ -4208,7 +4208,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Basic Wedding Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="basic_wedding">
                 <div class="relative">
-                    <img src="catering_Photos/basic_wedding_package.jpg" alt="Basic Wedding Package" class="w-full h-48 object-cover">
+                    <img src="catering_Photos/basic-wedding-package.jpg" alt="Basic Wedding Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-pink-600 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         WEDDING
                     </div>
@@ -6418,7 +6418,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
         basic_wedding: {
             name: "Basic Wedding Package",
             category: "Wedding",
-            image: "Catering_Photos/basic_wedding_package.jpg",
+            image: "Catering_Photos/basic-wedding-package.jpg",
             priceRange: "₱42,000 - ₱75,000",
             description: "Beautiful wedding catering with elegant styling and complete setup.",
             
