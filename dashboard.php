@@ -1597,7 +1597,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         }
 
 
-        /* ============================================
+/* ============================================
    PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
    ============================================ */
 
@@ -1973,181 +1973,648 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.75rem !important;
     }
 
-    /* ========== MY BOOKINGS SECTION ========== */
+    /* ========== MY BOOKINGS SECTION - FIXED LAYOUT ========== */
     
     /* Status Legend */
     .flex.flex-wrap.gap-4.items-center {
-        flex-direction: column;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
         gap: 0.5rem !important;
-        align-items: flex-start !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
     }
 
     .flex.flex-wrap.gap-4.items-center > div {
-        width: 100%;
+        width: auto !important;
+        flex: 0 0 auto !important;
     }
 
     .status-badge {
-        font-size: 0.65rem !important;
+        font-size: 0.6rem !important;
         padding: 2px 6px !important;
         font-weight: 700;
+        white-space: nowrap;
     }
 
-    /* Booking Cards Enhanced */
+    /* ========== UPCOMING EVENTS (IMAGE 1) ========== */
+    
+    /* Upcoming Events Card Container */
     .booking-card-enhanced {
-        padding: 0.75rem !important;
+        padding: 0.65rem !important;
         margin-bottom: 0.75rem;
+        position: relative;
+        border-radius: 12px;
+        overflow: visible; /* Allow elements to overflow */
     }
 
-    .booking-card-enhanced .flex.justify-between {
-        flex-direction: column;
-        gap: 0.75rem;
+    /* Header Section - Keep Status Badge at Top Right */
+    .booking-card-enhanced > .flex.justify-between:first-child {
+        flex-direction: column !important;
+        gap: 0.3rem !important;
+        margin-bottom: 0.6rem !important;
+        position: relative;
+    }
+
+    /* Status Badge - TOP RIGHT (Image 1) */
+    .booking-card-enhanced .status-badge {
+        position: absolute !important;
+        top: -0.5rem !important;
+        right: -0.5rem !important;
+        z-index: 10 !important;
+        font-size: 0.65rem !important;
+        padding: 3px 8px !important;
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Booking ID - BOTTOM LEFT (Image 1) */
+    .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
+        position: absolute !important;
+        bottom: -2rem !important;
+        left: 0.65rem !important;
+        right: auto !important;
+        text-align: left !important;
+        margin: 0 !important;
+    }
+
+    .booking-card-enhanced > .flex.justify-between:first-child > .text-right .text-sm {
+        font-size: 0.55rem !important;
+        color: #6b7280 !important;
+    }
+
+    .booking-card-enhanced > .flex.justify-between:first-child > .text-right .font-mono {
+        font-size: 0.7rem !important;
+        font-weight: 700 !important;
+        color: #374151 !important;
+    }
+
+    /* Price Tag - TOP RIGHT (below status) */
+    .booking-price-tag {
+        position: absolute !important;
+        top: 1.5rem !important;
+        right: -0.5rem !important;
+        font-size: 0.75rem !important;
+        padding: 0.3rem 0.6rem !important;
+        z-index: 9 !important;
+    }
+
+    /* Event Title Section */
+    .booking-card-enhanced .flex.items-center.gap-3 {
+        flex-wrap: wrap !important;
+        gap: 0.3rem !important;
+        padding-right: 5rem !important; /* Space for price tag */
+        margin-bottom: 2rem !important; /* Space for booking ID */
     }
 
     .booking-card-enhanced .text-xl {
-        font-size: 1rem !important;
+        font-size: 0.95rem !important;
+        line-height: 1.2 !important;
     }
 
     .booking-card-enhanced .text-lg {
-        font-size: 0.9rem !important;
+        font-size: 0.85rem !important;
     }
 
     .booking-card-enhanced .text-sm {
-        font-size: 0.75rem !important;
-    }
-
-    .booking-card-enhanced .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.5rem !important;
-    }
-
-    .booking-card-enhanced .space-y-2 > * + * {
-        margin-top: 0.4rem !important;
-    }
-
-    .booking-card-enhanced .text-right {
-        text-align: left !important;
-        margin-top: 0.5rem;
-    }
-
-    .booking-card-enhanced i {
-        font-size: 0.75rem !important;
-    }
-
-    /* Booking Price Tag */
-    .booking-price-tag {
-        font-size: 0.85rem !important;
-        padding: 0.4rem 0.75rem !important;
-    }
-
-    /* Booking Action Buttons */
-    .booking-card-enhanced .flex.gap-2 {
-        flex-direction: column;
-        width: 100%;
-        gap: 0.5rem !important;
-    }
-
-    .booking-card-enhanced .flex.gap-2 button {
-        width: 100%;
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.75rem !important;
-    }
-
-    .booking-card-enhanced .flex.gap-2 button i {
         font-size: 0.7rem !important;
     }
 
-    /* Booking Status Sections */
-    .bg-gradient-to-r.from-green-50,
-    .bg-gradient-to-r.from-yellow-50,
-    .bg-gradient-to-r.from-red-50 {
-        padding: 0.6rem !important;
-        margin-top: 0.75rem !important;
+    /* Data Grid - SINGLE COLUMN, TIGHT SPACING */
+    .booking-card-enhanced .grid.md\\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+        gap: 0.25rem !important;
+        margin-bottom: 0.5rem !important;
+        margin-top: 0.5rem !important;
     }
 
-    .bg-gradient-to-r p {
+    .booking-card-enhanced .space-y-2 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.25rem !important;
+    }
+
+    .booking-card-enhanced .space-y-2 > * + * {
+        margin-top: 0 !important;
+    }
+
+    .booking-card-enhanced .flex.items-center.gap-2 {
+        gap: 0.3rem !important;
+        padding: 0.15rem 0 !important;
+    }
+
+    .booking-card-enhanced i {
+        font-size: 0.7rem !important;
+        min-width: 0.9rem !important;
+    }
+
+    /* Action Buttons - SIDE BY SIDE */
+    .booking-card-enhanced .flex.gap-2:has(button) {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.4rem !important;
+        width: 100% !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .booking-card-enhanced .flex.gap-2 button {
+        width: 100% !important;
+        padding: 0.45rem 0.5rem !important;
+        font-size: 0.7rem !important;
+        white-space: nowrap !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+    }
+
+    .booking-card-enhanced .flex.gap-2 button i {
+        font-size: 0.65rem !important;
+        margin-right: 0.2rem !important;
+    }
+
+    /* Status Sections - Compact */
+    .booking-card-enhanced > div[class*="bg-gradient-to-r"] {
+        padding: 0.5rem !important;
+        margin-top: 0.5rem !important;
+        border-radius: 0.4rem !important;
+    }
+
+    .booking-card-enhanced > div[class*="bg-gradient-to-r"] .flex {
+        gap: 0.4rem !important;
+    }
+
+    .booking-card-enhanced > div[class*="bg-gradient-to-r"] p,
+    .booking-card-enhanced > div[class*="bg-gradient-to-r"] div {
+        font-size: 0.7rem !important;
+        line-height: 1.3 !important;
+    }
+
+    .booking-card-enhanced > div[class*="bg-gradient-to-r"] .font-semibold {
         font-size: 0.75rem !important;
+    }
+
+    /* Countdown Timers - Compact */
+    .booking-card-enhanced [id^="payment-countdown-"],
+    .booking-card-enhanced [id^="event-countdown-"] {
+        font-size: 0.8rem !important;
+        padding: 0.3rem !important;
+    }
+
+    /* Special Requests Section */
+    .booking-card-enhanced .p-3.bg-gray-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.5rem !important;
     }
 
     /* Refresh Button */
     #refresh-bookings {
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.85rem !important;
+    }
+
+    /* ========== PROFILE SETTINGS (IMAGE 2) ========== */
+    
+    /* Profile Card Container */
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6 {
+        padding: 0.75rem !important;
+        position: relative;
+    }
+
+    /* Profile Layout - CENTERED COLUMN */
+    .flex.flex-col.md\\:flex-row.items-center.gap-6 {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.6rem !important;
+        position: relative;
+        text-align: center;
+    }
+
+    /* Avatar Section - Centered */
+    .flex.flex-col.items-center:has(#profile-avatar) {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+
+    #profile-avatar {
+        width: 80px !important;
+        height: 80px !important;
+        border-width: 3px !important;
+        flex-shrink: 0 !important;
+        border-color: #DC2626 !important;
+    }
+
+    #change-avatar-btn {
+        padding: 0.3rem !important;
+        bottom: 2px !important;
+        right: 2px !important;
+        background: #DC2626 !important;
+    }
+
+    #change-avatar-btn i {
+        font-size: 0.7rem !important;
+    }
+
+    .flex.flex-col.items-center:has(#profile-avatar) p {
+        display: block !important;
+        font-size: 0.7rem !important;
+        color: #6b7280;
+        margin-top: 0.3rem;
+    }
+
+    /* User Info Section - Centered */
+    .flex-1.text-center.md\\:text-left {
+        flex: 1 !important;
+        text-align: center !important;
+        width: 100% !important;
+        padding-right: 0 !important;
+    }
+
+    .flex.items-center.justify-between {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.3rem !important;
+        width: 100% !important;
+    }
+
+    /* Name and Email - Centered */
+    #profile-name {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        margin: 0 !important;
+        text-align: center;
+    }
+
+    #profile-email {
+        font-size: 0.75rem !important;
+        color: #6b7280 !important;
+        margin: 0 !important;
+        text-align: center;
+    }
+
+    /* Profile Menu Button - TOP RIGHT (Image 2) */
+    .relative.self-start {
+        position: absolute !important;
+        top: 0.75rem !important;
+        right: 0.75rem !important;
+    }
+
+    #profile-menu-btn {
+        padding: 0.35rem !important;
+        background: #f3f4f6 !important;
+        border-radius: 0.4rem !important;
+    }
+
+    #profile-menu-btn svg {
+        width: 1.1rem !important;
+        height: 1.1rem !important;
+    }
+
+    /* Profile Dropdown */
+    #profile-dropdown {
+        right: 0 !important;
+        top: calc(100% + 0.4rem) !important;
+        min-width: 150px !important;
+        font-size: 0.7rem !important;
+    }
+
+    #profile-dropdown button {
+        padding: 0.45rem 0.6rem !important;
+        font-size: 0.7rem !important;
+    }
+
+    #profile-dropdown i,
+    #profile-dropdown svg {
+        width: 0.9rem !important;
+        height: 0.9rem !important;
+    }
+
+    /* Statistics Grid - COMPACT 3 COLUMNS (Image 2) */
+    .grid.grid-cols-2.md\\:grid-cols-3.gap-4.mt-4 {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.4rem !important;
+        margin-top: 0.5rem !important;
+        width: 100% !important;
+    }
+
+    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 > div {
+        padding: 0.4rem 0.3rem !important;
+        border-radius: 0.4rem !important;
+        text-align: center !important;
+    }
+
+    /* Statistics Numbers - Positioned as in Image 2 */
+    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-xs {
+        font-size: 0.6rem !important;
+        line-height: 1.2 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Clickable Stats Card */
+    #upcoming-events-card.cursor-pointer:active {
+        transform: scale(0.95);
+    }
+
+    /* Next Event Card - BOTTOM LEFT (Image 2) */
+    #next-event-card {
+        padding: 0.65rem !important;
+        margin-top: 0.6rem !important;
+        position: relative;
+    }
+
+    #next-event-card h4 {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.4rem !important;
+        font-weight: 600 !important;
+        text-align: center;
+    }
+
+    #next-event-card .grid.md\\:grid-cols-2 {
+        grid-template-columns: 1fr !important;
+        gap: 0.3rem !important;
+    }
+
+    #next-event-card .flex.justify-between {
+        gap: 0.3rem !important;
+        padding: 0.2rem 0 !important;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    #next-event-card .text-sm {
+        font-size: 0.65rem !important;
+    }
+
+    #next-event-card .text-lg {
         font-size: 0.8rem !important;
-        padding: 0.6rem 1rem !important;
+    }
+
+    /* Account Information Card - COMPACT */
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:last-of-type {
+        padding: 0.65rem !important;
+        margin-bottom: 0.6rem !important;
+    }
+
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 h4 {
+        font-size: 0.85rem !important;
+        margin-bottom: 0.4rem !important;
+        font-weight: 600 !important;
+        text-align: center;
+    }
+
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.3rem !important;
+    }
+
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 > * + * {
+        margin-top: 0 !important;
+    }
+
+    #section-settings .flex.justify-between {
+        font-size: 0.7rem !important;
+        padding: 0.2rem 0 !important;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.2rem;
+    }
+
+    #section-settings .flex.justify-between .text-gray-600 {
+        color: #6b7280 !important;
+        min-width: auto !important;
+    }
+
+    #section-settings .flex.justify-between .font-semibold {
+        font-weight: 600 !important;
+        text-align: center !important;
     }
 
     /* ========== CALENDAR ========== */
     
     /* Calendar Navigation */
     .calendar-nav {
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
         gap: 0.5rem;
-        padding: 0.5rem;
+        padding: 0.75rem 0.5rem;
         margin-bottom: 0.75rem;
+        align-items: center;
     }
 
     .calendar-nav button {
         padding: 0.5rem 0.75rem !important;
         font-size: 0.75rem !important;
-        min-width: 80px;
+        white-space: nowrap;
+        min-width: 70px;
     }
 
     #calendar-title {
         font-size: 1rem !important;
-        width: 100%;
         text-align: center;
-        order: -1;
+        font-weight: 700;
+        order: 0;
+        grid-column: 1 / -1;
         margin-bottom: 0.5rem;
     }
 
-    /* Calendar Legend */
-    .mb-4.flex.flex-wrap.gap-4 {
-        flex-direction: column;
+    #prev-month {
+        order: 1;
+    }
+
+    #next-month {
+        order: 2;
+        grid-column: 3;
+    }
+
+    /* Calendar Legend - Compact */
+    .mb-4.flex.flex-wrap.gap-4.text-sm {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.4rem !important;
         font-size: 0.7rem !important;
-        margin-bottom: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+        padding: 0.5rem;
+        background: #f8fafc;
+        border-radius: 0.5rem;
     }
 
     .mb-4.flex.flex-wrap.gap-4 > div {
         display: flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.35rem;
+        padding: 0.25rem;
     }
 
     .mb-4.flex.flex-wrap.gap-4 .w-4.h-4 {
-        width: 14px !important;
-        height: 14px !important;
+        width: 12px !important;
+        height: 12px !important;
+        flex-shrink: 0;
     }
 
-    /* Calendar Header */
-    .calendar-header-day {
+    .mb-4.flex.flex-wrap.gap-4 span {
         font-size: 0.65rem !important;
-        padding: 0.4rem 0.2rem !important;
-        font-weight: 600;
-    }
-
-    /* Calendar Grid */
-    .calendar-day {
-        min-height: 75px !important;
-        padding: 0.2rem !important;
-    }
-
-    .date-number {
-        font-size: 0.85rem !important;
-        font-weight: 600;
-    }
-
-    .booking-slot {
-        font-size: 0.55rem !important;
-        padding: 1px 3px !important;
-        margin: 0.5px 0 !important;
         line-height: 1.2;
     }
 
+    /* Calendar Header Days */
+    .calendar-header {
+        gap: 1px;
+        margin-bottom: 1px;
+    }
+
+    .calendar-header-day {
+        font-size: 0.65rem !important;
+        padding: 0.5rem 0.2rem !important;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+    }
+
+    /* Calendar Grid */
+    .calendar {
+        gap: 1px;
+        background-color: #cbd5e1;
+    }
+
+    .calendar-day {
+        min-height: 85px !important;
+        padding: 0.3rem !important;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+    }
+
+    .calendar-day.other-month {
+        background-color: #f1f5f9;
+    }
+
+    .date-number {
+        font-size: 0.9rem !important;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+        color: #1f2937;
+    }
+
+    .calendar-day.other-month .date-number {
+        color: #9ca3af;
+    }
+
+    .booking-slot {
+        font-size: 0.58rem !important;
+        padding: 2px 3px !important;
+        margin: 1px 0 !important;
+        line-height: 1.3;
+        border-radius: 2px;
+        font-weight: 500;
+    }
+
     .booking-count {
-        width: 14px !important;
-        height: 14px !important;
-        font-size: 0.6rem !important;
-        top: 2px;
-        right: 2px;
+        width: 16px !important;
+        height: 16px !important;
+        font-size: 0.65rem !important;
+        top: 3px;
+        right: 3px;
+        font-weight: 700;
+    }
+
+    /* Calendar Status Colors - More Visible */
+    .calendar-day.no-bookings,
+    .calendar-day.one-booking {
+        background-color: #dcfce7 !important;
+        border: 1.5px solid #22c55e;
+    }
+
+    .calendar-day.two-bookings {
+        background-color: #fef3c7 !important;
+        border: 1.5px solid #f59e0b;
+    }
+
+    .calendar-day.three-bookings,
+.calendar-day.unavailable {
+        background-color: #fee2e2 !important;
+        border: 1.5px solid #ef4444;
+    }
+
+    .calendar-day.today {
+        box-shadow: inset 0 0 0 2px #3b82f6;
+    }
+
+    /* Booking Details Modal */
+    #booking-details-modal .modal-content {
+        max-width: 95% !important;
+    }
+
+    #booking-details-modal h3 {
+        font-size: 1rem !important;
+    }
+
+    #booking-details-modal .mb-4 {
+        margin-bottom: 0.5rem !important;
+        padding: 0.5rem !important;
+    }
+
+    /* ========== ABOUT US ========== */
+    
+    .bg-gradient-to-r.from-\\[\\#DC2626\\] {
+        padding: 1rem !important;
+    }
+
+    .bg-gradient-to-r.from-\\[\\#DC2626\\] .text-3xl {
+        font-size: 1.3rem !important;
+    }
+
+    .bg-gradient-to-r.from-\\[\\#DC2626\\] .text-lg {
+        font-size: 0.9rem !important;
+    }
+
+    /* Vision/Mission Cards */
+    .bg-white.rounded-lg.shadow-lg.border-2.p-6 {
+        padding: 0.75rem !important;
+    }
+
+    .bg-\\[\\#DC2626\\].rounded-full.p-3 {
+        padding: 0.6rem !important;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-\\[\\#DC2626\\].rounded-full.p-3 i {
+        font-size: 1.1rem !important;
+    }
+
+    /* Core Values Grid */
+    .bg-gradient-to-br {
+        padding: 0.75rem !important;
+    }
+
+    .bg-gradient-to-br i {
+        font-size: 2rem !important;
+    }
+
+    .bg-gradient-to-br h5 {
+        font-size: 0.85rem !important;
+    }
+
+    /* Terms & Conditions */
+    .flex.items-start .text-\\[\\#DC2626\\] {
+        min-width: 1.5rem;
+        font-size: 0.85rem !important;
     }
 
     /* ========== MENU PACKAGES ========== */
@@ -2256,7 +2723,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.7rem !important;
     }
 
-    /* preview Modal */
+    /* Invoice Modal */
     #preview-content {
         font-size: 0.75rem !important;
         max-height: 70vh;
@@ -2331,140 +2798,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     #password-modal button {
         font-size: 0.8rem !important;
-    }
-
-    /* ========== PROFILE SETTINGS ========== */
-    
-    /* Profile Card */
-    .flex.flex-col.md\\:flex-row.items-center {
-        flex-direction: column !important;
-    }
-
-    #profile-avatar {
-        width: 85px !important;
-        height: 85px !important;
-    }
-
-    #change-avatar-btn {
-        padding: 0.4rem !important;
-    }
-
-    #change-avatar-btn i {
-        font-size: 0.9rem !important;
-    }
-
-    #profile-name {
-        font-size: 1.2rem !important;
-    }
-
-    #profile-email {
-        font-size: 0.8rem !important;
-    }
-
-    /* Statistics Grid */
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.5rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 > div {
-        padding: 0.5rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1.3rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-xs {
-        font-size: 0.65rem !important;
-    }
-
-    /* Next Event Card */
-    #next-event-card {
-        padding: 0.75rem !important;
-    }
-
-    #next-event-card .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.5rem !important;
-    }
-
-    #next-event-card .text-lg {
-        font-size: 0.9rem !important;
-    }
-
-    #next-event-card .text-sm {
-        font-size: 0.75rem !important;
-    }
-
-    /* Profile Dropdown */
-    #profile-dropdown {
-        min-width: 180px;
-        font-size: 0.8rem !important;
-    }
-
-    #profile-dropdown button {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.8rem !important;
-    }
-
-    #profile-dropdown i {
-        font-size: 0.9rem !important;
-    }
-
-    #profile-menu-btn {
-        padding: 0.4rem !important;
-    }
-
-    /* ========== ABOUT US ========== */
-    
-    .bg-gradient-to-r.from-\\[\\#DC2626\\] {
-        padding: 1rem !important;
-    }
-
-    .bg-gradient-to-r.from-\\[\\#DC2626\\] .text-3xl {
-        font-size: 1.3rem !important;
-    }
-
-    .bg-gradient-to-r.from-\\[\\#DC2626\\] .text-lg {
-        font-size: 0.9rem !important;
-    }
-
-    /* Vision/Mission Cards */
-    .bg-white.rounded-lg.shadow-lg.border-2.p-6 {
-        padding: 0.75rem !important;
-    }
-
-    .bg-\\[\\#DC2626\\].rounded-full.p-3 {
-        padding: 0.6rem !important;
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .bg-\\[\\#DC2626\\].rounded-full.p-3 i {
-        font-size: 1.1rem !important;
-    }
-
-    /* Core Values Grid */
-    .bg-gradient-to-br {
-        padding: 0.75rem !important;
-    }
-
-    .bg-gradient-to-br i {
-        font-size: 2rem !important;
-    }
-
-    .bg-gradient-to-br h5 {
-        font-size: 0.85rem !important;
-    }
-
-    /* Terms & Conditions */
-    .flex.items-start .text-\\[\\#DC2626\\] {
-        min-width: 1.5rem;
-        font-size: 0.85rem !important;
     }
 
     /* ========== SPACING ADJUSTMENTS ========== */
@@ -2676,7 +3009,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     #avatar-grid {
         grid-template-columns: repeat(2, 1fr) !important;
     }
-.package-card img {
+
+    .package-card img {
         height: 140px !important;
     }
 
@@ -2689,8 +3023,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .booking-price-tag {
-        font-size: 0.75rem !important;
-        padding: 0.3rem 0.6rem !important;
+        font-size: 0.7rem !important;
+        padding: 0.25rem 0.5rem !important;
+        top: 1.3rem !important;
     }
 
     #profile-avatar {
@@ -2699,438 +3034,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1.1rem !important;
-    }
-}
-
-/* ========== CALENDAR SECTION - IMPROVED MOBILE ========== */
-@media (max-width: 768px) {
-    /* Calendar Container */
-    #section-schedule .bg-white.rounded-lg.shadow-lg {
-        padding: 0.5rem !important;
-    }
-
-    /* Calendar Navigation - Better Layout */
-    .calendar-nav {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 0.5rem;
-        padding: 0.75rem 0.5rem;
-        margin-bottom: 0.75rem;
-        align-items: center;
-    }
-
-    .calendar-nav button {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.75rem !important;
-        white-space: nowrap;
-        min-width: 70px;
-    }
-
-    #calendar-title {
-        font-size: 1rem !important;
-        text-align: center;
-        font-weight: 700;
-        order: 0;
-        grid-column: 1 / -1;
-        margin-bottom: 0.5rem;
-    }
-
-    #prev-month {
-        order: 1;
-    }
-
-    #next-month {
-        order: 2;
-        grid-column: 3;
-    }
-
-    /* Calendar Legend - Compact */
-    .mb-4.flex.flex-wrap.gap-4.text-sm {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.4rem !important;
-        font-size: 0.7rem !important;
-        margin-bottom: 0.5rem !important;
-        padding: 0.5rem;
-        background: #f8fafc;
-        border-radius: 0.5rem;
-    }
-
-    .mb-4.flex.flex-wrap.gap-4 > div {
-        display: flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem;
-    }
-
-    .mb-4.flex.flex-wrap.gap-4 .w-4.h-4 {
-        width: 12px !important;
-        height: 12px !important;
-        flex-shrink: 0;
-    }
-
-    .mb-4.flex.flex-wrap.gap-4 span {
-        font-size: 0.65rem !important;
-        line-height: 1.2;
-    }
-
-    /* Calendar Header Days */
-    .calendar-header {
-        gap: 1px;
-        margin-bottom: 1px;
-    }
-
-    .calendar-header-day {
-        font-size: 0.65rem !important;
-        padding: 0.5rem 0.2rem !important;
-        font-weight: 700;
-        letter-spacing: -0.3px;
-    }
-
-    /* Calendar Grid */
-    .calendar {
-        gap: 1px;
-        background-color: #cbd5e1;
-    }
-
-    .calendar-day {
-        min-height: 85px !important;
-        padding: 0.3rem !important;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-    }
-
-    .calendar-day.other-month {
-        background-color: #f1f5f9;
-    }
-
-    .date-number {
-        font-size: 0.9rem !important;
-        font-weight: 700;
-        margin-bottom: 0.2rem;
-        color: #1f2937;
-    }
-
-    .calendar-day.other-month .date-number {
-        color: #9ca3af;
-    }
-
-    .booking-slot {
-        font-size: 0.58rem !important;
-        padding: 2px 3px !important;
-        margin: 1px 0 !important;
-        line-height: 1.3;
-        border-radius: 2px;
-        font-weight: 500;
-    }
-
-    .booking-count {
-        width: 16px !important;
-        height: 16px !important;
-        font-size: 0.65rem !important;
-        top: 3px;
-        right: 3px;
-        font-weight: 700;
-    }
-
-    /* Calendar Status Colors - More Visible */
-    .calendar-day.no-bookings,
-    .calendar-day.one-booking {
-        background-color: #dcfce7 !important;
-        border: 1.5px solid #22c55e;
-    }
-
-    .calendar-day.two-bookings {
-        background-color: #fef3c7 !important;
-        border: 1.5px solid #f59e0b;
-    }
-
-    .calendar-day.three-bookings,
-    .calendar-day.unavailable {
-        background-color: #fee2e2 !important;
-        border: 1.5px solid #ef4444;
-    }
-
-    .calendar-day.today {
-        box-shadow: inset 0 0 0 2px #3b82f6;
-    }
-
-    /* Booking Details Modal */
-    #booking-details-modal .modal-content {
-        max-width: 95% !important;
-    }
-
-    #booking-details-modal h3 {
         font-size: 1rem !important;
     }
 
-    #booking-details-modal .mb-4 {
-        margin-bottom: 0.5rem !important;
-        padding: 0.5rem !important;
-    }
-}
-
-/* ========== PROFILE SETTINGS - IMPROVED LAYOUT ========== */
-@media (max-width: 768px) {
-    /* Profile Card Container */
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6 {
-        padding: 1rem !important;
-    }
-
-    /* Profile Layout - Avatar on Left, Info on Right, Stats Below */
-    .flex.flex-col.md\\:flex-row.items-center.gap-6 {
-        flex-direction: row !important;
-        align-items: flex-start !important;
-        gap: 0.75rem !important;
-        flex-wrap: wrap;
-    }
-
-    /* Avatar Section - Smaller, Left Side */
-    .flex.flex-col.items-center:has(#profile-avatar) {
-        flex-direction: column;
-        align-items: center;
-        width: auto;
-        flex-shrink: 0;
-    }
-
-    #profile-avatar {
-        width: 75px !important;
-        height: 75px !important;
-        border-width: 3px;
-    }
-
-    #change-avatar-btn {
-        padding: 0.35rem !important;
-        bottom: -2px;
-        right: -2px;
-    }
-
-    #change-avatar-btn i {
-        font-size: 0.75rem !important;
-    }
-
-    .flex.flex-col.items-center:has(#profile-avatar) p {
-        font-size: 0.65rem !important;
-        margin-top: 0.3rem;
-        display: none; /* Hide "Click to change" text on mobile */
-    }
-
-    /* User Info Section - Flex Grow */
-    .flex-1.text-center.md\\:text-left {
-        flex: 1;
-        text-align: left !important;
-        min-width: 0;
-    }
-
-    .flex.items-center.justify-between {
-        flex-direction: column;
-        align-items: flex-start !important;
-        gap: 0.5rem;
-        width: 100%;
-    }
-
-    /* Name and Email */
-    #profile-name {
-        font-size: 1.15rem !important;
-        font-weight: 700;
-        line-height: 1.2;
-        margin-bottom: 0.2rem;
-    }
-
-    #profile-email {
-        font-size: 0.75rem !important;
-        color: #6b7280;
-        margin-top: 0 !important;
-    }
-
-    /* Profile Menu Button - Top Right Corner */
-    .relative.self-start {
-        position: absolute !important;
-        top: 0.75rem;
-        right: 0.75rem;
-        align-self: flex-start !important;
-    }
-
-    #profile-menu-btn {
-        padding: 0.4rem !important;
-        background: #f3f4f6;
-        border-radius: 0.5rem;
-    }
-
-    #profile-menu-btn svg {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-
-    /* Profile Dropdown */
-    #profile-dropdown {
-        right: 0;
-        top: calc(100% + 0.5rem);
-        min-width: 160px;
-        font-size: 0.75rem !important;
-    }
-
-    /* Statistics Grid - Full Width Below */
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4.mt-4 {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.5rem !important;
-        margin-top: 0.75rem !important;
-        width: 100%;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 > div {
-        padding: 0.5rem 0.4rem !important;
-        border-radius: 0.5rem;
-        text-align: center;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1.2rem !important;
-        font-weight: 700;
-        line-height: 1;
-        margin-bottom: 0.2rem;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-xs {
-        font-size: 0.65rem !important;
-        line-height: 1.2;
-        font-weight: 500;
-    }
-
-    /* Clickable Stats Card */
-    #upcoming-events-card.cursor-pointer {
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    #upcoming-events-card.cursor-pointer:active {
-        transform: scale(0.95);
-    }
-
-    /* Next Event Card */
-    #next-event-card {
-        padding: 0.75rem !important;
-        margin-top: 0.75rem !important;
-    }
-
-    #next-event-card h4 {
-        font-size: 0.9rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-
-    #next-event-card .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.5rem !important;
-    }
-
-    #next-event-card .text-sm {
-        font-size: 0.7rem !important;
-    }
-
-    #next-event-card .text-lg {
-        font-size: 0.85rem !important;
-    }
-
-    /* Account Information Card */
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:last-of-type {
-        padding: 0.75rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 h4 {
-        font-size: 0.9rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 {
-        gap: 0.5rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 > * + * {
-        margin-top: 0.5rem !important;
-    }
-
-    #section-settings .flex.justify-between {
-        font-size: 0.75rem !important;
-    }
-
-    #section-settings .flex.justify-between .text-gray-600 {
-        color: #6b7280 !important;
-    }
-
-    #section-settings .flex.justify-between .font-semibold {
-        font-weight: 600 !important;
-    }
-}
-
-/* ========== EXTRA SMALL DEVICES - CALENDAR & PROFILE ========== */
-@media (max-width: 374px) {
-    /* Calendar Adjustments */
-    .calendar-header-day {
-        font-size: 0.6rem !important;
-        padding: 0.4rem 0.15rem !important;
-    }
-
-    .calendar-day {
-        min-height: 75px !important;
-        padding: 0.25rem !important;
-    }
-
-    .date-number {
-        font-size: 0.8rem !important;
-    }
-
-    .booking-slot {
-        font-size: 0.52rem !important;
-        padding: 1px 2px !important;
-    }
-
-    .booking-count {
-        width: 14px !important;
-        height: 14px !important;
-        font-size: 0.6rem !important;
-    }
-
-    .calendar-nav {
-        padding: 0.5rem 0.25rem;
-    }
-
-    .calendar-nav button {
-        font-size: 0.7rem !important;
-        padding: 0.4rem 0.6rem !important;
-        min-width: 65px;
-    }
-
-    #calendar-title {
-        font-size: 0.95rem !important;
-    }
-
-    /* Profile Adjustments */
-    #profile-avatar {
-        width: 65px !important;
-        height: 65px !important;
-    }
-
-    #profile-name {
-        font-size: 1.05rem !important;
-    }
-
-    #profile-email {
-        font-size: 0.7rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.4rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1.1rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-xs {
-        font-size: 0.6rem !important;
+    .status-badge {
+        font-size: 0.55rem !important;
+        padding: 2px 5px !important;
     }
 }
 
@@ -3172,25 +3081,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     #menu-modal > div,
     #preview-modal > div {
         max-width: 90%;
-    }
-}
-
-/* ========== LANDSCAPE MODE - CALENDAR & PROFILE ========== */
-@media (max-width: 768px) and (orientation: landscape) {
-    .calendar-day {
-        min-height: 70px !important;
-    }
-
-    .booking-slot {
-        font-size: 0.55rem !important;
-    }
-
-    #next-event-card .grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 {
-        grid-template-columns: repeat(3, 1fr) !important;
     }
 }
 
