@@ -4116,7 +4116,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Diamond Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="diamond">
                 <div class="relative">
-                    <img src="catering_Photos/red_diamond_package.jpg" alt="Diamond Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/red_diamond_package.jpg" alt="Diamond Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-purple-600 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         BIRTHDAY
                     </div>
@@ -4162,7 +4162,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Gold Corporate Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="gold_corporate">
                 <div class="relative">
-                    <img src="catering_Photos/gold_corporate_package.jpg" alt="Gold Corporate Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/gold_corporate_package.jpg" alt="Gold Corporate Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-blue-600 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         CORPORATE
                     </div>
@@ -4185,7 +4185,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Platinum Corporate Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="platinum_corporate">
                 <div class="relative">
-                    <img src="catering_Photos/platinum_corporate_package.jpg" alt="Platinum Corporate Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/platinum_corporate_package.jpg" alt="Platinum Corporate Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-blue-600 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         CORPORATE
                     </div>
@@ -4208,7 +4208,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Basic Wedding Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="basic_wedding">
                 <div class="relative">
-                    <img src="catering_Photos/basic-wedding-package.jpg" alt="Basic Wedding Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/basic-wedding-package.jpg" alt="Basic Wedding Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-pink-600 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         WEDDING
                     </div>
@@ -4231,7 +4231,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Premium Wedding Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="premium_wedding">
                 <div class="relative">
-                    <img src="catering_Photos/premium_wedding_package.jpg" alt="Premium Wedding Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/premium_wedding_package.jpg" alt="Premium Wedding Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-pink-600 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         WEDDING
                     </div>
@@ -4254,7 +4254,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Silver Debut Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="silver_debut">
                 <div class="relative">
-                    <img src="catering_Photos/silver_debut_package.jpg" alt="Silver Debut Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/silver_debut_package.jpg" alt="Silver Debut Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-purple-500 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         DEBUT
                     </div>
@@ -4277,7 +4277,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Gold Debut Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="gold_debut">
                 <div class="relative">
-                    <img src="catering_Photos/gold_debut_package.jpg" alt="Gold Debut Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/gold_debut_package.jpg" alt="Gold Debut Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-purple-500 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         DEBUT
                     </div>
@@ -4300,7 +4300,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Platinum Debut Package -->
             <div class="package-card bg-white rounded-lg shadow-lg overflow-hidden border-2 border-gray-200 hover:border-[#DC2626] transition-all cursor-pointer" data-package="platinum_debut">
                 <div class="relative">
-                    <img src="catering_Photos/platinum_debut_package.jpg" alt="Platinum Debut Package" class="w-full h-48 object-cover">
+                    <img src="Catering_Photos/platinum_debut_package.jpg" alt="Platinum Debut Package" class="w-full h-48 object-cover">
                     <div class="absolute top-0 left-0 bg-purple-500 text-white px-3 py-1 text-xs font-bold rounded-br-lg">
                         DEBUT
                     </div>
