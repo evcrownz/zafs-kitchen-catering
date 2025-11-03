@@ -4323,56 +4323,72 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         </div>
     </section>
 
-    <!-- Menu Package Details Modal -->
+<!-- Menu Package Details Modal - ENHANCED -->
 <div id="menu-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-        <div class="p-6 border-b flex justify-between items-center">
-            <div>
-                <h3 id="modal-package-name" class="text-2xl font-bold text-gray-800"></h3>
-                <p id="modal-package-price" class="text-lg text-[#DC2626] font-semibold"></p>
+        <!-- Header -->
+        <div class="p-6 border-b bg-gradient-to-r from-[#DC2626] to-[#B91C1C]">
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <h3 id="modal-package-name" class="text-2xl font-bold text-white mb-2"></h3>
+                    <p id="modal-package-price" class="text-lg text-white font-semibold opacity-90"></p>
+                </div>
+                <button id="close-menu-modal" class="text-white hover:text-gray-200 transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
             </div>
-            <button id="close-menu-modal" class="text-gray-500 hover:text-gray-700">
-                <i class="fas fa-times text-xl"></i>
-            </button>
         </div>
         
-        <div class="p-6 overflow-y-auto max-h-[70vh]">
+        <!-- Content -->
+        <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+            <!-- Package Image -->
             <div class="mb-6">
-                <h4 class="text-lg font-semibold mb-2">Description</h4>
-                <div id="modal-description" class="text-gray-700"></div>
+                <img id="modal-package-image" src="" alt="" class="w-full h-64 object-cover rounded-lg shadow-lg">
             </div>
             
+            <!-- Description -->
             <div class="mb-6">
-                <h4 class="text-lg font-semibold mb-4">Menu Items</h4>
-                <div id="modal-menu-items" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-info-circle text-[#DC2626] text-xl"></i>
+                    <h4 class="text-lg font-semibold text-gray-800">Description</h4>
+                </div>
+                <div id="modal-description" class="text-gray-700 leading-relaxed pl-7"></div>
             </div>
             
+            <!-- Inclusions -->
             <div class="mb-6">
-                <h4 class="text-lg font-semibold mb-2">Package Inclusions</h4>
-                <ul id="modal-inclusions" class="list-disc list-inside space-y-2 text-gray-700"></ul>
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-check-circle text-[#DC2626] text-xl"></i>
+                    <h4 class="text-lg font-semibold text-gray-800">Package Inclusions</h4>
+                </div>
+                <div id="modal-inclusions" class="space-y-2 pl-7"></div>
             </div>
 
-            <div class="mb-6">
-                <h4 class="text-lg font-semibold mb-2">Pricing</h4>
-                <div id="modal-pricing" class="bg-gray-50 p-4 rounded-lg">
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="border-b">
-                                <th class="text-left py-2">Number of Guests</th>
-                                <th class="text-right py-2">Price</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pricing-table-body">
-                        </tbody>
-                    </table>
+            <!-- Guest Selection -->
+            <div class="mb-6 bg-gray-50 p-4 rounded-lg border-2 border-[#DC2626]">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-users text-[#DC2626] text-xl"></i>
+                    <h4 class="text-lg font-semibold text-gray-800">Select Number of Guests</h4>
+                </div>
+                <div id="modal-guest-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-3 pl-7"></div>
+                <div id="selected-price-display" class="hidden mt-4 p-3 bg-white rounded-lg border border-[#DC2626]">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700 font-medium">Selected Package:</span>
+                        <span id="selected-pax-text" class="text-[#DC2626] font-bold"></span>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-gray-700 font-medium">Total Price:</span>
+                        <span id="selected-price-text" class="text-2xl text-[#DC2626] font-bold"></span>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="p-6 border-t bg-gray-50">
-            <button id="book-package-btn" class="w-full bg-[#DC2626] hover:bg-[#B91C1C] text-white py-3 px-6 rounded-lg font-semibold text-lg transition-colors">
+        <!-- Footer with Book Button -->
+        <div class="sticky bottom-0 p-4 border-t bg-white shadow-lg">
+            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold text-lg transition-all cursor-not-allowed">
                 <i class="fas fa-calendar-plus mr-2"></i>
-                Book This Package
+                Select Guest Count to Continue
             </button>
         </div>
     </div>
@@ -4976,10 +4992,37 @@ let currentPriceData = {
     packageType: ''
 };
 
-        function updatePriceCalculator() {
-            const guestCount = parseInt(document.getElementById('guest-count')?.value) || 0;
-            const packageSelect = document.getElementById('package');
-            const packageType = packageSelect?.value || '';
+function updatePriceCalculator() {
+    const guestCount = parseInt(document.getElementById('guest-count')?.value) || 0;
+    const packageSelect = document.getElementById('package');
+    const packageType = packageSelect?.value || '';
+    
+    // ✅ BLOCK 30 & 40 PAX FOR PREMIUM WEDDING
+    const guestSelect = document.getElementById('guest-count');
+    if (guestSelect) {
+        const options = guestSelect.querySelectorAll('option');
+        options.forEach(option => {
+            const value = parseInt(option.value);
+            
+            // Disable 30 & 40 for Premium Wedding
+            if (packageType === 'premium_wedding' && (value === 30 || value === 40)) {
+                option.disabled = true;
+                option.textContent = option.textContent.replace(' (Not available)', '') + ' (Not available)';
+            } else {
+                option.disabled = false;
+                option.textContent = option.textContent.replace(' (Not available)', '');
+            }
+        });
+        
+        // Reset guest count if currently blocked
+        if (packageType === 'premium_wedding' && (guestCount === 30 || guestCount === 40)) {
+            guestSelect.value = '';
+            resetPriceDisplay();
+            showMessage('warning', 'Guest Count Restricted', 
+                'Premium Wedding package requires minimum 50 guests. Please select 50 or more.');
+            return;
+        }
+    }
             
             // Update all guest displays across all steps
             updateGuestDisplays(guestCount);
@@ -6285,380 +6328,380 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
 });
 
 
-    // ========================================
-    // COMPLETE MENU PACKAGES DATA
-    // ========================================
+        // ========================================
+        // COMPLETE MENU PACKAGES DATA
+        // ========================================
 
-    const menuPackages = {
-        
-        // BIRTHDAY PACKAGES
-        silver: {
-            name: "Silver Package",
-            category: "Birthday & Events",
-            image: "Catering_Photos/red_silver_package.jpg",
-            priceRange: "₱23,000 - ₱50,000",
-            description: "Perfect for intimate celebrations with complete buffet setup and themed decorations.",
+        const menuPackages = {
             
-            catering: ["Rice", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
+            // BIRTHDAY PACKAGES
+            silver: {
+                name: "Silver Package",
+                category: "Birthday & Events",
+                image: "Catering_Photos/red_silver_package.jpg",
+                priceRange: "₱23,000 - ₱50,000",
+                description: "Perfect for intimate celebrations with complete buffet setup and themed decorations.",
+                
+                catering: ["Rice tngaaaaaaaaaaaaaaaaa", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Themed Backdrop Design", "Cake Table", "Souvenir Rack"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 23000 },
+                    { pax: 40, price: 27000 },
+                    { pax: 50, price: 30000 },
+                    { pax: 60, price: 33000 },
+                    { pax: 70, price: 36000 },
+                    { pax: 80, price: 40000 },
+                    { pax: 90, price: 45000 },
+                    { pax: 100, price: 50000 }
+                ]
+            },
             
-            inclusions: ["Styro Name", "Celebrant Chair", "Themed Backdrop Design", "Cake Table", "Souvenir Rack"],
+            gold: {
+                name: "Gold Package",
+                category: "Birthday & Events",
+                image: "Catering_Photos/red_gold_package.jpg",
+                priceRange: "₱41,000 - ₱69,000",
+                description: "Enhanced package with professional host, lights & sounds, and photographer or photobooth.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack"],
+                
+                otherInclusions: ["Host/Magician", "Lights & Sounds", "Photographer or Photobooth"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 41000 },
+                    { pax: 40, price: 45000 },
+                    { pax: 50, price: 48000 },
+                    { pax: 60, price: 52000 },
+                    { pax: 70, price: 56000 },
+                    { pax: 80, price: 60000 },
+                    { pax: 90, price: 64000 },
+                    { pax: 100, price: 69000 }
+                ]
+            },
             
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
+            platinum: {
+                name: "Platinum Package",
+                category: "Birthday & Events",
+                image: "Catering_Photos/red_platinum_package.jpg",
+                priceRange: "₱48,000 - ₱82,000",
+                description: "Premium package with Tiffany chairs, lighted entrance arch, welcome board, and basic balloon ceilings.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Tiffany Chairs"],
+                
+                otherInclusions: ["Host/Magician", "Lights & Sounds", "Photographer or Photobooth", "Lighted Entrance Arch", "Welcome Board", "Basic Balloon Ceilings"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 52000 },
+                    { pax: 40, price: 54000 },
+                    { pax: 50, price: 58000 },
+                    { pax: 60, price: 63000 },
+                    { pax: 70, price: 67000 },
+                    { pax: 80, price: 72000 },
+                    { pax: 90, price: 77000 },
+                    { pax: 100, price: 82000 }
+                ]
+            },
             
-            rates: [
-                { pax: 30, price: 23000 },
-                { pax: 40, price: 27000 },
-                { pax: 50, price: 30000 },
-                { pax: 60, price: 33000 },
-                { pax: 70, price: 36000 },
-                { pax: 80, price: 40000 },
-                { pax: 90, price: 45000 },
-                { pax: 100, price: 50000 }
-            ]
-        },
-        
-        gold: {
-            name: "Gold Package",
-            category: "Birthday & Events",
-            image: "Catering_Photos/red_gold_package.jpg",
-            priceRange: "₱41,000 - ₱69,000",
-            description: "Enhanced package with professional host, lights & sounds, and photographer or photobooth.",
+            diamond: {
+                name: "Diamond Package",
+                category: "Birthday & Events",
+                image: "Catering_Photos/red_diamond_package.jpg",
+                priceRange: "₱67,000 - ₱97,000",
+                description: "Ultimate package with elegant balloon ceilings, complete entertainment, and premium styling.",
+                
+                catering: ["Rice", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Themed Backdrop Design", "Cake Table", "Souvenir Rack"],
+                
+                otherInclusions: ["Host/Magician", "Lights & Sounds", "Photographer or Photobooth", "Lighted Entrance Arch", "Welcome Board", "Elegant Balloon Ceilings"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 67000 },
+                    { pax: 40, price: 69000 },
+                    { pax: 50, price: 73000 },
+                    { pax: 60, price: 78000 },
+                    { pax: 70, price: 82000 },
+                    { pax: 80, price: 87000 },
+                    { pax: 90, price: 92000 },
+                    { pax: 100, price: 97000 }
+                ]
+            },
             
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+            // WEDDING PACKAGES
+            basic_wedding: {
+                name: "Basic Wedding Package",
+                category: "Wedding",
+                image: "Catering_Photos/basic-wedding-package.jpg",
+                priceRange: "₱42,000 - ₱75,000",
+                description: "Beautiful wedding catering with elegant styling and complete setup.",
+                
+                catering: ["Rice", "Soup", "Appetizer", "3 Main Courses", "1 Vegetable Dish", "1 Pasta", "Dessert", "Juice/Water"],
+                
+                styling: ["Backdrop Design", "Couple Couch", "Tables with Centerpieces", "Chairs and Buffet Setup", "Reveal Arch", "Red Carpet", "Couple Table", "Cake Table", "Gift Table"],
+                
+                inclusions: ["Uniformed Attendants", "Complete Catering Equipment"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 42000 },
+                    { pax: 40, price: 47000 },
+                    { pax: 50, price: 50000 },
+                    { pax: 60, price: 55000 },
+                    { pax: 70, price: 60000 },
+                    { pax: 80, price: 65000 },
+                    { pax: 90, price: 70000 },
+                    { pax: 100, price: 75000 }
+                ]
+            },
             
-            inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack"],
+            premium_wedding: {
+                name: "Premium Wedding Package",
+                category: "Wedding",
+                image: "Catering_Photos/premium_wedding_package.jpg",
+                priceRange: "₱130,000 - ₱165,000",
+                description: "Ultimate wedding with host, lights & sounds, hair & makeup, coordination, and photo/video coverage (SDE).",
+                
+                catering: ["Rice", "Soup", "Appetizer", "3 Main Courses", "1 Vegetable Dish", "1 Pasta", "1 Dessert", "Juice/Water"],
+                
+                styling: ["Backdrop Design", "Couple Couch", "Tables with Centerpieces", "Chairs and Buffet Setup", "Reveal Arch", "Red Carpet", "Couple Table", "Cake Table", "Gift Table"],
+                
+                otherInclusions: ["Host", "Lights & Sounds + Projector", "Hair & Makeup Artist", "On-the-day Coordination", "Photovideo Coverage (SDE)", "Uniformed Attendants", "Complete Catering Equipment"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 50, price: 130000 },
+                    { pax: 60, price: 135000 },
+                    { pax: 70, price: 145000 },
+                    { pax: 80, price: 155000 },
+                    { pax: 90, price: 160000 },
+                    { pax: 100, price: 165000 }
+                ]
+            },
             
-            otherInclusions: ["Host/Magician", "Lights & Sounds", "Photographer or Photobooth"],
+            // DEBUT PACKAGES
+            silver_debut: {
+                name: "Silver Debut Package",
+                category: "Debut (18th Birthday)",
+                image: "Catering_Photos/silver_debut_package.jpg",
+                priceRange: "₱24,000 - ₱52,000",
+                description: "Perfect debut package with essential styling and complete catering.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Number Standee"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 24000 },
+                    { pax: 40, price: 27000 },
+                    { pax: 50, price: 30000 },
+                    { pax: 60, price: 34000 },
+                    { pax: 70, price: 38000 },
+                    { pax: 80, price: 42000 },
+                    { pax: 90, price: 47000 },
+                    { pax: 100, price: 52000 }
+                ]
+            },
             
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
+            gold_debut: {
+                name: "Gold Debut Package",
+                category: "Debut (18th Birthday)",
+                image: "Catering_Photos/gold_debut_package.jpg",
+                priceRange: "₱43,000 - ₱72,000",
+                description: "Enhanced debut with host, lights & sounds, and photographer from preparation to reception.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Number Standee"],
+                
+                otherInclusions: ["Host", "Lights & Sounds", "Photographer (Preparation to Reception)"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 43000 },
+                    { pax: 40, price: 46000 },
+                    { pax: 50, price: 49000 },
+                    { pax: 60, price: 53000 },
+                    { pax: 70, price: 57000 },
+                    { pax: 80, price: 62000 },
+                    { pax: 90, price: 67000 },
+                    { pax: 100, price: 72000 }
+                ]
+            },
             
-            rates: [
-                { pax: 30, price: 41000 },
-                { pax: 40, price: 45000 },
-                { pax: 50, price: 48000 },
-                { pax: 60, price: 52000 },
-                { pax: 70, price: 56000 },
-                { pax: 80, price: 60000 },
-                { pax: 90, price: 64000 },
-                { pax: 100, price: 69000 }
-            ]
-        },
-        
-        platinum: {
-            name: "Platinum Package",
-            category: "Birthday & Events",
-            image: "Catering_Photos/red_platinum_package.jpg",
-            priceRange: "₱48,000 - ₱82,000",
-            description: "Premium package with Tiffany chairs, lighted entrance arch, welcome board, and basic balloon ceilings.",
+            platinum_debut: {
+                name: "Platinum Debut Package",
+                category: "Debut (18th Birthday)",
+                image: "Catering_Photos/platinum_debut_package.jpg",
+                priceRange: "₱54,000 - ₱86,000",
+                description: "Ultimate debut with Tiffany chairs and photo/video coverage (Non-SDE).",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Number Standee", "Tiffany Chairs"],
+                
+                otherInclusions: ["Host", "Lights & Sounds", "Photo/Video Coverage (Non-SDE)", "Preparation to Reception"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 54000 },
+                    { pax: 40, price: 57000 },
+                    { pax: 50, price: 61000 },
+                    { pax: 60, price: 65000 },
+                    { pax: 70, price: 70000 },
+                    { pax: 80, price: 75000 },
+                    { pax: 90, price: 81000 },
+                    { pax: 100, price: 86000 }
+                ]
+            },
             
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+            // CORPORATE PACKAGES
+            silver_corporate: {
+                name: "Silver Corporate Package",
+                category: "Corporate Events",
+                image: "Catering_Photos/silver_corporate_package.jpg",
+                priceRange: "₱25,000 - ₱50,000",
+                description: "Professional corporate package with complete setup and catering.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Company Name Made with Styro", "Backdrop Design", "Tables & Chairs Setup", "Buffet Setup", "Uniformed Attendants", "Complete Catering Equipment"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 25000 },
+                    { pax: 40, price: 27000 },
+                    { pax: 50, price: 30000 },
+                    { pax: 60, price: 34000 },
+                    { pax: 70, price: 38000 },
+                    { pax: 80, price: 42000 },
+                    { pax: 90, price: 46000 },
+                    { pax: 100, price: 50000 }
+                ]
+            },
             
-            inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Tiffany Chairs"],
+            gold_corporate: {
+                name: "Gold Corporate Package",
+                category: "Corporate Events",
+                image: "Catering_Photos/gold_corporate_package.jpg",
+                priceRange: "₱44,000 - ₱69,000",
+                description: "Enhanced corporate with host, lights & sounds, and photographer.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Company Name Made with Styro", "Backdrop Design", "Tables & Chairs Setup", "Buffet Setup", "Uniformed Attendants", "Complete Catering Equipment"],
+                
+                otherInclusions: ["Host", "Lights & Sounds", "Photographer"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 44000 },
+                    { pax: 40, price: 46000 },
+                    { pax: 50, price: 49000 },
+                    { pax: 60, price: 53000 },
+                    { pax: 70, price: 57000 },
+                    { pax: 80, price: 61000 },
+                    { pax: 90, price: 65000 },
+                    { pax: 100, price: 69000 }
+                ]
+            },
             
-            otherInclusions: ["Host/Magician", "Lights & Sounds", "Photographer or Photobooth", "Lighted Entrance Arch", "Welcome Board", "Basic Balloon Ceilings"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 52000 },
-                { pax: 40, price: 54000 },
-                { pax: 50, price: 58000 },
-                { pax: 60, price: 63000 },
-                { pax: 70, price: 67000 },
-                { pax: 80, price: 72000 },
-                { pax: 90, price: 77000 },
-                { pax: 100, price: 82000 }
-            ]
-        },
-        
-        diamond: {
-            name: "Diamond Package",
-            category: "Birthday & Events",
-            image: "Catering_Photos/red_diamond_package.jpg",
-            priceRange: "₱67,000 - ₱97,000",
-            description: "Ultimate package with elegant balloon ceilings, complete entertainment, and premium styling.",
-            
-            catering: ["Rice", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Styro Name", "Celebrant Chair", "Themed Backdrop Design", "Cake Table", "Souvenir Rack"],
-            
-            otherInclusions: ["Host/Magician", "Lights & Sounds", "Photographer or Photobooth", "Lighted Entrance Arch", "Welcome Board", "Elegant Balloon Ceilings"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 67000 },
-                { pax: 40, price: 69000 },
-                { pax: 50, price: 73000 },
-                { pax: 60, price: 78000 },
-                { pax: 70, price: 82000 },
-                { pax: 80, price: 87000 },
-                { pax: 90, price: 92000 },
-                { pax: 100, price: 97000 }
-            ]
-        },
-        
-        // WEDDING PACKAGES
-        basic_wedding: {
-            name: "Basic Wedding Package",
-            category: "Wedding",
-            image: "Catering_Photos/basic-wedding-package.jpg",
-            priceRange: "₱42,000 - ₱75,000",
-            description: "Beautiful wedding catering with elegant styling and complete setup.",
-            
-            catering: ["Rice", "Soup", "Appetizer", "3 Main Courses", "1 Vegetable Dish", "1 Pasta", "Dessert", "Juice/Water"],
-            
-            styling: ["Backdrop Design", "Couple Couch", "Tables with Centerpieces", "Chairs and Buffet Setup", "Reveal Arch", "Red Carpet", "Couple Table", "Cake Table", "Gift Table"],
-            
-            inclusions: ["Uniformed Attendants", "Complete Catering Equipment"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 42000 },
-                { pax: 40, price: 47000 },
-                { pax: 50, price: 50000 },
-                { pax: 60, price: 55000 },
-                { pax: 70, price: 60000 },
-                { pax: 80, price: 65000 },
-                { pax: 90, price: 70000 },
-                { pax: 100, price: 75000 }
-            ]
-        },
-        
-        premium_wedding: {
-            name: "Premium Wedding Package",
-            category: "Wedding",
-            image: "Catering_Photos/premium_wedding_package.jpg",
-            priceRange: "₱130,000 - ₱165,000",
-            description: "Ultimate wedding with host, lights & sounds, hair & makeup, coordination, and photo/video coverage (SDE).",
-            
-            catering: ["Rice", "Soup", "Appetizer", "3 Main Courses", "1 Vegetable Dish", "1 Pasta", "1 Dessert", "Juice/Water"],
-            
-            styling: ["Backdrop Design", "Couple Couch", "Tables with Centerpieces", "Chairs and Buffet Setup", "Reveal Arch", "Red Carpet", "Couple Table", "Cake Table", "Gift Table"],
-            
-            otherInclusions: ["Host", "Lights & Sounds + Projector", "Hair & Makeup Artist", "On-the-day Coordination", "Photovideo Coverage (SDE)", "Uniformed Attendants", "Complete Catering Equipment"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 50, price: 130000 },
-                { pax: 60, price: 135000 },
-                { pax: 70, price: 145000 },
-                { pax: 80, price: 155000 },
-                { pax: 90, price: 160000 },
-                { pax: 100, price: 165000 }
-            ]
-        },
-        
-        // DEBUT PACKAGES
-        silver_debut: {
-            name: "Silver Debut Package",
-            category: "Debut (18th Birthday)",
-            image: "Catering_Photos/silver_debut_package.jpg",
-            priceRange: "₱24,000 - ₱52,000",
-            description: "Perfect debut package with essential styling and complete catering.",
-            
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Number Standee"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 24000 },
-                { pax: 40, price: 27000 },
-                { pax: 50, price: 30000 },
-                { pax: 60, price: 34000 },
-                { pax: 70, price: 38000 },
-                { pax: 80, price: 42000 },
-                { pax: 90, price: 47000 },
-                { pax: 100, price: 52000 }
-            ]
-        },
-        
-        gold_debut: {
-            name: "Gold Debut Package",
-            category: "Debut (18th Birthday)",
-            image: "Catering_Photos/gold_debut_package.jpg",
-            priceRange: "₱43,000 - ₱72,000",
-            description: "Enhanced debut with host, lights & sounds, and photographer from preparation to reception.",
-            
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Number Standee"],
-            
-            otherInclusions: ["Host", "Lights & Sounds", "Photographer (Preparation to Reception)"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 43000 },
-                { pax: 40, price: 46000 },
-                { pax: 50, price: 49000 },
-                { pax: 60, price: 53000 },
-                { pax: 70, price: 57000 },
-                { pax: 80, price: 62000 },
-                { pax: 90, price: 67000 },
-                { pax: 100, price: 72000 }
-            ]
-        },
-        
-        platinum_debut: {
-            name: "Platinum Debut Package",
-            category: "Debut (18th Birthday)",
-            image: "Catering_Photos/platinum_debut_package.jpg",
-            priceRange: "₱54,000 - ₱86,000",
-            description: "Ultimate debut with Tiffany chairs and photo/video coverage (Non-SDE).",
-            
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Styro Name", "Celebrant Chair", "Backdrop Design", "Cake Table", "Souvenir Rack", "Number Standee", "Tiffany Chairs"],
-            
-            otherInclusions: ["Host", "Lights & Sounds", "Photo/Video Coverage (Non-SDE)", "Preparation to Reception"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 54000 },
-                { pax: 40, price: 57000 },
-                { pax: 50, price: 61000 },
-                { pax: 60, price: 65000 },
-                { pax: 70, price: 70000 },
-                { pax: 80, price: 75000 },
-                { pax: 90, price: 81000 },
-                { pax: 100, price: 86000 }
-            ]
-        },
-        
-        // CORPORATE PACKAGES
-        silver_corporate: {
-            name: "Silver Corporate Package",
-            category: "Corporate Events",
-            image: "Catering_Photos/silver_corporate_package.jpg",
-            priceRange: "₱25,000 - ₱50,000",
-            description: "Professional corporate package with complete setup and catering.",
-            
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Company Name Made with Styro", "Backdrop Design", "Tables & Chairs Setup", "Buffet Setup", "Uniformed Attendants", "Complete Catering Equipment"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 25000 },
-                { pax: 40, price: 27000 },
-                { pax: 50, price: 30000 },
-                { pax: 60, price: 34000 },
-                { pax: 70, price: 38000 },
-                { pax: 80, price: 42000 },
-                { pax: 90, price: 46000 },
-                { pax: 100, price: 50000 }
-            ]
-        },
-        
-        gold_corporate: {
-            name: "Gold Corporate Package",
-            category: "Corporate Events",
-            image: "Catering_Photos/gold_corporate_package.jpg",
-            priceRange: "₱44,000 - ₱69,000",
-            description: "Enhanced corporate with host, lights & sounds, and photographer.",
-            
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Company Name Made with Styro", "Backdrop Design", "Tables & Chairs Setup", "Buffet Setup", "Uniformed Attendants", "Complete Catering Equipment"],
-            
-            otherInclusions: ["Host", "Lights & Sounds", "Photographer"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Chairs", image: "https://images.unsplash.com/photo-1519167758481-83f29da8c799?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 44000 },
-                { pax: 40, price: 46000 },
-                { pax: 50, price: 49000 },
-                { pax: 60, price: 53000 },
-                { pax: 70, price: 57000 },
-                { pax: 80, price: 61000 },
-                { pax: 90, price: 65000 },
-                { pax: 100, price: 69000 }
-            ]
-        },
-        
-        platinum_corporate: {
-            name: "Platinum Corporate Package",
-            category: "Corporate Events",
-            image: "Catering_Photos/platinum_corporate_package.jpg",
-            priceRange: "₱50,000 - ₱80,000",
-            description: "Premium corporate with Tiffany chairs, entrance arch, and welcome board.",
-            
-            catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
-            
-            inclusions: ["Company Name Made with Styro", "Backdrop Design", "Tables & Tiffany Chairs Setup", "Buffet Setup", "Uniformed Attendants", "Complete Catering Equipment"],
-            
-            otherInclusions: ["Host", "Lights & Sounds", "Photographer", "Entrance Arch & Welcome Board"],
-            
-            photos: [
-                { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
-                { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
-                { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
-            ],
-            
-            rates: [
-                { pax: 30, price: 50000 },
-                { pax: 40, price: 53000 },
-                { pax: 50, price: 56000 },
-                { pax: 60, price: 60000 },
-                { pax: 70, price: 65000 },
-                { pax: 80, price: 70000 },
-                { pax: 90, price: 75000 },
-                { pax: 100, price: 80000 }
-            ]
-        }
-    };
+            platinum_corporate: {
+                name: "Platinum Corporate Package",
+                category: "Corporate Events",
+                image: "Catering_Photos/platinum_corporate_package.jpg",
+                priceRange: "₱50,000 - ₱80,000",
+                description: "Premium corporate with Tiffany chairs, entrance arch, and welcome board.",
+                
+                catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
+                
+                inclusions: ["Company Name Made with Styro", "Backdrop Design", "Tables & Tiffany Chairs Setup", "Buffet Setup", "Uniformed Attendants", "Complete Catering Equipment"],
+                
+                otherInclusions: ["Host", "Lights & Sounds", "Photographer", "Entrance Arch & Welcome Board"],
+                
+                photos: [
+                    { name: "Buffet Setup", image: "https://images.unsplash.com/photo-1555244162-803834f70033?w=400" },
+                    { name: "Tables & Tiffany Chairs", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400" },
+                    { name: "Complete Equipment", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" }
+                ],
+                
+                rates: [
+                    { pax: 30, price: 50000 },
+                    { pax: 40, price: 53000 },
+                    { pax: 50, price: 56000 },
+                    { pax: 60, price: 60000 },
+                    { pax: 70, price: 65000 },
+                    { pax: 80, price: 70000 },
+                    { pax: 90, price: 75000 },
+                    { pax: 100, price: 80000 }
+                ]
+            }
+        };
 
     // Initialize Menu Package Functionality
     document.addEventListener('DOMContentLoaded', function() {
@@ -6694,63 +6737,167 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
         }
     }
 
-    function openMenuModal(packageType) {
-        const modal = document.getElementById('menu-modal');
-        const packageData = menuPackages[packageType];
-        
-        if (!packageData || !modal) return;
+function openMenuModal(packageType) {
+    const modal = document.getElementById('menu-modal');
+    const packageData = menuPackages[packageType];
+    
+    if (!packageData || !modal) return;
 
-        // Store current package type for booking
-        modal.setAttribute('data-current-package', packageType);
+    // Store current package type
+    modal.setAttribute('data-current-package', packageType);
+    modal.setAttribute('data-selected-pax', ''); // Reset selection
 
-        // Update modal header
-        document.getElementById('modal-package-name').textContent = packageData.name;
-        document.getElementById('modal-package-price').textContent = packageData.priceRange;
-
-        // Update description
-        document.getElementById('modal-description').innerHTML = `
-            <p class="text-gray-700 leading-relaxed">${packageData.description}</p>
-        `;
-
-        // Update menu items
-        const menuItemsContainer = document.getElementById('modal-menu-items');
-        menuItemsContainer.innerHTML = '';
-        
-        // Combine all inclusions for display
-        const allInclusions = [
-            ...(packageData.catering || []),
-            ...(packageData.inclusions || []),
-            ...(packageData.otherInclusions || []),
-            ...(packageData.styling || [])
-        ];
-
-        allInclusions.forEach(item => {
-            const menuItem = document.createElement('div');
-            menuItem.className = 'menu-item-card';
-            menuItem.innerHTML = `
-                <div class="content">
-                    <h5>${item}</h5>
-                    <p>Included in package</p>
-                </div>
-            `;
-            menuItemsContainer.appendChild(menuItem);
-        });
-
-        // Update inclusions
-        const inclusionsContainer = document.getElementById('modal-inclusions');
-        inclusionsContainer.innerHTML = '';
-        
-        allInclusions.forEach(inclusion => {
-            const li = document.createElement('li');
-            li.innerHTML = `<i class="fas fa-check mr-2"></i>${inclusion}`;
-            inclusionsContainer.appendChild(li);
-        });
-
-        // Show modal with animation
-        modal.classList.remove('hidden');
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    // Update modal header
+    document.getElementById('modal-package-name').textContent = packageData.name;
+    document.getElementById('modal-package-price').textContent = packageData.priceRange;
+    
+    // Update package image
+    const packageImage = document.getElementById('modal-package-image');
+    if (packageImage) {
+        packageImage.src = packageData.image;
+        packageImage.alt = packageData.name;
     }
+
+    // Update description with icon
+    document.getElementById('modal-description').innerHTML = `
+        <p class="text-gray-700 leading-relaxed">${packageData.description}</p>
+    `;
+
+    // Update inclusions with icons
+    const inclusionsContainer = document.getElementById('modal-inclusions');
+    inclusionsContainer.innerHTML = '';
+    
+    const allInclusions = [
+        ...(packageData.catering || []),
+        ...(packageData.inclusions || []),
+        ...(packageData.otherInclusions || []),
+        ...(packageData.styling || [])
+    ];
+
+    allInclusions.forEach(inclusion => {
+        const div = document.createElement('div');
+        div.className = 'flex items-start gap-2 text-gray-700';
+        div.innerHTML = `
+            <i class="fas fa-check-circle text-[#DC2626] mt-1 flex-shrink-0"></i>
+            <span>${inclusion}</span>
+        `;
+        inclusionsContainer.appendChild(div);
+    });
+
+    // Generate guest selection checkboxes
+    generateGuestSelection(packageType, packageData.rates);
+
+    // Reset book button
+    resetBookButton();
+
+    // Show modal with animation
+    modal.classList.remove('hidden');
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+// Generate guest selection checkboxes
+function generateGuestSelection(packageType, rates) {
+    const container = document.getElementById('modal-guest-selection');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    rates.forEach(rate => {
+        const checkbox = document.createElement('label');
+        checkbox.className = 'flex items-center gap-2 p-3 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-[#DC2626] hover:bg-red-50 transition-all';
+        checkbox.innerHTML = `
+            <input type="checkbox" name="modal_guest_count" value="${rate.pax}" data-price="${rate.price}" 
+                   class="w-5 h-5 text-[#DC2626] focus:ring-[#DC2626] rounded cursor-pointer">
+            <div class="flex-1">
+                <div class="font-semibold text-gray-800">${rate.pax} Guests</div>
+                <div class="text-sm text-[#DC2626] font-bold">₱${rate.price.toLocaleString()}</div>
+            </div>
+        `;
+        
+        // Add change listener
+        const input = checkbox.querySelector('input');
+        input.addEventListener('change', function() {
+            handleGuestSelection(this);
+        });
+        
+        container.appendChild(checkbox);
+    });
+}
+
+// Handle guest selection (only one can be selected)
+function handleGuestSelection(selectedCheckbox) {
+    const modal = document.getElementById('menu-modal');
+    const allCheckboxes = document.querySelectorAll('input[name="modal_guest_count"]');
+    
+    // Uncheck all others
+    allCheckboxes.forEach(cb => {
+        if (cb !== selectedCheckbox) {
+            cb.checked = false;
+            cb.parentElement.classList.remove('border-[#DC2626]', 'bg-red-50');
+            cb.parentElement.classList.add('border-gray-300');
+        }
+    });
+    
+    if (selectedCheckbox.checked) {
+        // Highlight selected
+        selectedCheckbox.parentElement.classList.add('border-[#DC2626]', 'bg-red-50');
+        selectedCheckbox.parentElement.classList.remove('border-gray-300');
+        
+        // Store selection
+        const pax = selectedCheckbox.value;
+        const price = selectedCheckbox.dataset.price;
+        modal.setAttribute('data-selected-pax', pax);
+        modal.setAttribute('data-selected-price', price);
+        
+        // Update price display
+        const priceDisplay = document.getElementById('selected-price-display');
+        const paxText = document.getElementById('selected-pax-text');
+        const priceText = document.getElementById('selected-price-text');
+        
+        if (priceDisplay && paxText && priceText) {
+            priceDisplay.classList.remove('hidden');
+            paxText.textContent = `${pax} Guests`;
+            priceText.textContent = `₱${parseInt(price).toLocaleString()}`;
+        }
+        
+        // Enable book button
+        enableBookButton();
+    } else {
+        // Reset if unchecked
+        modal.setAttribute('data-selected-pax', '');
+        modal.setAttribute('data-selected-price', '');
+        
+        const priceDisplay = document.getElementById('selected-price-display');
+        if (priceDisplay) {
+            priceDisplay.classList.add('hidden');
+        }
+        
+        resetBookButton();
+    }
+}
+
+// Enable book button
+function enableBookButton() {
+    const bookBtn = document.getElementById('book-package-btn');
+    if (bookBtn) {
+        bookBtn.disabled = false;
+        bookBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        bookBtn.classList.add('bg-[#DC2626]', 'hover:bg-[#B91C1C]', 'text-white', 'cursor-pointer');
+        bookBtn.innerHTML = '<i class="fas fa-calendar-plus mr-2"></i>Book This Package';
+    }
+}
+
+// Reset book button
+function resetBookButton() {
+    const bookBtn = document.getElementById('book-package-btn');
+    if (bookBtn) {
+        bookBtn.disabled = true;
+        bookBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+        bookBtn.classList.remove('bg-[#DC2626]', 'hover:bg-[#B91C1C]', 'text-white', 'cursor-pointer');
+        bookBtn.innerHTML = '<i class="fas fa-calendar-plus mr-2"></i>Select Guest Count to Continue';
+    }
+}
 
     function closeMenuModal() {
         const modal = document.getElementById('menu-modal');
@@ -6824,15 +6971,95 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
         }
     }
 
-    // Add keyboard support for modal
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
+// Book package button click handler
+document.addEventListener('DOMContentLoaded', function() {
+    const bookPackageBtn = document.getElementById('book-package-btn');
+    if (bookPackageBtn) {
+        bookPackageBtn.addEventListener('click', function() {
             const modal = document.getElementById('menu-modal');
-            if (modal && !modal.classList.contains('hidden')) {
-                closeMenuModal();
+            const selectedPackage = modal?.getAttribute('data-current-package');
+            const selectedPax = modal?.getAttribute('data-selected-pax');
+            
+            if (!selectedPackage || !selectedPax) {
+                showMessage('error', 'Selection Required', 'Please select number of guests first.');
+                return;
             }
+            
+            // Close modal with animation
+            closeMenuModal();
+            
+            // Navigate to Book Now section
+            setTimeout(() => {
+                navigateToBookingWithPackage(selectedPackage, selectedPax);
+            }, 300);
+        });
+    }
+});
+
+// Navigate to booking with pre-filled package and guest count
+function navigateToBookingWithPackage(packageType, guestCount) {
+    hideAllSections();
+    document.querySelectorAll("nav a").forEach(l => l.classList.remove("active-nav"));
+    
+    // Activate Book Now nav
+    const bookNavLink = document.querySelector('nav a');
+    if (bookNavLink) bookNavLink.classList.add("active-nav");
+    
+    const bookSection = document.getElementById("section-book");
+    if (bookSection) {
+        bookSection.classList.remove("hidden");
+        
+        // Pre-fill form with animation
+        setTimeout(() => {
+            // Set guest count
+            const guestSelect = document.getElementById('guest-count');
+            if (guestSelect) {
+                guestSelect.value = guestCount;
+                guestSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Highlight with animation
+                guestSelect.classList.add('ring-4', 'ring-green-300');
+                setTimeout(() => {
+                    guestSelect.classList.remove('ring-4', 'ring-green-300');
+                }, 2000);
+            }
+            
+            // Set package
+            const packageSelect = document.getElementById('package');
+            if (packageSelect) {
+                packageSelect.value = packageType;
+                packageSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Highlight with animation
+                packageSelect.classList.add('ring-4', 'ring-green-300');
+                setTimeout(() => {
+                    packageSelect.classList.remove('ring-4', 'ring-green-300');
+                }, 2000);
+            }
+            
+            // Update price calculator
+            if (typeof updatePriceCalculator === 'function') {
+                updatePriceCalculator();
+            }
+            
+            // Show success message
+            showMessage('success', 'Package Selected!', `${guestCount} guests package has been pre-filled. Please complete the remaining details.`);
+            
+            // Scroll to form
+            bookSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+}
+
+// Add keyboard support for modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('menu-modal');
+        if (modal && !modal.classList.contains('hidden')) {
+            closeMenuModal();
         }
-    });
+    }
+});
 
     // Export functions for use in other parts of the application
     window.openMenuModal = openMenuModal;
@@ -8274,6 +8501,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         field.addEventListener('input', updatePriceCalculator);
                     }
                 });
+
+                // ✅ TRIGGER GUEST BLOCKING WHEN PACKAGE CHANGES
+                const packageField = document.getElementById('package');
+                if (packageField) {
+                    packageField.addEventListener('change', function() {
+                        updatePriceCalculator(); // This will trigger guest blocking
+                    });
+                }
+                
                 
                 // Menu checkboxes for additional pricing
                 document.addEventListener('change', function(e) {
