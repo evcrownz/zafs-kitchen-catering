@@ -6763,9 +6763,15 @@ function openMenuModal(packageType) {
         <p class="text-gray-700 leading-relaxed">${packageData.description}</p>
     `;
 
-    // Update inclusions with icons
+// Update inclusions with icons - 3 COLUMN GRID LAYOUT
     const inclusionsContainer = document.getElementById('modal-inclusions');
     inclusionsContainer.innerHTML = '';
+    
+    // Set container to grid with 3 columns
+    inclusionsContainer.style.display = 'grid';
+    inclusionsContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    inclusionsContainer.style.columnGap = '1.5rem';
+    inclusionsContainer.style.rowGap = '0.5rem';
     
     const allInclusions = [
         ...(packageData.catering || []),
@@ -6777,16 +6783,16 @@ function openMenuModal(packageType) {
     allInclusions.forEach(inclusion => {
         const div = document.createElement('div');
         div.className = 'flex items-start gap-2 text-gray-700';
+        div.style.alignItems = 'flex-start';
         div.innerHTML = `
-            <i class="fas fa-check-circle text-[#DC2626] mt-1 flex-shrink-0"></i>
-            <span>${inclusion}</span>
+            <i class="fas fa-check-circle text-[#DC2626] flex-shrink-0" style="margin-top: 0.25rem;"></i>
+            <span style="line-height: 1.5;">${inclusion}</span>
         `;
         inclusionsContainer.appendChild(div);
     });
 
     // Generate guest selection checkboxes
     generateGuestSelection(packageType, packageData.rates);
-
     // Reset book button
     resetBookButton();
 
@@ -9985,7 +9991,6 @@ if (nextStep2) {
         // Check expiration every hour while page is open
         setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour
             
-            
-            </script>
-            </body>
-            </html>
+</script>
+</body>
+</html>
