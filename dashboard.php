@@ -6793,6 +6793,7 @@ function openMenuModal(packageType) {
 
     // Generate guest selection checkboxes
     generateGuestSelection(packageType, packageData.rates);
+    
     // Reset book button
     resetBookButton();
 
