@@ -89,7 +89,7 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60%;
+    height: 65%;
     background: #fff;
     display: flex;
     align-items: center;
@@ -313,7 +313,7 @@ form{
     content: '';
     position: absolute;
     left: 0;
-    top: -1950px;
+    top: -1880px;
     width: 100%;
     height: 2200px;
     border-radius: 20vw;
@@ -344,7 +344,7 @@ form{
 }
 
 .toggle-panel h1 {
-    font-size: 24px;
+    font-size: 34px;
     margin-bottom: 8px;
 }
 
@@ -388,8 +388,8 @@ form{
 }
 
 .toggle-panel .btn{
-    width: 160px;
-    height: 40px;
+    width: 200px;
+    height: 44px;
     background: transparent;
     border: 2px solid #fff;
     box-shadow: none;
