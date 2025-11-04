@@ -89,7 +89,7 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 65%;
+    height: 80%;
     background: #fff;
     display: flex;
     align-items: center;
@@ -313,7 +313,7 @@ form{
     content: '';
     position: absolute;
     left: 0;
-    top: -1880px;
+    top: -1840px;
     width: 100%;
     height: 2200px;
     border-radius: 20vw;
