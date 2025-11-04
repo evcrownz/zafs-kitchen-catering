@@ -325,7 +325,7 @@ form{
 .container.active .toggle-box::before,
 .container.forgot-active .toggle-box::before,
 .container.otp-active .toggle-box::before {
-    top: 58%;
+    top: 60%;
     left: 0;
 }
 
