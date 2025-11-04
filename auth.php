@@ -18,19 +18,19 @@ require_once "controllerUserData.php";
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Caveat:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
-    
-    @font-face {
-        font-family: 'LHF Ascribe';
-        src: url('fonts/CR_LHF-Ascribe-Regular-Regular-otf-400.otf') format('opentype'),
-             url('fonts/LHFAscribe.woff2') format('woff2'),
-             url('fonts/LHFAscribe.woff') format('woff'),
-             url('fonts/LHFAscribe.ttf') format('truetype');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
+
+@font-face {
+    font-family: 'LHF Ascribe';
+    src: url('fonts/CR_LHF-Ascribe-Regular-Regular-otf-400.otf') format('opentype'),
+         url('fonts/LHFAscribe.woff2') format('woff2'),
+         url('fonts/LHFAscribe.woff') format('woff'),
+         url('fonts/LHFAscribe.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
 
 *{
     margin: 0;
@@ -89,28 +89,28 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 72%;
+    height: 60%;
     background: #fff;
     display: flex;
     align-items: center;
     color: #333;
     text-align: center;
-    padding: 30px 30px;
+    padding: 20px 25px;
     z-index: 1;
     transition: .6s ease-in-out 0.8s, visibility 0s 1s;
     overflow-y: auto;
 }
 
 .container.active .form-box{
-    bottom: 28%;
+    bottom: 40%;
 }
 
 .container.forgot-active .form-box{
-    bottom: 28%;
+    bottom: 40%;
 }
 
 .container.otp-active .form-box{
-    bottom: 28%;
+    bottom: 40%;
 }
 
 .form-box.signup{
@@ -142,30 +142,31 @@ form{
 }
 
 .container h1{
-    font-size: 36px;
-    margin-bottom: 10px;
+    font-size: 28px;
+    margin-bottom: 8px;
 }
 
 .container h4{
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
-    margin: 8px 0 20px 0;
+    margin: 6px 0 15px 0;
     text-align: center;
+    line-height: 1.3;
 }
 
 .input-box {
     position: relative;
-    margin: 22px 0;
+    margin: 15px 0;
 } 
 
 .input-box input{
     width: 100%;
-    padding: 14px 45px 14px 18px;
+    padding: 12px 40px 12px 15px;
     background: #eee;
     border-radius: 8px;
     border: none;
     outline: none;
-    font-size: 15px;
+    font-size: 14px;
     color: #333;
     font-weight: 500;
 }
@@ -177,27 +178,27 @@ form{
 
 .input-box i{
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: 18px;
     color: #888;
 }
 
 .otp-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 8px;
+    margin: 15px 0;
 }
 
 .otp-input {
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
     border: 2px solid #ddd;
     border-radius: 8px;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #333;
     background: #f9f9f9;
@@ -206,9 +207,10 @@ form{
 }
 
 .otp-instruction {
-    font-size: 14px;
+    font-size: 13px;
     color: #555;
     font-weight: normal;
+    line-height: 1.4;
 }
 
 .otp-input:focus {
@@ -224,15 +226,15 @@ form{
 }
 
 .otp-timer {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .resend-link {
     color: #DC2626;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
 }
 
@@ -248,11 +250,11 @@ form{
 }
 
 .forgot-link{
-    margin: -10px 0 18px;
+    margin: -8px 0 15px;
 }
 
 .forgot-link a{
-    font-size: 14.5px;
+    font-size: 13px;
     color: #333;
     text-decoration: none;
     cursor: pointer;
@@ -264,13 +266,13 @@ form{
 
 .btn{
     width: 100%;
-    height: 45px;
+    height: 42px;
     background: #DC2626;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     border: none;
     cursor: pointer;
-    font-size: 17px;
+    font-size: 15px;
     color: #fff;
     font-weight: 600;
 }
@@ -281,24 +283,24 @@ form{
 }
 
 .container p{
-    font-size: 15px;
-    margin: 18px 0;
+    font-size: 13px;
+    margin: 12px 0;
 }
 
 .social-icons{
-    font-size: 14.5px;
-    margin: 18px 0;
+    font-size: 13px;
+    margin: 12px 0;
 }
 
 .social-icons a{
     display: inline-flex;
-    padding: 12px;
+    padding: 10px;
     border: 2px solid #ccc;
     border-radius: 8px;
-    font-size: 26px;
+    font-size: 22px;
     color: #333;
     text-decoration: none;
-    margin: 0 10px;    
+    margin: 0 8px;    
 }
 
 .toggle-box{
@@ -323,14 +325,14 @@ form{
 .container.active .toggle-box::before,
 .container.forgot-active .toggle-box::before,
 .container.otp-active .toggle-box::before {
-    top: 70%;
+    top: 58%;
     left: 0;
 }
 
 .toggle-panel{
     position: absolute;
     width: 100%;
-    height: 30%;
+    height: 40%;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -338,6 +340,18 @@ form{
     align-items: center;
     z-index: 2;
     transition: .6s ease-in-out;
+    padding: 0 20px;
+}
+
+.toggle-panel h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.toggle-panel h4 {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 10px;
 }
 
 .toggle-panel.toggle-left {
@@ -350,13 +364,13 @@ form{
 .container.forgot-active .toggle-panel.toggle-left,
 .container.otp-active .toggle-panel.toggle-left{
     left: 0;
-    top: -30%;
+    top: -40%;
     transition-delay: .6s;
 }
 
 .toggle-panel.toggle-right{
     right: 0;
-    bottom: -30%;
+    bottom: -40%;
     transition-delay: .6s;
 }
 
@@ -369,25 +383,26 @@ form{
 }
 
 .toggle-panel p{
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-size: 13px;
 }
 
 .toggle-panel .btn{
-    width: 180px;
-    height: 45px;
+    width: 160px;
+    height: 40px;
     background: transparent;
     border: 2px solid #fff;
     box-shadow: none;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .back-btn {
     background: none;
     border: none;
     color: #DC2626;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
-    margin: 10px 0;
+    margin: 8px 0;
     text-decoration: underline;
 }
 
@@ -404,6 +419,7 @@ form{
     margin: 10px 0;
     border: 1px solid #c3e6cb;
     display: none;
+    font-size: 13px;
 }
 
 .error-message {
@@ -414,6 +430,7 @@ form{
     margin: 10px 0;
     border: 1px solid #f5c6cb;
     display: none;
+    font-size: 13px;
 }
 
 /* Modal Error Overlay */
@@ -621,11 +638,11 @@ form{
 .loading-container {
     text-align: center;
     background: white;
-    padding: 50px 40px;
+    padding: 40px 30px;
     border-radius: 20px;
     box-shadow: 0 25px 50px rgba(0,0,0,0.4);
     animation: slideInBounce 0.6s ease-out;
-    min-width: 300px;
+    min-width: 280px;
 }
 
 @keyframes slideInBounce {
@@ -644,11 +661,11 @@ form{
 }
 
 .spinner {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 30px;
-    border: 6px solid #f0f0f0;
-    border-top: 6px solid #DC2626;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 25px;
+    border: 5px solid #f0f0f0;
+    border-top: 5px solid #DC2626;
     border-radius: 50%;
     animation: spin 1.2s linear infinite;
     position: relative;
@@ -674,10 +691,10 @@ form{
 
 .loading-text {
     font-family: 'Arial', sans-serif;
-    font-size: 20px;
+    font-size: 17px;
     color: #333;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     animation: loadingPulse 2s ease-in-out infinite;
 }
 
@@ -689,12 +706,12 @@ form{
 .loading-dots {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 7px;
 }
 
 .loading-dots span {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     background: #DC2626;
     border-radius: 50%;
     animation: dotBounce 1.4s ease-in-out infinite both;
@@ -732,7 +749,7 @@ form{
 
 .otp-modal-content {
     background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
-    padding: 40px 35px 35px;
+    padding: 35px 30px 30px;
     border-radius: 20px;
     width: 90%;
     max-width: 480px;
@@ -764,9 +781,9 @@ form{
 }
 
 .otp-modal-content h2 {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     color: #2c3e50;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
     display: flex;
@@ -777,7 +794,7 @@ form{
 
 .otp-modal-content h2::before {
     content: '📧';
-    font-size: 32px;
+    font-size: 28px;
     animation: emailBounce 2s infinite;
 }
 
@@ -793,18 +810,18 @@ form{
 
 .otp-verify-btn {
     width: 100%;
-    height: 45px;
+    height: 42px;
     background: linear-gradient(145deg, #DC2626, #B91C1C);
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3);
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     color: #fff;
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
-    margin: 20px 0 15px 0;
+    margin: 15px 0 12px 0;
     position: relative;
     overflow: hidden;
 }
@@ -844,11 +861,11 @@ form{
 .otp-error {
     background: linear-gradient(145deg, #f8d7da, #f5c6cb);
     color: #721c24;
-    padding: 12px;
+    padding: 10px;
     border-radius: 8px;
-    margin: 15px 0;
+    margin: 12px 0;
     border: 1px solid #f5c6cb;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     position: relative;
     animation: slideIn 0.3s ease;
@@ -862,11 +879,11 @@ form{
 .otp-success {
     background: linear-gradient(145deg, #d4edda, #c3e6cb);
     color: #155724;
-    padding: 12px;
+    padding: 10px;
     border-radius: 8px;
-    margin: 15px 0;
+    margin: 12px 0;
     border: 1px solid #c3e6cb;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     position: relative;
     animation: slideIn 0.3s ease;
@@ -943,10 +960,10 @@ form{
 
 .custom-modal-content {
     background-color: #fff;
-    padding: 30px;
+    padding: 25px;
     border-radius: 10px;
-    width: 100%;
-    max-width: 450px;
+    width: 90%;
+    max-width: 400px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     animation: modalSlideIn 0.5s ease-out;
@@ -967,19 +984,19 @@ form{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 2px solid #eee;
 }
 
 .custom-modal-header h5 {
     margin: 0;
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
     font-weight: bold;
 }
 
 .close-btn {
-    font-size: 24px;
+    font-size: 22px;
     color: #aaa;
     cursor: pointer;
     transition: color 0.3s;
@@ -990,19 +1007,19 @@ form{
 }
 
 .custom-modal-body {
-    font-size: 16px;
+    font-size: 14px;
     color: #555;
-    margin-top: 20px;
+    margin-top: 15px;
     line-height: 1.5;
 }
 
 .custom-modal-footer {
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 .custom-btn {
-    padding: 12px 30px;
-    font-size: 18px;
+    padding: 10px 25px;
+    font-size: 16px;
     color: white;
     background-color: #4CAF50;
     border: none;
@@ -1018,6 +1035,43 @@ form{
 
 .custom-btn:focus {
     outline: none;
+}
+
+/* Small mobile adjustments */
+@media screen and (max-width: 380px) {
+    .container h1 {
+        font-size: 26px;
+    }
+    
+    .input-box {
+        margin: 12px 0;
+    }
+    
+    .input-box input {
+        padding: 11px 38px 11px 14px;
+        font-size: 13px;
+    }
+    
+    .btn {
+        height: 40px;
+        font-size: 14px;
+    }
+    
+    .social-icons a {
+        padding: 9px;
+        font-size: 20px;
+        margin: 0 6px;
+    }
+    
+    .toggle-panel h1 {
+        font-size: 22px;
+    }
+    
+    .toggle-panel .btn {
+        width: 150px;
+        height: 38px;
+        font-size: 13px;
+    }
 }
 
 /* Desktop styles - Show navbar */
@@ -1135,6 +1189,59 @@ form{
         padding: 36px;
         bottom: auto;
     }
+    
+    .container h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+    
+    .container h4 {
+        font-size: 13px;
+        margin: 8px 0 20px 0;
+    }
+    
+    .input-box {
+        margin: 22px 0;
+    }
+    
+    .input-box input {
+        padding: 14px 45px 14px 18px;
+        font-size: 15px;
+    }
+    
+    .input-box i {
+        right: 20px;
+        font-size: 20px;
+    }
+    
+    .forgot-link {
+        margin: -10px 0 18px;
+    }
+    
+    .forgot-link a {
+        font-size: 14.5px;
+    }
+    
+    .btn {
+        height: 45px;
+        font-size: 17px;
+    }
+    
+    .container p {
+        font-size: 15px;
+        margin: 18px 0;
+    }
+    
+    .social-icons {
+        font-size: 14.5px;
+        margin: 18px 0;
+    }
+    
+    .social-icons a {
+        padding: 12px;
+        font-size: 26px;
+        margin: 0 10px;
+    }
 
     .container.active .form-box,
     .container.forgot-active .form-box,
@@ -1161,6 +1268,28 @@ form{
     .toggle-panel{
         width: 50%;
         height: 100%;
+        padding: 0 30px;
+    }
+    
+    .toggle-panel h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+    
+    .toggle-panel h4 {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .toggle-panel p {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .toggle-panel .btn {
+        width: 180px;
+        height: 45px;
+        font-size: 16px;
     }
 
     .toggle-panel.toggle-left {
@@ -1185,6 +1314,111 @@ form{
     .container.otp-active .toggle-panel.toggle-right{
         right: 0;
         bottom: 0;
+    }
+    
+    .otp-container {
+        gap: 10px;
+        margin: 20px 0;
+    }
+    
+    .otp-input {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .otp-instruction {
+        font-size: 14px;
+    }
+    
+    .otp-timer {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    
+    .resend-link {
+        font-size: 14px;
+    }
+    
+    .otp-verify-btn {
+        height: 45px;
+        font-size: 16px;
+        margin: 20px 0 15px 0;
+    }
+    
+    .otp-modal-content h2 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    .otp-modal-content h2::before {
+        font-size: 32px;
+    }
+    
+    .otp-modal-content {
+        padding: 40px 35px 35px;
+    }
+    
+    .custom-modal-content {
+        padding: 30px;
+        max-width: 450px;
+    }
+    
+    .custom-modal-header h5 {
+        font-size: 20px;
+    }
+    
+    .custom-modal-header {
+        padding-bottom: 20px;
+    }
+    
+    .custom-modal-body {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+    
+    .custom-modal-footer {
+        margin-top: 30px;
+    }
+    
+    .custom-btn {
+        padding: 12px 30px;
+        font-size: 18px;
+    }
+    
+    .close-btn {
+        font-size: 24px;
+    }
+    
+    .loading-container {
+        padding: 50px 40px;
+        min-width: 300px;
+    }
+    
+    .spinner {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 30px;
+        border: 6px solid #f0f0f0;
+        border-top: 6px solid #DC2626;
+    }
+    
+    .spinner::before {
+        border: 2px solid transparent;
+    }
+    
+    .loading-text {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .loading-dots {
+        gap: 8px;
+    }
+    
+    .loading-dots span {
+        width: 12px;
+        height: 12px;
     }
 }
 
