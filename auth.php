@@ -89,27 +89,28 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 70%;
+    height: 72%;
     background: #fff;
     display: flex;
     align-items: center;
     color: #333;
     text-align: center;
-    padding: 40px 30px;
+    padding: 30px 30px;
     z-index: 1;
     transition: .6s ease-in-out 0.8s, visibility 0s 1s;
+    overflow-y: auto;
 }
 
 .container.active .form-box{
-    bottom: 30%;
+    bottom: 28%;
 }
 
 .container.forgot-active .form-box{
-    bottom: 30%;
+    bottom: 28%;
 }
 
 .container.otp-active .form-box{
-    bottom: 30%;
+    bottom: 28%;
 }
 
 .form-box.signup{
