@@ -102,7 +102,7 @@ body::before {
 }
 
 .container.active .form-box{
-    bottom: 40%;
+    bottom: 25%;
 }
 
 .container.forgot-active .form-box{
@@ -377,7 +377,7 @@ form{
 .container.active .toggle-panel.toggle-right,
 .container.forgot-active .toggle-panel.toggle-right,
 .container.otp-active .toggle-panel.toggle-right{
-    bottom: 0;
+    bottom: 70px;
     right: 0;
     transition-delay: .6s;
 }
