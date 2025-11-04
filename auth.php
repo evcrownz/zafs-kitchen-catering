@@ -12,7 +12,7 @@ require_once "controllerUserData.php";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zaf's Kitchen - Login & Registration</title>
-     <link rel="icon" type="image/png" href="logo/logo.png">
+    <link rel="icon" type="image/png" href="logo/logo.png">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Caveat:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@ require_once "controllerUserData.php";
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
     
-    /* LHF Ascribe Font - Download the OTF file and place it in your fonts folder */
     @font-face {
         font-family: 'LHF Ascribe';
         src: url('fonts/CR_LHF-Ascribe-Regular-Regular-otf-400.otf') format('opentype'),
@@ -51,14 +50,12 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  padding: 20px;
-  padding-top: 80px;
+  padding: 0;
   position: relative;
   z-index: 0;
   overflow: hidden;
 }
 
-/* Dark overlay */
 body::before {
   content: "";
   position: fixed;
@@ -71,165 +68,48 @@ body::before {
   pointer-events: none; 
 }
 
-
-/* Navigation Styles */
+/* Hide navbar on mobile */
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 800;
-    color: #DC2626;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-family: 'LHF Ascribe', 'Cinzel', 'Times New Roman', serif;
-    letter-spacing: 2px;
-    text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-    font-style: normal;
-    transform: skewX(-5deg);
-}
-
-.logo .logo-z {
-    font-weight: 900;
-    font-size: 25px;
-    text-shadow: 4px 4px 8px rgba(0,0,0,0.7);
-    font-family: 'LHF Ascribe', 'Cinzel', 'Times New Roman', serif;
-}
-
-.logo:hover {
-    transform: scale(1.05) skewX(-5deg);
-    color: #B91C1C;
-}
-
-.logo-icon {
-    width: 42px;
-    height: 42px;
-    margin-right: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.logo:hover .logo-icon {
-    transform: rotate(10deg);
-}
-
-.logo-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: transparent;
-    mix-blend-mode: screen;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.nav-menu li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
-    position: relative;
-    transition: color 0.3s ease;
-}
-
-.nav-menu li a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -5px;
-    left: 0;
-    background: #DC2626;
-    transition: width 0.3s ease;
-}
-
-.nav-menu li a:hover {
-    color: #DC2626;
-}
-
-.nav-menu li a:hover::after {
-    width: 100%;
-}
-
-.hamburger {
     display: none;
-    flex-direction: column;
-    cursor: pointer;
-    padding: 5px;
 }
 
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background: #fff;
-    margin: 3px 0;
-    transition: 0.3s;
-}
-
-.hamburger.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
-
+/* Mobile First - Fullscreen Container */
 .container {
     position: relative;
-    width: 765px;
-    height: 495px;
+    width: 100%;
+    height: 100vh;
     background: #ffffff;
-    border-radius: 30px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+    border-radius: 0;
+    box-shadow: none;
     overflow: hidden;
-    margin: auto;
+    margin: 0;
 }
 
 .form-box{
     position: absolute;
-    right: 0;
-    width: 50%;
-    height: 100%;
+    bottom: 0;
+    width: 100%;
+    height: 70%;
     background: #fff;
     display: flex;
     align-items: center;
     color: #333;
     text-align: center;
-    padding: 36px;
+    padding: 40px 30px;
     z-index: 1;
     transition: .6s ease-in-out 0.8s, visibility 0s 1s;
 }
 
 .container.active .form-box{
-    right: 50%;
+    bottom: 30%;
 }
 
 .container.forgot-active .form-box{
-    right: 50%;
+    bottom: 30%;
 }
 
 .container.otp-active .form-box{
-    right: 50%;
+    bottom: 30%;
 }
 
 .form-box.signup{
@@ -261,30 +141,30 @@ form{
 }
 
 .container h1{
-    font-size: 34px;
-    margin: -9px 0;
+    font-size: 36px;
+    margin-bottom: 10px;
 }
 
 .container h4{
-    font-size: 11.5px;
+    font-size: 13px;
     font-weight: 400;
-    margin: 5px 0;
+    margin: 8px 0 20px 0;
     text-align: center;
 }
 
 .input-box {
     position: relative;
-    margin: 27px 0;
+    margin: 22px 0;
 } 
 
 .input-box input{
     width: 100%;
-    padding: 12px 45px 12px 18px;
+    padding: 14px 45px 14px 18px;
     background: #eee;
     border-radius: 8px;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: 15px;
     color: #333;
     font-weight: 500;
 }
@@ -303,7 +183,6 @@ form{
     color: #888;
 }
 
-/* OTP Input Styles */
 .otp-container {
     display: flex;
     justify-content: center;
@@ -368,7 +247,7 @@ form{
 }
 
 .forgot-link{
-    margin: -15px 0 15px;
+    margin: -10px 0 18px;
 }
 
 .forgot-link a{
@@ -384,13 +263,13 @@ form{
 
 .btn{
     width: 100%;
-    height: 40px;
+    height: 45px;
     background: #DC2626;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, .1);
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 17px;
     color: #fff;
     font-weight: 600;
 }
@@ -401,24 +280,24 @@ form{
 }
 
 .container p{
-    font-size: 14.5px;
-    margin: 15px 0;
+    font-size: 15px;
+    margin: 18px 0;
 }
 
 .social-icons{
     font-size: 14.5px;
-    margin: 15px 0;
+    margin: 18px 0;
 }
 
 .social-icons a{
     display: inline-flex;
-    padding: 10px;
+    padding: 12px;
     border: 2px solid #ccc;
     border-radius: 8px;
-    font-size: 24px;
+    font-size: 26px;
     color: #333;
     text-decoration: none;
-    margin: 0 8px;    
+    margin: 0 10px;    
 }
 
 .toggle-box{
@@ -430,15 +309,12 @@ form{
 .toggle-box::before {
     content: '';
     position: absolute;
-    left: -250%;
-    width: 300%;
-    height: 100%;
-    
-    background-image: linear-gradient(
-        #DC2626,
-        #991B1B
-    );
-    border-radius: 150px;
+    left: 0;
+    top: -1950px;
+    width: 100%;
+    height: 2200px;
+    border-radius: 20vw;
+    background: linear-gradient(#DC2626, #991B1B);
     z-index: 2;
     transition: 1.4s ease-in-out;
 }
@@ -446,13 +322,14 @@ form{
 .container.active .toggle-box::before,
 .container.forgot-active .toggle-box::before,
 .container.otp-active .toggle-box::before {
-    left: 50%;
+    top: 70%;
+    left: 0;
 }
 
 .toggle-panel{
     position: absolute;
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: 30%;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -463,6 +340,7 @@ form{
 }
 
 .toggle-panel.toggle-left {
+    top: 0;
     left: 0;
     transition-delay: .6s;
 }
@@ -470,18 +348,21 @@ form{
 .container.active .toggle-panel.toggle-left,
 .container.forgot-active .toggle-panel.toggle-left,
 .container.otp-active .toggle-panel.toggle-left{
-    left: -50%;
+    left: 0;
+    top: -30%;
     transition-delay: .6s;
 }
 
 .toggle-panel.toggle-right{
-    right: -50%;
+    right: 0;
+    bottom: -30%;
     transition-delay: .6s;
 }
 
 .container.active .toggle-panel.toggle-right,
 .container.forgot-active .toggle-panel.toggle-right,
 .container.otp-active .toggle-panel.toggle-right{
+    bottom: 0;
     right: 0;
     transition-delay: .6s;
 }
@@ -491,11 +372,12 @@ form{
 }
 
 .toggle-panel .btn{
-    width: 160px;
-    height: 40px;
+    width: 180px;
+    height: 45px;
     background: transparent;
     border: 2px solid #fff;
     box-shadow: none;
+    font-size: 16px;
 }
 
 .back-btn {
@@ -512,7 +394,7 @@ form{
     color: #B91C1C;
 }
 
-/* Success message styles */
+/* Success and Error Messages */
 .success-message {
     background: #d4edda;
     color: #155724;
@@ -533,215 +415,7 @@ form{
     display: none;
 }
 
-/* Mobile Navigation */
-@media screen and (max-width: 768px) {
-    .navbar {
-        padding: 15px 20px;
-    }
-    
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background: rgba(29, 29, 29, 0.95);
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        padding: 30px 0;
-        backdrop-filter: blur(10px);
-    }
-
-    .nav-menu.active {
-        left: 0;
-    }
-
-    .nav-menu li {
-        margin: 15px 0;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    .logo {
-        font-size: 15px;
-        letter-spacing: 1.5px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-    
-    .logo .logo-z {
-        font-weight: 900;
-        font-size: 20px;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
-    }
-
-    .logo-icon {
-        width: 30px;
-        height: 36px;
-        margin-right: 10px;
-    }
-
-    .logo-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        background: transparent;
-        mix-blend-mode: screen;
-    }
- 
-}
-
-@media screen and (max-width: 650px) {
-    body {
-        min-height: 100svh;
-        padding: 10px;
-        padding-top: 80px;
-    }
-    
-    .container{
-        height: 750px;
-        width: 95%;
-        max-width: 400px;
-        position: relative;
-        margin: 20px auto;
-    }
-
-    .form-box {
-        bottom: 0;
-        width: 100%;
-        height: 550px;
-        right: 0;
-        padding: 30px;
-        overflow: hidden;
-    }
-
-    .container.active .form-box,
-    .container.forgot-active .form-box,
-    .container.otp-active .form-box{
-        right: 0;
-        bottom: 200px;
-    }
-
-    .toggle-box::before{
-        left: 0;
-        top: -1950px;
-        width: 100%;
-        height: 2200px;
-        border-radius: 20vw;
-         background: #DC2626;
-    }
-
-    .container.active .toggle-box::before,
-    .container.forgot-active .toggle-box::before,
-    .container.otp-active .toggle-box::before{
-        top: 550px;
-        left: 0;
-    }
-
-      .container h4 {
-        font-weight: 300;
-        font-size: small;
-    }
-
-    .container h1 {
-        font-size: 30px;
-    }
-
-    .container p {
-        font-size: 14px;
-        margin-bottom: 5px;
-      
-    }
-
-    .toggle-panel{
-        width: 100%;
-        height: 200px;
-    }
-
-    .toggle-panel.toggle-left{
-        top: 0;
-        left: 0;
-    }
-
-    .container.active .toggle-panel.toggle-left,
-    .container.forgot-active .toggle-panel.toggle-left,
-    .container.otp-active .toggle-panel.toggle-left{
-        left: 0;
-        top: -200px;
-    }
-
-    .toggle-panel.toggle-right{
-        right: 0;
-        bottom: -200px;
-    }
-
-    .container.active .toggle-panel.toggle-right,
-    .container.forgot-active .toggle-panel.toggle-right,
-    .container.otp-active .toggle-panel.toggle-right{
-        bottom: 0;
-        right: 0;
-    }
-
-    .otp-input {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-    }
-}
-
-@media screen and (max-width: 400px){
-    .form-box{
-        padding: 20px;
-    }
-
-    .toggle-panel h1 {
-        font-size: 200px;
-    }
-    
-    .container h1{
-        font-size: 28px;
-    }
-    
-    .input-box {
-        margin: 20px 0;
-    }
-
-    .logo {
-        font-size: 13px;
-        letter-spacing: 1px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-    
-    .logo .logo-z {
-        font-weight: 900;
-        font-size: 28px;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
-    }
-
-    .logo-icon {
-        width: 32px;
-        height: 32px;
-        margin-right: 8px;
-    }
-
-    .logo-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        background: transparent;
-        mix-blend-mode: screen;
-    }
-
-    .otp-input {
-        width: 35px;
-        height: 35px;
-        font-size: 14px;
-    }
-
-    
-}
-
+/* Modal Error Overlay */
 .modal-error-overlay {
     position: fixed;
     top: 0;
@@ -776,7 +450,7 @@ form{
     max-width: 450px;
     text-align: left;
     color: #2c3e50;
-    border: 2px solidrgb(#991B1B);
+    border: 2px solid #991B1B;
     box-shadow: 
         0 20px 60px rgba(220, 38, 38, 0.15),
         0 8px 25px rgba(0, 0, 0, 0.1),
@@ -824,7 +498,7 @@ form{
 }
 
 .modal-error-content h3::before {
-    content: 'âš ';
+    content: '⚠';
     font-size: 28px;
     animation: pulse 2s infinite;
 }
@@ -859,7 +533,7 @@ form{
 }
 
 .modal-error-content ul li::before {
-    content: 'ðŸ›‘';
+    content: '🛑';
     position: absolute;
     left: 15px;
     top: 50%;
@@ -870,11 +544,9 @@ form{
     width: 18px;
     height: 18px;
     background: rgba(220, 38, 38, 0.15);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .close-error-btn {
@@ -905,12 +577,11 @@ form{
 }
 
 .close-error-btn::before {
-    content: '';
+    content: '×';
     font-size: 20px;
     line-height: 1;
 }
 
-/* Add a subtle glow effect */
 .modal-error-content {
     animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
                subtleGlow 4s ease-in-out infinite alternate;
@@ -931,58 +602,7 @@ form{
     }
 }
 
-/* Mobile responsiveness */
-@media screen and (max-width: 480px) {
-    .modal-error-content {
-        width: 95%;
-        padding: 30px 25px 25px;
-        border-radius: 16px;
-        max-width: none;
-        margin: 20px;
-    }
-    
-    .modal-error-content h3 {
-        font-size: 20px;
-        margin-bottom: 18px;
-    }
-    
-    .modal-error-content ul li {
-        font-size: 14px;
-        padding: 6px 0 6px 40px;
-        padding-right: 12px;
-    }
-    
-    .close-error-btn {
-        width: 30px;
-        height: 30px;
-        top: 12px;
-        right: 15px;
-        font-size: 16px;
-    }
-}
-
-/* Dark mode support (optional) */
-@media (prefers-color-scheme: dark) {
-    .modal-error-overlay {
-        background: rgba(0, 0, 0, 0.9);
-    }
-    
-    .modal-error-content {
-        background: linear-gradient(145deg, #2c3e50 0%, #34495e 100%);
-        color:rgb(255, 255, 255);
-        border-color: #DC2626;
-    }
-    
-    .modal-error-content ul li {
-        background: rgba(231, 77, 60, 0.53);
-    }
-    
-    .modal-error-content ul li:hover {
-        background: rgba(220, 38, 38, 0.2);
-    }
-}
-
-/* Loading Screen Styles */
+/* Loading Screen */
 #loading-screen {
     position: fixed;
     top: 0;
@@ -1057,10 +677,10 @@ form{
     color: #333;
     font-weight: 600;
     margin-bottom: 20px;
-    animation: pulse 2s ease-in-out infinite;
+    animation: loadingPulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
+@keyframes loadingPulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
 }
@@ -1076,13 +696,13 @@ form{
     height: 12px;
     background: #DC2626;
     border-radius: 50%;
-    animation: bounce 1.4s ease-in-out infinite both;
+    animation: dotBounce 1.4s ease-in-out infinite both;
 }
 
 .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
 .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
 
-@keyframes bounce {
+@keyframes dotBounce {
     0%, 80%, 100% {
         transform: scale(0);
         opacity: 0.5;
@@ -1093,7 +713,7 @@ form{
     }
 }
 
-/* OTP Modal Overlay */
+/* OTP Modal */
 .otp-modal-overlay {
     position: fixed;
     top: 0;
@@ -1109,18 +729,6 @@ form{
     animation: fadeInOverlay 0.3s ease-out;
 }
 
-@keyframes fadeInOverlay {
-    from {
-        opacity: 0;
-        backdrop-filter: blur(0px);
-    }
-    to {
-        opacity: 1;
-        backdrop-filter: blur(8px);
-    }
-}
-
-/* OTP Modal Content */
 .otp-modal-content {
     background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
     padding: 40px 35px 35px;
@@ -1140,13 +748,6 @@ form{
     animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
-@keyframes popIn {
-    to {
-        transform: scale(1);
-    }
-}
-
-/* Animated border effect */
 .otp-modal-content::before {
     content: '';
     position: absolute;
@@ -1161,12 +762,6 @@ form{
     animation: gradientShift 3s ease infinite;
 }
 
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-/* OTP Modal Header */
 .otp-modal-content h2 {
     margin-bottom: 15px;
     color: #2c3e50;
@@ -1180,23 +775,14 @@ form{
 }
 
 .otp-modal-content h2::before {
-    content: 'ðŸ“§';
+    content: '📧';
     font-size: 32px;
-    animation: bounce 2s infinite;
+    animation: emailBounce 2s infinite;
 }
 
-@keyframes bounce {
+@keyframes emailBounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
-}
-
-/* OTP Instruction Text */
-.otp-instruction {
-    font-size: 15px;
-    color: #555;
-    font-weight: 400;
-    margin-bottom: 25px;
-    line-height: 1.5;
 }
 
 .otp-instruction span {
@@ -1204,105 +790,6 @@ form{
     font-weight: 600;
 }
 
-/* OTP Input Container */
-.otp-container {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin: 25px 0;
-}
-
-/* OTP Input Fields */
-.otp-input {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 700;
-    color: #333;
-    background: #f9f9f9;
-    outline: none;
-    transition: all 0.3s ease;
-    font-family: 'Poppins', sans-serif;
-}
-
-.otp-input:focus {
-    border-color: #DC2626;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
-    transform: scale(1.05);
-}
-
-.otp-input.filled {
-    background: linear-gradient(145deg, #DC2626, #B91C1C);
-    color: white;
-    border-color: #DC2626;
-    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
-}
-
-.otp-input:invalid {
-    border-color: #DC2626;
-    background: #ffeaea;
-}
-
-/* OTP Timer */
-.otp-timer {
-    font-size: 14px;
-    color: #666;
-    margin: 15px 0;
-    font-weight: 500;
-}
-
-#countdown {
-    color: #DC2626;
-    font-weight: 700;
-}
-
-/* Resend Link */
-.resend-link {
-    color: #DC2626;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
-    position: relative;
-}
-
-.resend-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -2px;
-    left: 0;
-    background: #DC2626;
-    transition: width 0.3s ease;
-}
-
-.resend-link:hover {
-    color: #B91C1C;
-    transform: translateY(-1px);
-}
-
-.resend-link:hover::after {
-    width: 100%;
-}
-
-.resend-link.disabled {
-    color: #ccc;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.resend-link.disabled:hover::after {
-    width: 0;
-}
-
-/* OTP Verify Button */
 .otp-verify-btn {
     width: 100%;
     height: 45px;
@@ -1353,7 +840,6 @@ form{
     box-shadow: none;
 }
 
-/* OTP Error and Success Messages */
 .otp-error {
     background: linear-gradient(145deg, #f8d7da, #f5c6cb);
     color: #721c24;
@@ -1368,7 +854,7 @@ form{
 }
 
 .otp-error::before {
-    content: 'âœ–';
+    content: '✖';
     margin-right: 8px;
 }
 
@@ -1386,7 +872,7 @@ form{
 }
 
 .otp-success::before {
-    content: 'âœ…';
+    content: '✓';
     margin-right: 8px;
 }
 
@@ -1401,7 +887,6 @@ form{
     }
 }
 
-/* Close Button */
 .otp-close-btn {
     position: absolute;
     top: 15px;
@@ -1430,80 +915,308 @@ form{
 }
 
 .otp-close-btn::before {
-    content: 'Ã—';
+    content: '×';
     font-size: 20px;
     line-height: 1;
 }
 
-/* Subtle glow effect */
-.otp-modal-content {
-    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
-               subtleGlow 4s ease-in-out infinite alternate;
+/* Custom Modal */
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-@keyframes subtleGlow {
+.custom-modal.fade-in {
+    opacity: 1;
+}
+
+.custom-modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: modalSlideIn 0.5s ease-out;
+}
+
+@keyframes modalSlideIn {
     from {
-        box-shadow: 
-            0 20px 60px rgba(220, 38, 38, 0.15),
-            0 8px 25px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        transform: translateY(-50px);
+        opacity: 0;
     }
     to {
-        box-shadow: 
-            0 20px 60px rgba(220, 38, 38, 0.25),
-            0 8px 25px rgba(0, 0, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 
-/* Mobile Responsive Design */
-@media screen and (max-width: 768px) {
-    .otp-modal-content {
+.custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.custom-modal-header h5 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.close-btn {
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.custom-modal-body {
+    font-size: 16px;
+    color: #555;
+    margin-top: 20px;
+    line-height: 1.5;
+}
+
+.custom-modal-footer {
+    margin-top: 30px;
+}
+
+.custom-btn {
+    padding: 12px 30px;
+    font-size: 18px;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.custom-btn:focus {
+    outline: none;
+}
+
+/* Desktop styles - Show navbar */
+@media screen and (min-width: 769px) {
+    body {
+        padding: 20px;
+        padding-top: 80px;
+    }
+
+    .navbar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px 50px;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 800;
+        color: #DC2626;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-family: 'LHF Ascribe', 'Cinzel', 'Times New Roman', serif;
+        letter-spacing: 2px;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        font-style: normal;
+        transform: skewX(-5deg);
+    }
+
+    .logo .logo-z {
+        font-weight: 900;
+        font-size: 25px;
+        text-shadow: 4px 4px 8px rgba(0,0,0,0.7);
+        font-family: 'LHF Ascribe', 'Cinzel', 'Times New Roman', serif;
+    }
+
+    .logo:hover {
+        transform: scale(1.05) skewX(-5deg);
+        color: #B91C1C;
+    }
+
+    .logo-icon {
+        width: 42px;
+        height: 42px;
+        margin-right: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .logo:hover .logo-icon {
+        transform: rotate(10deg);
+    }
+
+    .logo-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: transparent;
+        mix-blend-mode: screen;
+    }
+
+    .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    .nav-menu li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    .nav-menu li a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background: #DC2626;
+        transition: width 0.3s ease;
+    }
+
+    .nav-menu li a:hover {
+        color: #DC2626;
+    }
+
+    .nav-menu li a:hover::after {
+        width: 100%;
+    }
+
+    .container {
+        width: 765px;
+        height: 495px;
+        border-radius: 30px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, .2);
+    }
+
+    .form-box{
+        right: 0;
+        width: 50%;
+        height: 100%;
+        padding: 36px;
+        bottom: auto;
+    }
+
+    .container.active .form-box,
+    .container.forgot-active .form-box,
+    .container.otp-active .form-box{
+        right: 50%;
+        bottom: 0;
+    }
+
+    .toggle-box::before {
+        left: -250%;
+        top: 0;
+        width: 300%;
+        height: 100%;
+        border-radius: 150px;
+    }
+
+    .container.active .toggle-box::before,
+    .container.forgot-active .toggle-box::before,
+    .container.otp-active .toggle-box::before {
+        left: 50%;
+        top: 0;
+    }
+
+    .toggle-panel{
+        width: 50%;
+        height: 100%;
+    }
+
+    .toggle-panel.toggle-left {
+        left: 0;
+        top: 0;
+    }
+
+    .container.active .toggle-panel.toggle-left,
+    .container.forgot-active .toggle-panel.toggle-left,
+    .container.otp-active .toggle-panel.toggle-left{
+        left: -50%;
+        top: 0;
+    }
+
+    .toggle-panel.toggle-right{
+        right: -50%;
+        bottom: 0;
+    }
+
+    .container.active .toggle-panel.toggle-right,
+    .container.forgot-active .toggle-panel.toggle-right,
+    .container.otp-active .toggle-panel.toggle-right{
+        right: 0;
+        bottom: 0;
+    }
+}
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 480px) {
+    .modal-error-content,
+    .custom-modal-content {
         width: 95%;
-        padding: 35px 25px 30px;
+        padding: 30px 25px 25px;
         border-radius: 16px;
         max-width: none;
         margin: 20px;
     }
     
-    .otp-modal-content h2 {
-        font-size: 24px;
-        margin-bottom: 12px;
+    .modal-error-content h3 {
+        font-size: 20px;
+        margin-bottom: 18px;
     }
     
-    .otp-instruction {
+    .modal-error-content ul li {
         font-size: 14px;
-        margin-bottom: 20px;
+        padding: 6px 0 6px 40px;
+        padding-right: 12px;
     }
     
-    .otp-container {
-        gap: 8px;
-        margin: 20px 0;
-    }
-    
-    .otp-input {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
-        border-radius: 10px;
-    }
-    
-    .otp-verify-btn {
-        height: 42px;
-        font-size: 15px;
-        margin: 18px 0 12px 0;
-    }
-    
-    .otp-close-btn {
-        width: 32px;
-        height: 32px;
+    .close-error-btn {
+        width: 30px;
+        height: 30px;
         top: 12px;
         right: 15px;
         font-size: 16px;
     }
-}
 
-@media screen and (max-width: 480px) {
     .otp-modal-content {
         padding: 30px 20px 25px;
         border-radius: 12px;
@@ -1559,117 +1272,10 @@ form{
         border-radius: 6px;
     }
 }
-
-    /* The modal background overlay */
-    .custom-modal {
-        display: none; /* Initially hidden */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6); /* Darker background */
-        justify-content: center; /* Horizontally center the modal */
-        align-items: center; /* Vertically center the modal */
-        z-index: 9999;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .custom-modal.fade-in {
-        opacity: 1;
-    }
-
-    /* Modal content box */
-    .custom-modal-content {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        width: 100%;
-        max-width: 450px; /* Set max width to make the modal look elegant */
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for a "floating" effect */
-        animation: slideIn 0.5s ease-out;
-    }
-
-    /* Slide-in animation for the modal */
-    @keyframes slideIn {
-        from {
-            transform: translateY(-50px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    /* Modal header styling */
-    .custom-modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #eee;
-    }
-
-    .custom-modal-header h5 {
-        margin: 0;
-        font-size: 20px;
-        color: #333;
-        font-weight: bold;
-    }
-
-    /* Close button (X) */
-    .close-btn {
-        font-size: 24px;
-        color: #aaa;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .close-btn:hover {
-        color: #333;
-    }
-
-    /* Modal body styling */
-    .custom-modal-body {
-        font-size: 16px;
-        color: #555;
-        margin-top: 20px;
-        line-height: 1.5;
-    }
-
-    /* Footer styling */
-    .custom-modal-footer {
-        margin-top: 30px;
-    }
-
-    /* "Okay" button styling */
-    .custom-btn {
-        padding: 12px 30px;
-        font-size: 18px;
-        color: white;
-        background-color: #4CAF50; /* Green color */
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-
-    /* Button hover effect */
-    .custom-btn:hover {
-        background-color: #45a049; /* Darker green */
-        transform: scale(1.05); /* Slight scale-up effect */
-    }
-
-    .custom-btn:focus {
-        outline: none;
-    }
 </style>
 
 <body>
-  <!-- Navigation Bar -->
+  <!-- Navigation Bar (Hidden on mobile, shown on desktop) -->
     <nav class="navbar">
         <a href="#" class="logo">
             <div class="logo-icon">
@@ -1680,11 +1286,6 @@ form{
         <ul class="nav-menu">
             <li><a href="index.php"><i class="fas fa-home"></i> Home</a></li>
         </ul>
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
     </nav>
 
     <!-- Error Modal -->
@@ -1718,10 +1319,7 @@ form{
             </div>
         </div>
     </div>
-    <?php
-    // Clear the session message after displaying the modal
-    unset($_SESSION['verification_success']);
-    ?>
+    <?php unset($_SESSION['verification_success']); ?>
     <?php endif; ?>
 
     <!-- Reset Success Modal -->
@@ -1740,9 +1338,7 @@ form{
             </div>
         </div>
     </div>
-    <?php
-    unset($_SESSION['reset_success']);
-    ?>
+    <?php unset($_SESSION['reset_success']); ?>
     <?php endif; ?>
 
     <!-- Forgot Password Success Modal -->
@@ -1780,14 +1376,12 @@ form{
             <h2>Verify Your Email</h2>
             <p class="otp-instruction">We've sent a 6-digit verification code to <span id="userEmail"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?></span></p>
             
-            <!-- Show success messages -->
             <?php if(isset($_SESSION['info'])): ?>
                 <div class="otp-success" style="display: block;">
                     <?php echo $_SESSION['info']; unset($_SESSION['info']); ?>
                 </div>
             <?php endif; ?>
             
-            <!-- Show OTP errors here -->
             <?php if(isset($errors['otp-error'])): ?>
                 <div class="otp-error" style="display: block;">
                     <?php echo $errors['otp-error']; ?>
@@ -1814,7 +1408,6 @@ form{
                 <button type="submit" name="check" class="btn otp-verify-btn" id="verifyBtn" disabled>Verify OTP</button>
             </form>
             
-            <!-- Separate form for resend OTP -->
             <form id="resendForm" method="POST" action="" style="display: inline;">
                 <button type="submit" name="resend-otp" class="resend-link disabled" id="resendOtp">Resend OTP</button>
             </form>
@@ -1895,7 +1488,6 @@ form{
                 <h1>Reset Password</h1>
                 <h4>Enter your email address and we'll send you a link to reset your password</h4>
                 
-                <!-- Show forgot password errors -->
                 <?php if(isset($errors['forgot-error'])): ?>
                     <div class="error-message" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc3545;">
                         <i class="bx bx-error-circle"></i>
@@ -1932,7 +1524,6 @@ form{
     </div>
 
     <script>
-        // Show modals based on PHP conditions
         <?php if(isset($_SESSION['verification_success'])): ?>
             window.onload = function() {
                 document.getElementById('successModal').style.display = 'flex';
@@ -1961,9 +1552,7 @@ form{
             <?php unset($_SESSION['show_otp_modal']); ?>
         <?php endif; ?>
 
-        // Modal close handlers
         document.addEventListener('DOMContentLoaded', function() {
-            // Success modal handlers
             const successModal = document.getElementById('successModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const closeModal = document.getElementById('closeModal');
@@ -1986,7 +1575,6 @@ form{
                 });
             }
 
-            // Reset success modal handlers
             const resetModal = document.getElementById('resetSuccessModal');
             const closeResetBtn = document.getElementById('closeResetModalBtn');
             const closeResetX = document.getElementById('closeResetModal');
@@ -2003,7 +1591,6 @@ form{
                 });
             }
 
-            // Forgot password success modal handlers
             const forgotModal = document.getElementById('forgotSuccessModal');
             const closeForgotBtn = document.getElementById('closeForgotModalBtn');
             const closeForgotX = document.getElementById('closeForgotModal');
@@ -2020,7 +1607,6 @@ form{
                 });
             }
 
-            // Loading screen for signup
             const form = document.querySelector(".form-box.signup form");
             const loadingScreen = document.getElementById("loading-screen");
             
@@ -2031,13 +1617,11 @@ form{
             }
         });
 
-        // Close error modal function
         function closeErrorModal() {
             const modal = document.getElementById("errorModal");
             if (modal) modal.style.display = "none";
         }
 
-        // Show OTP modal function
         function showOTPModal() {
             const modal = document.getElementById("otpModal");
             if (modal) {
@@ -2046,7 +1630,6 @@ form{
             }
         }
 
-        // Hide OTP modal function
         function hideOTPModal() {
             const modal = document.getElementById("otpModal");
             if (modal) modal.style.display = "none";
@@ -2054,31 +1637,12 @@ form{
     </script>
     
     <script>
-        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function () {
             const container = document.querySelector('.container');
             const signupBtn = document.querySelector('.signup-btn');
             const signinBtn = document.querySelector('.signin-btn');
             const forgotPasswordLink = document.querySelector('.forgot-password-link');
-            const hamburger = document.querySelector('.hamburger');
-            const navMenu = document.querySelector('.nav-menu');
 
-            // Hamburger menu toggle
-            if (hamburger && navMenu) {
-                hamburger.addEventListener('click', () => {
-                    hamburger.classList.toggle('active');
-                    navMenu.classList.toggle('active');             
-                });
-
-                document.querySelectorAll('.nav-menu li a').forEach(link => {
-                    link.addEventListener('click', function () {
-                        hamburger.classList.remove('active');
-                        navMenu.classList.remove('active');
-                    });
-                });
-            }
-
-            // Form toggles
             if (signupBtn) {
                 signupBtn.addEventListener('click', () => {
                     container.classList.remove('forgot-active');
@@ -2100,23 +1664,20 @@ form{
                 });
             }
 
-            // Initialize OTP modal
             initializeOTPModal();
 
-            // Start countdown if OTP modal is visible and not yet expired
             const otpModal = document.getElementById('otpModal');
             const expiry = localStorage.getItem('otp_expiry');
             if (otpModal && otpModal.style.display !== 'none' && expiry) {
                 const now = Date.now();
                 if (now < parseInt(expiry)) {
-                    startCountdown(); // Resume countdown
+                    startCountdown();
                 } else {
                     localStorage.removeItem('otp_expiry');
                 }
             }
         });
 
-        // OTP Modal Logic
         function initializeOTPModal() {
             const otpInputs = document.querySelectorAll('.otp-input');
             const verifyBtn = document.getElementById('verifyBtn');
@@ -2190,7 +1751,6 @@ form{
             }
         }
 
-        // Countdown timer
         let countdownInterval;
 
         function startCountdown() {
@@ -2229,7 +1789,7 @@ form{
                 }
             }
 
-            updateCountdown(); // first run
+            updateCountdown();
             countdownInterval = setInterval(updateCountdown, 1000);
 
             if (resendBtn) {
@@ -2239,7 +1799,6 @@ form{
             }
         }
 
-        // Resend OTP
         function resendOTP() {
             const resendBtn = document.getElementById('resendOtp');
             showLoadingState(resendBtn, 'Sending...');
@@ -2255,7 +1814,7 @@ form{
                     if (data.success) {
                         showOTPMessage(data.message, 'success');
                         clearOTPInputs();
-                        localStorage.setItem('otp_expiry', Date.now() + 60000); // reset timer
+                        localStorage.setItem('otp_expiry', Date.now() + 60000);
                         startCountdown();
                     } else {
                         showOTPMessage(data.message, 'error');
@@ -2267,7 +1826,6 @@ form{
                 });
         }
 
-        // Utility Functions
         function showLoadingState(element, loadingText = 'Loading...') {
             if (element) {
                 element.disabled = true;
