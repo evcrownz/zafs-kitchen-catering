@@ -102,7 +102,7 @@ body::before {
 }
 
 .container.active .form-box{
-    bottom: 40%;
+    bottom: 33%;
 }
 
 .container.forgot-active .form-box{
