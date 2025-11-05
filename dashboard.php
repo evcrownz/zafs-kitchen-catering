@@ -4498,7 +4498,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <h4 class="text-lg font-semibold text-gray-800">Next Event</h4>
+                            <h4 class="text-lg font-semibold text-gray-800">Your Event</h4>
                         </div>
                         <div class="grid md:grid-cols-2 gap-4">
                             <div>
@@ -6342,7 +6342,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 priceRange: "₱23,000 - ₱50,000",
                 description: "Perfect for intimate celebrations with complete buffet setup and themed decorations.",
                 
-                catering: ["Rice tngaaaaaaaaaaaaaaaaa", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
+                catering: ["Rice", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
                 
                 inclusions: ["Styro Name", "Celebrant Chair", "Themed Backdrop Design", "Cake Table", "Souvenir Rack"],
                 
@@ -6793,7 +6793,7 @@ function openMenuModal(packageType) {
 
     // Generate guest selection checkboxes
     generateGuestSelection(packageType, packageData.rates);
-    
+
     // Reset book button
     resetBookButton();
 

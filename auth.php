@@ -102,7 +102,7 @@ body::before {
 }
 
 .container.active .form-box{
-    bottom: 33%;
+    bottom: 40%;
 }
 
 .container.forgot-active .form-box{
@@ -1654,7 +1654,7 @@ form{
         <!-- Sign In Form -->
         <div class="form-box signin">
             <form action="" id="signinForm" method="POST" autocomplete="">
-                <h1>Signin</h1>
+                <h1>Sign in</h1>
                     
                 <div class="input-box">
                     <input type="email" name="email" placeholder="Email" required value="<?php echo htmlspecialchars($email); ?>">
@@ -1682,7 +1682,7 @@ form{
         <!-- Sign Up Form -->
         <div class="form-box signup">
             <form action="" method="POST" autocomplete="">
-                <h1>Signup</h1>
+                <h1>Sign up</h1>
 
                 <div class="input-box">
                     <input type="text" name="name" placeholder="Full name" required value="<?php echo htmlspecialchars($name); ?>">
