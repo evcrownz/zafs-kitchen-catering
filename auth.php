@@ -377,7 +377,7 @@ form{
 .container.active .toggle-panel.toggle-right,
 .container.forgot-active .toggle-panel.toggle-right,
 .container.otp-active .toggle-panel.toggle-right{
-    bottom: 0;
+    bottom: 40px;
     right: 0;
     transition-delay: .6s;
 }
