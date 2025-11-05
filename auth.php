@@ -102,7 +102,7 @@ body::before {
 }
 
 .container.active .form-box{
-    bottom: 30%;
+    bottom: 33%;
 }
 
 .container.forgot-active .form-box{
@@ -595,7 +595,7 @@ form{
 }
 
 .close-error-btn::before {
-    content: '×';
+    content: '';
     font-size: 20px;
     line-height: 1;
 }
