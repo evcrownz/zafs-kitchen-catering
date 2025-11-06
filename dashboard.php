@@ -1,11 +1,17 @@
 <?php
+// Prevent caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 session_start();
 require_once 'connection.php';
 
 // ✅ CHECK IF USER IS LOGGED IN
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
-    // User is not logged in, redirect to auth.php
-    header('Location: auth.php');
+    // Clear any cached data
+    session_destroy();
+    header("Location: auth.php");
     exit();
 }
 
@@ -9992,11 +9998,7 @@ if (nextStep2) {
         // Check expiration every hour while page is open
         setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour
             
-// Clear localStorage when landing on auth page
-window.addEventListener('load', function() {
-    localStorage.clear();
-    sessionStorage.clear();
-});
+
 </script>
 </body>
 </html>

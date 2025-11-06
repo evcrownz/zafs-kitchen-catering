@@ -1,16 +1,26 @@
 <?php
+// Start session
 session_start();
 
 // Destroy all session data
 $_SESSION = array();
 
 // Destroy the session cookie
-if (isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time() - 3600, '/');
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
 }
 
 // Destroy the session
 session_destroy();
+
+// Prevent caching
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 ?>
 <!DOCTYPE html>
 <html>
@@ -63,31 +73,35 @@ session_destroy();
     </div>
     
     <script>
-        // CRITICAL: Clear ALL browser storage
-        try {
-            localStorage.clear();
-            sessionStorage.clear();
-            
-            // Specifically remove known keys as backup
-            localStorage.removeItem('currentSection');
-            localStorage.removeItem('bookingFormData');
-            
-            console.log('All storage cleared successfully');
-        } catch (e) {
-            console.error('Storage clear error:', e);
-        }
+        // CRITICAL: Clear ALL browser storage IMMEDIATELY
+        (function() {
+            try {
+                // Clear all storage
+                localStorage.clear();
+                sessionStorage.clear();
+                
+                // Clear specific keys as backup
+                ['currentSection', 'bookingFormData', 'user_id', 'email', 'name'].forEach(key => {
+                    localStorage.removeItem(key);
+                    sessionStorage.removeItem(key);
+                });
+                
+                console.log('All storage cleared');
+            } catch (e) {
+                console.error('Storage clear error:', e);
+            }
+        })();
         
-        // Redirect after ensuring storage is cleared
-        setTimeout(function() {
-            // Force reload to prevent cache
-            window.location.replace('auth.php');
-        }, 500);
-        
-        // Prevent back button from returning to dashboard
-        window.history.pushState(null, '', window.location.href);
+        // Prevent back button immediately
+        history.pushState(null, '', location.href);
         window.addEventListener('popstate', function() {
-            window.history.pushState(null, '', window.location.href);
+            history.pushState(null, '', location.href);
         });
+        
+        // Force redirect with location.replace (no history)
+        setTimeout(function() {
+            window.location.replace('auth.php?logout=1');
+        }, 800);
     </script>
 </body>
 </html>
