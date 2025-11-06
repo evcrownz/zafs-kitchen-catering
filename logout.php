@@ -11,13 +11,12 @@ if (isset($_COOKIE[session_name()])) {
 
 // Destroy the session
 session_destroy();
-
-// Add HTML with JavaScript to clear localStorage before redirect
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signing out...</title>
     <style>
         body {
@@ -25,9 +24,10 @@ session_destroy();
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
             background: linear-gradient(135deg, #DC2626, #991B1B);
             color: white;
+            margin: 0;
         }
         .logout-message {
             text-align: center;
@@ -45,6 +45,14 @@ session_destroy();
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        h2 {
+            margin: 10px 0;
+            font-size: 24px;
+        }
+        p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -55,20 +63,31 @@ session_destroy();
     </div>
     
     <script>
-        // Clear ALL localStorage items
-        localStorage.clear();
+        // CRITICAL: Clear ALL browser storage
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Specifically remove known keys as backup
+            localStorage.removeItem('currentSection');
+            localStorage.removeItem('bookingFormData');
+            
+            console.log('All storage cleared successfully');
+        } catch (e) {
+            console.error('Storage clear error:', e);
+        }
         
-        // Also specifically remove known keys as backup
-        localStorage.removeItem('currentSection');
-        localStorage.removeItem('bookingFormData');
-        
-        // Clear sessionStorage as well
-        sessionStorage.clear();
-        
-        // Redirect after clearing
+        // Redirect after ensuring storage is cleared
         setTimeout(function() {
-            window.location.href = 'auth.php';
+            // Force reload to prevent cache
+            window.location.replace('auth.php');
         }, 500);
+        
+        // Prevent back button from returning to dashboard
+        window.history.pushState(null, '', window.location.href);
+        window.addEventListener('popstate', function() {
+            window.history.pushState(null, '', window.location.href);
+        });
     </script>
 </body>
 </html>
