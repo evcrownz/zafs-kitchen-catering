@@ -9992,6 +9992,11 @@ if (nextStep2) {
         // Check expiration every hour while page is open
         setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour
             
+// Clear localStorage when landing on auth page
+window.addEventListener('load', function() {
+    localStorage.clear();
+    sessionStorage.clear();
+});
 </script>
 </body>
 </html>
