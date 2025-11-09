@@ -1276,7 +1276,7 @@
           </svg>
         </a>
       </div>
-      <p class="text-white/60 text-sm mt-6">© 2024 Zaf's Kitchen. All rights reserved.</p>
+      <p class="text-white/60 text-sm mt-6">© 2020 Zaf's Kitchen. All rights reserved.</p>
     </div>
   </div>
 </footer>
