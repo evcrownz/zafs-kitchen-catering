@@ -1607,6 +1607,33 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
    PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
    ============================================ */
 
+   /* Force proper grid behavior on mobile */
+@media (max-width: 768px) {
+    #section-dashboard .grid-cols-2 {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    
+    /* Ensure cards don't overflow */
+    #section-dashboard .grid-cols-2 > * {
+        min-width: 0;
+        max-width: 100%;
+    }
+    
+    /* Prevent any margin/padding issues */
+    #section-dashboard {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+}
+
+/* Hover effects only on desktop */
+@media (hover: hover) {
+    #section-dashboard .hover\:scale-105:hover {
+        transform: scale(1.05);
+    }
+}
+
 @media (max-width: 768px) {
     /* ========== GLOBAL MOBILE ADJUSTMENTS ========== */
     * {
@@ -3295,6 +3322,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         content-visibility: auto;
     }
 }
+
+
             </style>
             </head>
             <body class="bg-gray-100">
@@ -3350,20 +3379,212 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             </aside>
 
             <main class="lg:ml-64 p-6 lg:p-10 pt-16 lg:pt-10 min-h-screen">
-                <!-- Dashboard -->
-                <section id="section-dashboard">
-                    <h2 class="text-3xl font-bold mb-2">Welcome to Zaf's Kitchen Dashboard</h2>
-                    <div class="w-full h-0.5 bg-gray-400 mb-6"></div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="text-center p-4" style="width: 380px;">
-                            <img 
-                                src="dashboard/calendar.png" 
-                                alt="Book Now" 
-                                class="w-[650px] h-[350px] object-cover rounded-[10px] mb-3 transform transition-transform duration-500 ease-in-out hover:scale-105 border border-gray-400"
-                                style="box-shadow: 8px 8px 15px rgba(0,0,0,0.3);">
-                        </div>
+
+
+<!-- Enhanced Mobile-Friendly Dashboard Section -->
+<section id="section-dashboard" class="px-2 md:px-4">
+    <div class="mb-8">
+        <!-- Welcome Header with Animation -->
+        <div class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] rounded-xl shadow-lg p-4 md:p-8 mb-4 md:mb-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl md:text-3xl font-bold mb-1 md:mb-2">Welcome back, <span id="dashboard-user-name"><?php echo htmlspecialchars($_SESSION['name'] ?? 'User'); ?></span>!</h2>
+                    <p class="text-xs md:text-lg opacity-90">Let's make your next event unforgettable</p>
+                </div>
+                <div class="hidden md:block">
+                    <img src="logo/logo-border.png" alt="Zaf's Kitchen" class="w-20 h-20 md:w-24 md:h-24 animate-pulse">
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Statistics Cards - SUPER COMPACT MOBILE -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mb-4 md:mb-6">
+            <!-- Total Bookings -->
+            <div class="bg-white rounded-lg shadow-md p-2 md:p-6 border-l-4 border-blue-500">
+                <div class="flex flex-col items-center justify-center text-center min-h-[100px] md:min-h-0">
+                    <div class="bg-blue-100 p-2 md:p-4 rounded-full mb-1 md:mb-2">
+                        <i class="fas fa-calendar-check text-blue-600 text-sm md:text-2xl"></i>
                     </div>
-                </section>
+                    <p class="text-[10px] md:text-sm text-gray-600 mb-0.5 md:mb-1">Total</p>
+                    <p class="text-lg md:text-3xl font-bold text-blue-600" id="dashboard-total-bookings">0</p>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="bg-white rounded-lg shadow-md p-2 md:p-6 border-l-4 border-purple-500 cursor-pointer" onclick="navigateToMyBookings()">
+                <div class="flex flex-col items-center justify-center text-center min-h-[100px] md:min-h-0">
+                    <div class="bg-purple-100 p-2 md:p-4 rounded-full mb-1 md:mb-2">
+                        <i class="fas fa-calendar-day text-purple-600 text-sm md:text-2xl"></i>
+                    </div>
+                    <p class="text-[10px] md:text-sm text-gray-600 mb-0.5 md:mb-1">Upcoming</p>
+                    <p class="text-lg md:text-3xl font-bold text-purple-600" id="dashboard-upcoming-events">0</p>
+                </div>
+            </div>
+
+            <!-- Pending -->
+            <div class="bg-white rounded-lg shadow-md p-2 md:p-6 border-l-4 border-yellow-500">
+                <div class="flex flex-col items-center justify-center text-center min-h-[100px] md:min-h-0">
+                    <div class="bg-yellow-100 p-2 md:p-4 rounded-full mb-1 md:mb-2">
+                        <i class="fas fa-clock text-yellow-600 text-sm md:text-2xl"></i>
+                    </div>
+                    <p class="text-[10px] md:text-sm text-gray-600 mb-0.5 md:mb-1">Pending</p>
+                    <p class="text-lg md:text-3xl font-bold text-yellow-600" id="dashboard-pending-bookings">0</p>
+                </div>
+            </div>
+
+            <!-- Total Spent -->
+            <div class="bg-white rounded-lg shadow-md p-2 md:p-6 border-l-4 border-green-500">
+                <div class="flex flex-col items-center justify-center text-center min-h-[100px] md:min-h-0">
+                    <div class="bg-green-100 p-2 md:p-4 rounded-full mb-1 md:mb-2">
+                        <i class="fas fa-peso-sign text-green-600 text-sm md:text-2xl"></i>
+                    </div>
+                    <p class="text-[10px] md:text-sm text-gray-600 mb-0.5 md:mb-1">Spent</p>
+                    <p class="text-sm md:text-2xl font-bold text-green-600" id="dashboard-total-spent">₱0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions - SUPER COMPACT MOBILE -->
+        <div class="bg-white rounded-lg shadow-lg p-3 md:p-6 mb-4 md:mb-6">
+            <h3 class="text-base md:text-xl font-bold mb-3 md:mb-4 flex items-center gap-2">
+                <i class="fas fa-bolt text-[#DC2626] text-sm md:text-base"></i>
+                Quick Actions
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                <!-- New Booking -->
+                <button onclick="navigateToBookNow()" class="flex flex-col items-center justify-center gap-1 md:gap-2 p-3 md:p-4 bg-gradient-to-r from-[#DC2626] to-[#B91C1C] text-white rounded-lg hover:opacity-90 transition-all min-h-[80px] md:min-h-0">
+                    <i class="fas fa-plus-circle text-lg md:text-2xl"></i>
+                    <div class="text-center">
+                        <div class="font-semibold text-xs md:text-base">New Booking</div>
+                    </div>
+                </button>
+
+                <!-- My Bookings -->
+                <button onclick="navigateToMyBookings()" class="flex flex-col items-center justify-center gap-1 md:gap-2 p-3 md:p-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:opacity-90 transition-all min-h-[80px] md:min-h-0">
+                    <i class="fas fa-list text-lg md:text-2xl"></i>
+                    <div class="text-center">
+                        <div class="font-semibold text-xs md:text-base">My Bookings</div>
+                    </div>
+                </button>
+
+                <!-- Check Schedule -->
+                <button onclick="navigateToSchedule()" class="flex flex-col items-center justify-center gap-1 md:gap-2 p-3 md:p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:opacity-90 transition-all min-h-[80px] md:min-h-0">
+                    <i class="fas fa-calendar text-lg md:text-2xl"></i>
+                    <div class="text-center">
+                        <div class="font-semibold text-xs md:text-base">Schedule</div>
+                    </div>
+                </button>
+
+                <!-- Browse Menu -->
+                <button onclick="navigateToMenu()" class="flex flex-col items-center justify-center gap-1 md:gap-2 p-3 md:p-4 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-lg hover:opacity-90 transition-all min-h-[80px] md:min-h-0">
+                    <i class="fas fa-utensils text-lg md:text-2xl"></i>
+                    <div class="text-center">
+                        <div class="font-semibold text-xs md:text-base">Menu</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Next Upcoming Event Card -->
+        <div id="dashboard-next-event-card" class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg shadow-lg p-4 md:p-6 mb-4 md:mb-6 border-2 border-purple-200 hidden">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-purple-600 p-2 md:p-3 rounded-full">
+                    <i class="fas fa-star text-white text-base md:text-xl"></i>
+                </div>
+                <h3 class="text-base md:text-xl font-bold text-gray-800">Your Next Event</h3>
+            </div>
+            
+            <div class="bg-white rounded-lg p-3 md:p-4 shadow-md">
+                <div class="grid grid-cols-2 gap-2 md:gap-4">
+                    <div>
+                        <p class="text-[10px] md:text-sm text-gray-600 mb-1">Event Date</p>
+                        <p class="text-xs md:text-lg font-bold text-purple-700" id="dashboard-next-event-date">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] md:text-sm text-gray-600 mb-1">Time</p>
+                        <p class="text-xs md:text-lg font-bold text-purple-700" id="dashboard-next-event-time">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] md:text-sm text-gray-600 mb-1">Celebrant</p>
+                        <p class="text-xs md:text-lg font-bold text-gray-800" id="dashboard-next-event-celebrant">-</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] md:text-sm text-gray-600 mb-1">Event Type</p>
+                        <p class="text-xs md:text-lg font-bold text-gray-800 capitalize" id="dashboard-next-event-type">-</p>
+                    </div>
+                    <div class="col-span-2">
+                        <p class="text-[10px] md:text-sm text-gray-600 mb-1">Location</p>
+                        <p class="text-xs md:text-lg font-bold text-gray-800" id="dashboard-next-event-location">-</p>
+                    </div>
+                </div>
+                
+                <div class="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-gray-200">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-3">
+                        <div class="text-center md:text-left">
+                            <p class="text-[10px] md:text-sm text-gray-600">Days Until Event</p>
+                            <p class="text-lg md:text-2xl font-bold text-pink-600" id="dashboard-next-event-countdown">-</p>
+                        </div>
+                        <button onclick="navigateToMyBookings()" class="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg transition-colors font-semibold text-xs md:text-base">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-lg shadow-lg p-3 md:p-6 mb-4 md:mb-6">
+            <h3 class="text-base md:text-xl font-bold mb-3 md:mb-4 flex items-center gap-2">
+                <i class="fas fa-history text-[#DC2626] text-sm md:text-base"></i>
+                Recent Activity
+            </h3>
+            <div id="dashboard-recent-activity" class="space-y-2 md:space-y-3">
+                <div class="text-center py-6 md:py-8 text-gray-500">
+                    <i class="fas fa-spinner fa-spin text-xl md:text-3xl mb-2"></i>
+                    <p class="text-xs md:text-base">Loading recent activity...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Us - Mobile Optimized -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 mb-4 md:mb-6">
+            <div class="bg-white rounded-lg shadow-lg p-4 md:p-6 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-red-100 w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
+                    <i class="fas fa-award text-[#DC2626] text-lg md:text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-sm md:text-lg mb-2">Quality Service</h4>
+                <p class="text-gray-600 text-xs md:text-sm">Professional catering with attention to every detail</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-4 md:p-6 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-red-100 w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
+                    <i class="fas fa-utensils text-[#DC2626] text-lg md:text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-sm md:text-lg mb-2">Delicious Food</h4>
+                <p class="text-gray-600 text-xs md:text-sm">Fresh ingredients and expert culinary skills</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-4 md:p-6 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-red-100 w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4">
+                    <i class="fas fa-smile text-[#DC2626] text-lg md:text-2xl"></i>
+                </div>
+                <h4 class="font-bold text-sm md:text-lg mb-2">Happy Clients</h4>
+                <p class="text-gray-600 text-xs md:text-sm">Thousands of successful events since 2020</p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] rounded-xl shadow-lg p-4 md:p-8 text-white text-center">
+            <h3 class="text-lg md:text-2xl font-bold mb-2 md:mb-4">Ready to Plan Your Perfect Event?</h3>
+            <p class="mb-3 md:mb-6 text-xs md:text-lg opacity-90">Let Zaf's Kitchen handle the catering while you enjoy the celebration</p>
+            <button onclick="navigateToBookNow()" class="w-full md:w-auto bg-white text-[#DC2626] px-6 md:px-8 py-2.5 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg text-sm md:text-base">
+                <i class="fas fa-calendar-plus mr-2"></i>
+                Book Your Event Now
+            </button>
+        </div>
+    </div>
+</section>
+
 
                 <!-- My Bookings Section -->
             <section id="section-mybookings" class="hidden">
@@ -3626,7 +3847,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                 
                                 <!-- Integrated Price Calculator -->
                                 <div id="price-summary" class="bg-gradient-to-r from-[#DC2626] to-[#d14b1f] text-white p-4 rounded-lg shadow-lg">
-                                    <div class="flex items-center justify-between">
+                                    <div class="flex justify-between">
                                         <div>
                                             <div class="text-sm opacity-90 mb-1">
                                                 <i class="fas fa-calculator mr-1"></i>
@@ -4026,13 +4247,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                         
                         <!-- Calendar Header -->
                         <div class="calendar-header">
-                            <div class="calendar-header-day">Sunday</div>
-                            <div class="calendar-header-day">Monday</div>
-                            <div class="calendar-header-day">Tuesday</div>
-                            <div class="calendar-header-day">Wednesday</div>
-                            <div class="calendar-header-day">Thursday</div>
-                            <div class="calendar-header-day">Friday</div>
-                            <div class="calendar-header-day">Saturday</div>
+                            <div class="calendar-header-day">Sun</div>
+                            <div class="calendar-header-day">Mon</div>
+                            <div class="calendar-header-day">Tue</div>
+                            <div class="calendar-header-day">Wed</div>
+                            <div class="calendar-header-day">Thu</div>
+                            <div class="calendar-header-day">Fri</div>
+                            <div class="calendar-header-day">Sat</div>
                         </div>
                         
                         <!-- Calendar Grid -->
@@ -4402,11 +4623,544 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
 
 
-                <section id="section-gallery" class="hidden">
-                    <h2 class="text-2xl font-bold mb-2">Gallery</h2>
-                    <div class="w-full h-0.5 bg-gray-400 mb-4"></div>
-                    <p>Gallery content here...</p>
-                </section>
+<!-- Gallery Section -->
+<section id="section-gallery" class="hidden px-2 md:px-4">
+    <div class="mb-8">
+        <!-- Header -->
+        <div class="mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold mb-2 text-gray-800">Our Gallery</h2>
+            <div class="w-full h-1 bg-gradient-to-r from-[#DC2626] to-transparent mb-4"></div>
+            <p class="text-sm md:text-base text-gray-600">Explore our memorable events and celebrations</p>
+        </div>
+
+        <!-- Event Category Buttons (Moved to top) -->
+        <div class="bg-white rounded-lg shadow-lg p-3 md:p-4 mb-4">
+            <h3 class="text-xs md:text-sm font-bold mb-3 text-center text-gray-800">Select Event Type</h3>
+            
+            <!-- Category Navigation Dots -->
+            <div class="flex items-center justify-center gap-2 mb-3">
+                <button onclick="scrollCategories('left')" class="text-gray-400 hover:text-[#DC2626] transition-colors">
+                    <i class="fas fa-chevron-left text-sm"></i>
+                </button>
+                
+                <div class="flex gap-2" id="category-dots">
+                    <button onclick="selectCategory('birthday')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="birthday">
+                        <i class="fas fa-birthday-cake text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                    <button onclick="selectCategory('wedding')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="wedding">
+                        <i class="fas fa-heart text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                    <button onclick="selectCategory('corporate')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="corporate">
+                        <i class="fas fa-briefcase text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                    <button onclick="selectCategory('graduation')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="graduation">
+                        <i class="fas fa-graduation-cap text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                    <button onclick="selectCategory('anniversary')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="anniversary">
+                        <i class="fas fa-heart text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                    <button onclick="selectCategory('debut')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="debut">
+                        <i class="fas fa-crown text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                    <button onclick="selectCategory('baptismal')" class="category-dot w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-gray-300 hover:border-[#DC2626] transition-all flex items-center justify-center" data-category="baptismal">
+                        <i class="fas fa-cross text-xs md:text-sm text-gray-400"></i>
+                    </button>
+                </div>
+                
+                <button onclick="scrollCategories('right')" class="text-gray-400 hover:text-[#DC2626] transition-colors">
+                    <i class="fas fa-chevron-right text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Category Labels (shows name of hovered/active category) -->
+            <div class="text-center">
+                <span id="category-label" class="text-xs md:text-sm text-gray-600 font-medium">Hover over a category</span>
+            </div>
+        </div>
+
+        <!-- Video Display (Default - before selecting category) -->
+        <div id="gallery-video-container" class="bg-white rounded-lg shadow-lg p-4 md:p-6 mb-6">
+            <div class="relative overflow-hidden rounded-lg bg-black" style="min-height: 300px;">
+                <video id="gallery-promo-video" 
+                       class="w-full h-auto rounded-lg" 
+                       style="max-height: 500px; object-fit: cover;"
+                       autoplay 
+                       loop 
+                       muted 
+                       playsinline
+                       controlslist="nodownload nofullscreen noremoteplayback"
+                       disablePictureInPicture>
+                    <source src="Catering_Photos/promoting_video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                
+                <!-- Overlay Text on Video -->
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <div class="text-center text-white px-4">
+                        <h3 class="text-2xl md:text-4xl font-bold mb-4">Zaf's Kitchen Catering</h3>
+                        <p class="text-sm md:text-xl mb-6">Creating Memorable Moments Since 2020</p>
+                        <p class="text-xs md:text-base">Select an event type above to view our gallery</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Carousel (Hidden by default) -->
+        <div id="gallery-carousel-container" class="bg-white rounded-lg shadow-lg p-4 md:p-6 hidden">
+            <div class="relative">
+                <!-- Main Image Display with Conditional Overlay -->
+                <div class="relative overflow-hidden rounded-2xl bg-gray-100 shadow-2xl" style="min-height: 300px;">
+                    <img id="gallery-main-image" src="" alt="Event Gallery" class="w-full h-auto object-cover rounded-2xl" style="max-height: 500px; object-fit: cover;">
+
+                    <!-- Dark Overlay with Text (Only on first image) -->
+                    <div id="gallery-overlay" class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex items-end">
+                        <div class="p-4 md:p-8 text-white w-full">
+                            <div class="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
+                                <div class="bg-[#DC2626] p-2 md:p-3 rounded-full flex-shrink-0">
+                                    <i id="gallery-icon" class="fas fa-birthday-cake text-white text-base md:text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 id="gallery-title" class="text-xl md:text-3xl font-bold mb-2">Birthday Party</h3>
+                                    <p id="gallery-description" class="text-xs md:text-base leading-relaxed opacity-90">Description here...</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Highlights -->
+                            <div id="gallery-highlights" class="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 text-xs md:text-sm">
+                                <!-- Dynamic highlights -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Counter -->
+                    <div class="absolute top-4 right-4 bg-black bg-opacity-60 text-white px-3 py-1 rounded-full text-xs md:text-sm">
+                        <span id="current-image-index">1</span> / <span id="total-images">1</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons (Circular style) -->
+                <button onclick="prevImage()" class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-[#DC2626] text-gray-700 hover:text-white w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg transition-all z-10 flex items-center justify-center">
+                    <i class="fas fa-chevron-left text-sm md:text-base"></i>
+                </button>
+
+                <button onclick="nextImage()" class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white hover:bg-[#DC2626] text-gray-700 hover:text-white w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg transition-all z-10 flex items-center justify-center">
+                    <i class="fas fa-chevron-right text-sm md:text-base"></i>
+                </button>
+            </div>
+
+            <!-- Thumbnail Navigation (Visual Diary Style) -->
+            <div class="mt-6 md:mt-8">
+                <div class="flex gap-3 overflow-x-auto pb-2 justify-center" id="gallery-thumbnails">
+                    <!-- Thumbnails will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Gallery Styles */
+.category-dot {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.category-dot.active {
+    border-color: #DC2626;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    transform: scale(1.15);
+}
+
+.category-dot.active i {
+    color: white !important;
+}
+
+.category-dot:hover {
+    transform: scale(1.1);
+}
+
+#gallery-main-image {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#gallery-main-image.fade-out {
+    opacity: 0;
+}
+
+#gallery-overlay {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#gallery-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.thumbnail {
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.thumbnail.active {
+    border-color: #DC2626;
+    transform: scale(1.15) translateY(-8px);
+    box-shadow: 0 8px 16px rgba(220, 38, 38, 0.3);
+}
+
+.thumbnail:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Video controls disabled */
+#gallery-promo-video::-webkit-media-controls {
+    display: none !important;
+}
+
+#gallery-promo-video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+/* Scrollbar styling for thumbnails */
+#gallery-thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-thumb {
+    background: #DC2626;
+    border-radius: 10px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-thumb:hover {
+    background: #B91C1C;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    #section-gallery {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    .category-dot {
+        width: 32px !important;
+        height: 32px !important;
+    }
+}
+</style>
+
+<script>
+// Gallery Data Structure
+const galleryData = {
+    birthday: {
+        title: "Birthday Party Catering",
+        icon: "fa-birthday-cake",
+        label: "Birthday",
+        description: "Make your birthday celebration extra special with our delicious catering services! From kiddie parties to milestone celebrations, we create memorable moments with delectable food that your guests will love.",
+        highlights: ["Customized birthday cakes", "Kid-friendly menu options", "Themed party setups", "Professional service crew"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    },
+    wedding: {
+        title: "Wedding Reception Catering",
+        icon: "fa-heart",
+        label: "Wedding",
+        description: "Your wedding day deserves nothing but perfection! Let us handle your wedding catering with elegance and sophistication. We offer exquisite menu selections, stunning presentation, and impeccable service to make your special day truly unforgettable.",
+        highlights: ["Elegant plated dinners", "Buffet selections", "Cocktail hour appetizers", "Wedding cake coordination"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    },
+    corporate: {
+        title: "Corporate Events Catering",
+        icon: "fa-briefcase",
+        label: "Corporate",
+        description: "Impress your clients and colleagues with our professional corporate catering services. Whether it's a business meeting, conference, team building, or company celebration, we provide high-quality food and seamless service.",
+        highlights: ["Business lunch packages", "Coffee break services", "Conference catering", "Product launch events"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    },
+    graduation: {
+        title: "Graduation Party Catering",
+        icon: "fa-graduation-cap",
+        label: "Graduation",
+        description: "Celebrate academic achievements with a memorable graduation party! We offer delicious catering options perfect for this milestone moment. Whether it's a backyard celebration or a formal event, our menu selections and professional service will help you honor the graduate in style.",
+        highlights: ["Buffet-style dining", "Snack stations", "Dessert bars", "Photo-worthy setups"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    },
+    anniversary: {
+        title: "Anniversary Celebration",
+        icon: "fa-heart",
+        label: "Anniversary",
+        description: "Honor years of love and commitment with our anniversary catering services. From intimate dinners to grand celebrations, we create romantic and memorable dining experiences. Our elegant presentations and delicious cuisine will help you celebrate your special milestone with style.",
+        highlights: ["Romantic table settings", "Couples' special menu", "Champagne service", "Anniversary cake designs"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    },
+    debut: {
+        title: "Debut / 18th Birthday",
+        icon: "fa-crown",
+        label: "Debut",
+        description: "Make her 18th birthday truly spectacular! A debut is a once-in-a-lifetime celebration, and we ensure every detail is perfect. From elegant plated meals to stunning buffet displays, we create a sophisticated dining experience worthy of this coming-of-age milestone.",
+        highlights: ["Formal dining service", "18 roses/candles coordination", "Themed decorations", "Dessert showcase"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    },
+    baptismal: {
+        title: "Baptismal Celebration",
+        icon: "fa-cross",
+        label: "Baptismal",
+        description: "Welcome your little one into the community with a beautiful baptismal celebration. We provide family-friendly catering that creates a warm and joyful atmosphere for this sacred occasion. Our menu options cater to guests of all ages, ensuring everyone enjoys this special day.",
+        highlights: ["Family-style dining", "Kid-friendly options", "Elegant presentations", "Christening cake designs"],
+        images: [
+            "Catering_Photos/gallery_promoting1.jpg",
+            "Catering_Photos/gallery_promoting2.jpg",
+            "Catering_Photos/gallery_promoting3.jpg"
+        ]
+    }
+};
+
+// Gallery State
+let currentCategory = null;
+let currentImageIndex = 0;
+let autoPlayInterval = null;
+
+// Disable video controls
+document.addEventListener('DOMContentLoaded', function() {
+    const video = document.getElementById('gallery-promo-video');
+    if (video) {
+        video.controls = false;
+        video.removeAttribute('controls');
+        
+        // Prevent context menu on video
+        video.addEventListener('contextmenu', (e) => e.preventDefault());
+        
+        // Prevent seeking
+        video.addEventListener('seeking', function() {
+            if (this.currentTime > 0) {
+                this.currentTime = 0;
+            }
+        });
+    }
+
+    // Add hover effects to category dots
+    document.querySelectorAll('.category-dot').forEach(dot => {
+        dot.addEventListener('mouseenter', function() {
+            const category = this.dataset.category;
+            const label = galleryData[category].label;
+            document.getElementById('category-label').textContent = label;
+            
+            // Highlight icon on hover
+            this.querySelector('i').style.color = '#DC2626';
+        });
+        
+        dot.addEventListener('mouseleave', function() {
+            if (!this.classList.contains('active')) {
+                this.querySelector('i').style.color = '';
+                document.getElementById('category-label').textContent = currentCategory ? galleryData[currentCategory].label : 'Hover over a category';
+            }
+        });
+    });
+});
+
+// Select Category
+function selectCategory(category) {
+    currentCategory = category;
+    currentImageIndex = 0;
+    
+    // Hide video, show carousel
+    document.getElementById('gallery-video-container').classList.add('hidden');
+    document.getElementById('gallery-carousel-container').classList.remove('hidden');
+    
+    // Update active button
+    document.querySelectorAll('.category-dot').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+    
+    // Update label
+    document.getElementById('category-label').textContent = galleryData[category].label;
+    
+    // Update content
+    updateGalleryContent();
+    
+    // Start auto play automatically
+    startAutoPlay();
+}
+
+// Update Gallery Content
+function updateGalleryContent() {
+    const data = galleryData[currentCategory];
+    
+    // Update icon, title, description
+    document.getElementById('gallery-icon').className = `fas ${data.icon} text-white text-base md:text-xl`;
+    document.getElementById('gallery-title').textContent = data.title;
+    document.getElementById('gallery-description').textContent = data.description;
+    
+    // Update highlights
+    const highlightsHTML = data.highlights.map(highlight => `
+        <div class="flex items-center gap-1 md:gap-2">
+            <i class="fas fa-check-circle text-[#DC2626] text-xs md:text-sm"></i>
+            <span>${highlight}</span>
+        </div>
+    `).join('');
+    document.getElementById('gallery-highlights').innerHTML = highlightsHTML;
+    
+    // Update image
+    updateImage();
+    
+    // Update thumbnails
+    updateThumbnails();
+}
+
+// Update Image
+function updateImage() {
+    const data = galleryData[currentCategory];
+    const mainImage = document.getElementById('gallery-main-image');
+    const overlay = document.getElementById('gallery-overlay');
+    
+    // Show overlay only on first image (index 0)
+    if (currentImageIndex === 0) {
+        overlay.classList.remove('hidden');
+    } else {
+        overlay.classList.add('hidden');
+    }
+    
+    // Fade out effect
+    mainImage.classList.add('fade-out');
+    
+    setTimeout(() => {
+        mainImage.src = data.images[currentImageIndex];
+        mainImage.classList.remove('fade-out');
+    }, 250);
+    
+    // Update counter
+    document.getElementById('current-image-index').textContent = currentImageIndex + 1;
+    document.getElementById('total-images').textContent = data.images.length;
+}
+
+// Update Thumbnails (Visual Diary Style)
+function updateThumbnails() {
+    const data = galleryData[currentCategory];
+    const thumbnailsHTML = data.images.map((img, index) => `
+        <img src="${img}" 
+             alt="Thumbnail ${index + 1}" 
+             class="thumbnail w-20 h-20 md:w-28 md:h-28 object-cover ${index === currentImageIndex ? 'active' : ''}"
+             onclick="goToImage(${index})">
+    `).join('');
+    document.getElementById('gallery-thumbnails').innerHTML = thumbnailsHTML;
+}
+
+// Navigate Images
+function nextImage() {
+    const data = galleryData[currentCategory];
+    currentImageIndex = (currentImageIndex + 1) % data.images.length;
+    updateImage();
+    updateThumbnails();
+}
+
+function prevImage() {
+    const data = galleryData[currentCategory];
+    currentImageIndex = (currentImageIndex - 1 + data.images.length) % data.images.length;
+    updateImage();
+    updateThumbnails();
+}
+
+function goToImage(index) {
+    currentImageIndex = index;
+    updateImage();
+    updateThumbnails();
+}
+
+// Scroll Categories
+function scrollCategories(direction) {
+    const container = document.getElementById('category-dots');
+    const scrollAmount = 100;
+    if (direction === 'left') {
+        container.scrollLeft -= scrollAmount;
+    } else {
+        container.scrollLeft += scrollAmount;
+    }
+}
+
+// Auto Play Function (Automatic - no button)
+function startAutoPlay() {
+    // Clear any existing interval
+    if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+    }
+    
+    autoPlayInterval = setInterval(() => {
+        nextImage();
+    }, 10000); // 10 seconds per image
+}
+
+function stopAutoPlay() {
+    if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+    }
+}
+
+// Keyboard Navigation
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('section-gallery').classList.contains('hidden')) return;
+    if (!currentCategory) return;
+    
+    if (e.key === 'ArrowLeft') {
+        prevImage();
+    } else if (e.key === 'ArrowRight') {
+        nextImage();
+    }
+});
+
+// Clean up autoplay when section is hidden
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+            const section = document.getElementById('section-gallery');
+            if (section.classList.contains('hidden')) {
+                stopAutoPlay();
+            }
+        }
+    });
+});
+
+if (typeof window !== 'undefined') {
+    const section = document.getElementById('section-gallery');
+    if (section) {
+        observer.observe(section, { attributes: true });
+    }
+}
+</script>
                 
             <section id="section-settings" class="hidden">
                 <h2 class="text-2xl font-bold mb-2">Profile Settings</h2>
@@ -4932,6 +5686,282 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
 <!-- JavaScript -->
 <script>
+// Dashboard Functions
+function loadDashboardData() {
+    console.log('Loading dashboard data...');
+    
+    // Load booking statistics
+    fetch(window.location.pathname + '?action=get_booking_stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error loading stats:', data.error);
+                return;
+            }
+            
+            // Update statistics
+            document.getElementById('dashboard-total-bookings').textContent = data.total_bookings || 0;
+            document.getElementById('dashboard-upcoming-events').textContent = data.upcoming_events || 0;
+            document.getElementById('dashboard-pending-bookings').textContent = data.pending_bookings || 0;
+            document.getElementById('dashboard-total-spent').textContent = '₱' + (parseFloat(data.total_spent || 0)).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            // Animate numbers
+            animateNumbers();
+        })
+        .catch(error => {
+            console.error('Error fetching dashboard stats:', error);
+        });
+    
+    // Load next upcoming event
+    loadDashboardNextEvent();
+    
+    // Load recent activity
+    loadDashboardRecentActivity();
+}
+
+function loadDashboardNextEvent() {
+    fetch(window.location.pathname + '?action=get_my_bookings')
+        .then(response => response.json())
+        .then(bookings => {
+            if (bookings.error) return;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const upcomingEvents = bookings.filter(booking => {
+                const eventDate = new Date(booking.event_date);
+                eventDate.setHours(0, 0, 0, 0);
+                return eventDate >= today && booking.booking_status !== 'cancelled';
+            }).sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
+            
+            if (upcomingEvents.length > 0) {
+                displayDashboardNextEvent(upcomingEvents[0]);
+            } else {
+                document.getElementById('dashboard-next-event-card').classList.add('hidden');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading next event:', error);
+        });
+}
+
+function displayDashboardNextEvent(event) {
+    const card = document.getElementById('dashboard-next-event-card');
+    
+    // Format date
+    const eventDate = new Date(event.event_date);
+    const formattedDate = eventDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+    
+    // Format time
+    const startTime = formatTimeTo12Hour(event.start_time.substring(0, 5));
+    const endTime = formatTimeTo12Hour(event.end_time.substring(0, 5));
+    const timeRange = `${startTime} - ${endTime}`;
+    
+    // Calculate days until event
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0);
+    const daysUntil = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+    
+    // Update card
+    document.getElementById('dashboard-next-event-date').textContent = formattedDate;
+    document.getElementById('dashboard-next-event-time').textContent = timeRange;
+    document.getElementById('dashboard-next-event-celebrant').textContent = event.celebrant_name;
+    document.getElementById('dashboard-next-event-type').textContent = event.event_type;
+    document.getElementById('dashboard-next-event-location').textContent = event.location || 'Not specified';
+    document.getElementById('dashboard-next-event-countdown').textContent = daysUntil === 0 ? 'Today!' : 
+        daysUntil === 1 ? 'Tomorrow!' : `${daysUntil} days`;
+    
+    card.classList.remove('hidden');
+}
+
+function loadDashboardRecentActivity() {
+    fetch(window.location.pathname + '?action=get_my_bookings')
+        .then(response => response.json())
+        .then(bookings => {
+            if (bookings.error) {
+                document.getElementById('dashboard-recent-activity').innerHTML = '<p class="text-center text-gray-500 py-4">No recent activity</p>';
+                return;
+            }
+            
+            // Get recent 5 bookings
+            const recentBookings = bookings
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 5);
+            
+            if (recentBookings.length === 0) {
+                document.getElementById('dashboard-recent-activity').innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-3"></i>
+                        <p>No bookings yet. Start by creating your first event!</p>
+                        <button onclick="navigateToBookNow()" class="mt-4 bg-[#DC2626] hover:bg-[#B91C1C] text-white px-6 py-2 rounded-lg transition-colors">
+                            Create Booking
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            displayDashboardRecentActivity(recentBookings);
+        })
+        .catch(error => {
+            console.error('Error loading recent activity:', error);
+            document.getElementById('dashboard-recent-activity').innerHTML = '<p class="text-center text-red-500 py-4">Failed to load activity</p>';
+        });
+}
+
+function displayDashboardRecentActivity(bookings) {
+    const container = document.getElementById('dashboard-recent-activity');
+    container.innerHTML = '';
+    
+    bookings.forEach(booking => {
+        const createdDate = new Date(booking.created_at);
+        const timeAgo = getTimeAgo(createdDate);
+        
+        const statusConfig = {
+            'approved': { icon: 'fa-check-circle', color: 'text-green-600', bg: 'bg-green-50', text: 'Approved' },
+            'pending': { icon: 'fa-clock', color: 'text-yellow-600', bg: 'bg-yellow-50', text: 'Pending' },
+            'cancelled': { icon: 'fa-times-circle', color: 'text-red-600', bg: 'bg-red-50', text: 'Cancelled' }
+        };
+        
+        const status = statusConfig[booking.booking_status] || statusConfig.pending;
+        
+        const activityItem = document.createElement('div');
+        activityItem.className = 'flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors';
+        activityItem.innerHTML = `
+            <div class="${status.bg} p-3 rounded-full">
+                <i class="fas ${status.icon} ${status.color} text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <p class="font-semibold text-gray-800">${booking.event_type} - ${booking.celebrant_name}</p>
+                <p class="text-sm text-gray-600">
+                    ${new Date(booking.event_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </p>
+            </div>
+            <div class="text-right">
+                <span class="text-xs ${status.color} font-semibold">${status.text}</span>
+                <p class="text-xs text-gray-500 mt-1">${timeAgo}</p>
+            </div>
+        `;
+        
+        container.appendChild(activityItem);
+    });
+}
+
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + ' year' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
+    
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + ' month' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
+    
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + ' day' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
+    
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + ' hour' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
+    
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + ' minute' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
+    
+    return 'Just now';
+}
+
+function animateNumbers() {
+    const elements = [
+        'dashboard-total-bookings',
+        'dashboard-upcoming-events',
+        'dashboard-pending-bookings'
+    ];
+    
+    elements.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            const target = parseInt(element.textContent);
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 20);
+        }
+    });
+}
+
+// Navigation Functions
+function navigateToBookNow() {
+    hideAllSections();
+    document.querySelectorAll("nav a").forEach(l => l.classList.remove("active-nav"));
+    document.querySelector('nav a').classList.add("active-nav");
+    document.getElementById("section-book").classList.remove("hidden");
+    resetBookingForm();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigateToMyBookings() {
+    hideAllSections();
+    document.querySelectorAll("nav a").forEach(l => l.classList.remove("active-nav"));
+    const navLinks = document.querySelectorAll("nav a");
+    if (navLinks[1]) navLinks[1].classList.add("active-nav");
+    document.getElementById("section-mybookings").classList.remove("hidden");
+    loadMyBookings();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigateToSchedule() {
+    hideAllSections();
+    document.querySelectorAll("nav a").forEach(l => l.classList.remove("active-nav"));
+    const navLinks = document.querySelectorAll("nav a");
+    if (navLinks[4]) navLinks[4].classList.add("active-nav");
+    document.getElementById("section-schedule").classList.remove("hidden");
+    loadCalendar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigateToMenu() {
+    hideAllSections();
+    document.querySelectorAll("nav a").forEach(l => l.classList.remove("active-nav"));
+    const navLinks = document.querySelectorAll("nav a");
+    if (navLinks[2]) navLinks[2].classList.add("active-nav");
+    document.getElementById("section-menu").classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Load dashboard when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Load dashboard data when dashboard is visible
+    const dashboardSection = document.getElementById('section-dashboard');
+    if (dashboardSection && !dashboardSection.classList.contains('hidden')) {
+        loadDashboardData();
+    }
+    
+    // Reload dashboard data when navigating back to dashboard
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (this.innerText.trim() === 'Dashboard' || !navMap[this.innerText.trim()]) {
+                setTimeout(() => {
+                    loadDashboardData();
+                }, 100);
+            }
+        });
+    });
+});
+
 // Package pricing based on exact rates from your packages
 const PACKAGE_PRICES = {
 // Birthday/Event Packages
@@ -5655,7 +6685,7 @@ ${!isPast ? (booking.booking_status === 'approved' ? `
             ` : ''}
             
             <!-- Event Countdown -->
-            <div class="mt-2 p-3 bg-blue-50 border border-blue-300 rounded-lg">
+            <div class="mt-2 p-3 bg-blue-50 rounded-lg">
                 <div class="flex items-center gap-2 mb-1">
                     <i class="fas fa-calendar-check text-blue-600 text-sm"></i>
                     <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
@@ -5751,7 +6781,7 @@ function displayBookingsWithPrice(bookings) {
                     } else if (data.reason === 'event_ended') {
                         const eventEl = document.getElementById(`event-countdown-${bookingId}`);
                         if (eventEl) {
-                            eventEl.innerHTML = '<span class="text-gray-600 font-bold">🎉 EVENT ENDED</span>';
+                            eventEl.innerHTML = '<span class="text-gray-600 font-bold"> EVENT ENDED</span>';
                         }
                     }
                     // Reload bookings after 2 seconds
@@ -5788,7 +6818,7 @@ function displayBookingsWithPrice(bookings) {
                         const minutes = Math.floor((endSeconds % 3600) / 60);
                         const secs = Math.floor(endSeconds % 60);
                         
-                        eventEl.innerHTML = `<span class="text-green-600 font-bold animate-pulse">🎉 ONGOING - Ends in ${hours}h ${minutes}m ${secs}s</span>`;
+                        eventEl.innerHTML = `<span class="text-green-600 font-bold animate-pulse">ONGOING - Ends in ${hours}h ${minutes}m ${secs}s</span>`;
                     } else if (data.event_start_seconds !== undefined && data.event_start_seconds > 0) {
                         // Event is upcoming
                         const seconds = data.event_start_seconds;
@@ -7996,7 +9026,7 @@ function showConflictWarning(existingSlots, reason = '', gapHours = 0) {
         message = `
             <div class="space-y-2">
                 <div class="font-bold text-red-700 text-lg">⚠️ 4-Hour Gap Required</div>
-                <div class="bg-yellow-50 p-3 rounded">
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-300">
                     <div class="font-semibold text-yellow-800 mb-2">Existing Events:</div>
                     <div class="text-yellow-700">${existingSlots}</div>
                 </div>
@@ -8018,7 +9048,7 @@ function showConflictWarning(existingSlots, reason = '', gapHours = 0) {
                     <div class="font-semibold text-red-800 mb-2">Maximum Capacity Reached:</div>
                     <div class="text-red-700">Only 2 events can overlap at the same time.</div>
                 </div>
-                <div class="bg-yellow-50 p-3 rounded">
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-300">
                     <div class="font-semibold text-yellow-800 mb-2">Conflicting Bookings:</div>
                     <div class="text-yellow-700">${existingSlots}</div>
                 </div>
