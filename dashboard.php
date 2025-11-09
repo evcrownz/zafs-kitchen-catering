@@ -5640,7 +5640,7 @@ ${!isPast ? (booking.booking_status === 'approved' ? `
             
             ${booking.payment_status !== 'paid' ? `
                 <!-- Payment Countdown -->
-                <div class="mt-2 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
+                <div class="mt-2 p-3 bg-yellow-50 rounded-lg">
                     <div class="flex items-center gap-2 mb-1">
                         <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
                         <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
@@ -7996,7 +7996,7 @@ function showConflictWarning(existingSlots, reason = '', gapHours = 0) {
         message = `
             <div class="space-y-2">
                 <div class="font-bold text-red-700 text-lg">⚠️ 4-Hour Gap Required</div>
-                <div class="bg-yellow-50 p-3 rounded border border-yellow-300">
+                <div class="bg-yellow-50 p-3 rounded">
                     <div class="font-semibold text-yellow-800 mb-2">Existing Events:</div>
                     <div class="text-yellow-700">${existingSlots}</div>
                 </div>
@@ -8018,7 +8018,7 @@ function showConflictWarning(existingSlots, reason = '', gapHours = 0) {
                     <div class="font-semibold text-red-800 mb-2">Maximum Capacity Reached:</div>
                     <div class="text-red-700">Only 2 events can overlap at the same time.</div>
                 </div>
-                <div class="bg-yellow-50 p-3 rounded border border-yellow-300">
+                <div class="bg-yellow-50 p-3 rounded">
                     <div class="font-semibold text-yellow-800 mb-2">Conflicting Bookings:</div>
                     <div class="text-yellow-700">${existingSlots}</div>
                 </div>

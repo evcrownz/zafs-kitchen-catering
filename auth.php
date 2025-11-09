@@ -595,7 +595,6 @@ form{
 }
 
 .close-error-btn::before {
-    content: '';
     font-size: 20px;
     line-height: 1;
 }
