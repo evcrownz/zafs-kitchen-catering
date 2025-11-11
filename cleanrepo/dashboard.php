@@ -11026,8 +11026,8 @@ if (nextStep2) {
         // ============= PERIODIC EXPIRATION CHECK =============
 
         // Check expiration every hour while page is open
-        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour
-            
+        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour         
+         
 </script>
 </body>
 </html>
