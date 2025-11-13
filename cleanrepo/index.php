@@ -436,7 +436,7 @@
       /* Right Image Section - Mobile - REDUCED HEIGHT */
       .w-2\/3 {
         width: 100% !important;
-        height: 280px !important;
+        height: 200px !important;
         order: 2;
         position: relative !important;
         display: flex !important;
@@ -779,7 +779,7 @@
       }
 
       .w-2\/3 {
-        height: 240px !important;
+        height: 160px !important;
       }
 
       .absolute.bottom-16.right-16 {
@@ -895,6 +895,22 @@
       background: linear-gradient(135deg, #DC2626, #B91C1C);
       width: 24px;
     }
+
+/* Background positioning for tablets and mobile */
+@media (max-width: 768px) {
+  .hero-bg-image {
+    background-position: center bottom !important;
+    background-size: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-bg-image {
+    background-position: center center !important;
+    background-size: 160% !important;
+    margin-top: 35%;
+  }
+}
   </style>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
@@ -953,8 +969,14 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <div class="flex min-h-screen relative">
+<!-- Hero Section -->
+  <div class="flex min-h-screen relative overflow-hidden m-0 p-0">
+    <!-- Background Image - Fixed Position -->
+    <div class="hero-bg-image absolute inset-0" style="background-image: url('indexbackground/background_index.png'); background-size: 70%; background-position: left bottom; background-repeat: no-repeat; z-index: 1;"></div>
+    
+    <!-- Dark overlay for text visibility -->
+    <div class="absolute inset-0 bg-black/50" style="z-index: 2;"></div>
+    
     <!-- Left Content -->
     <div class="w-[38%] relative px-6 lg:px-16 py-20 lg:py-24 z-10">
       <div class="relative z-10 max-w-[500px] mt-20 scroll-animate">
@@ -984,7 +1006,7 @@
     </div>
     
     <!-- Right Image -->
-    <div class="w-2/3 relative">
+    <div class="w-2/3 relative z-10">
       <div class="absolute inset-0 circular-clip">
         <img 
           src="right_image/indexbground.jpg" 
@@ -1006,13 +1028,13 @@
   </div>
 
   <!-- Video Section -->
-  <section class="relative py-0 overflow-hidden bg-black">
-    <!-- Top spacing text -->
-    <div class="relative z-10 text-center pt-16 pb-8 px-6 scroll-animate">
+  <section class="relative py-0 overflow-hidden bg-black m-0 p-0">
+    <!-- Top Text -->
+    <div class="relative z-10 text-center px-6 scroll-animate" style="padding-top: 40px; padding-bottom: -20px;">
       <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto">Watch how we transform ordinary events into extraordinary memories</p>
     </div>
 
-    <div class="relative w-full h-screen md:h-screen">
+    <div class="relative w-full h-screen md:h-screen m-0 p-0">
       <!-- Video Background -->
       <div class="absolute inset-0">
         <video 
@@ -1766,5 +1788,6 @@
       }
     });
   </script>
+
 </body>
 </html>
