@@ -1,11 +1,7 @@
 <?php 
 date_default_timezone_set('Asia/Manila');
 
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+session_start();
 require "connection.php";
 require_once "sendmail.php";
 require_once "google-oauth-config.php";
@@ -14,45 +10,13 @@ $email = "";
 $name = "";
 $errors = [];
 
-// Remove duplicate function declarations - keep them only in sendmail.php
-// function generateResetToken($length = 32) {
-//     return bin2hex(random_bytes($length));
-// }
+function generateResetToken($length = 32) {
+    return bin2hex(random_bytes($length));
+}
 
-// function generateOTP() {
-//     return sprintf("%06d", mt_rand(1, 999999));
-// }
-
-// Check if user is blocked and redirect to admin if admin
 if (isset($_SESSION['user_id']) && isset($_SESSION['email'])) {
-    try {
-        $check_user = "SELECT status, email FROM usertable WHERE id = :user_id";
-        $stmt = $conn->prepare($check_user);
-        $stmt->bindParam(':user_id', $_SESSION['user_id']);
-        $stmt->execute();
-        
-        if($stmt->rowCount() > 0) {
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            // Check if user is blocked
-            if($user['status'] === 'blocked') {
-                session_unset();
-                session_destroy();
-                header('Location: auth.php?error=blocked');
-                exit();
-            }
-            
-            // Redirect to appropriate dashboard
-            if($user['email'] === 'admin@zafskitchen.com' || $user['email'] === 'admin@gmail.com') {
-                header('Location: admin-dashboard.php');
-            } else {
-                header('Location: dashboard.php');
-            }
-            exit();
-        }
-    } catch(PDOException $e) {
-        error_log("Session check error: " . $e->getMessage());
-    }
+    header('Location: dashboard.php');
+    exit();
 }
 
 // Google OAuth Callback
@@ -79,40 +43,31 @@ if(isset($_GET['code'])) {
             if($stmt->rowCount() > 0) {
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                // Check if user is blocked
-                if($user['status'] === 'blocked') {
-                    $errors['google-error'] = 'Your account has been blocked. Please contact support.';
-                } else {
-                    if(empty($user['google_id'])) {
-                        $update = "UPDATE usertable SET google_id = :google_id, avatar_url = :avatar_url, oauth_provider = 'google', updated_at = NOW() WHERE email = :email";
-                        $update_stmt = $conn->prepare($update);
-                        $update_stmt->bindParam(':google_id', $google_id);
-                        $update_stmt->bindParam(':avatar_url', $avatar_url);
-                        $update_stmt->bindParam(':email', $email);
-                        $update_stmt->execute();
-                    }
-                    
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['name'];
-                    $_SESSION['name'] = $user['name'];
-                    $_SESSION['email'] = $email;
-                    $_SESSION['avatar_url'] = $avatar_url;
-                    
-                    // Redirect to appropriate dashboard
-                    if($email === 'admin@zafskitchen.com' || $email === 'admin@gmail.com') {
-                        header('Location: admin-dashboard.php');
-                    } else {
-                        header('Location: dashboard.php');
-                    }
-                    exit();
+                if(empty($user['google_id'])) {
+                    $update = "UPDATE usertable SET google_id = :google_id, avatar_url = :avatar_url, oauth_provider = 'google' WHERE email = :email";
+                    $update_stmt = $conn->prepare($update);
+                    $update_stmt->bindParam(':google_id', $google_id);
+                    $update_stmt->bindParam(':avatar_url', $avatar_url);
+                    $update_stmt->bindParam(':email', $email);
+                    $update_stmt->execute();
                 }
+                
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['name'];
+                $_SESSION['name'] = $user['name'];
+                $_SESSION['email'] = $email;
+                $_SESSION['avatar_url'] = $avatar_url;
+                
+                header('Location: dashboard.php');
+                exit();
+                
             } else {
                 $status = 'verified';
                 $oauth_provider = 'google';
                 $random_password = password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT);
                 
-                $insert = "INSERT INTO usertable (name, email, password, status, google_id, avatar_url, oauth_provider, created_at, updated_at) 
-                          VALUES (:name, :email, :password, :status, :google_id, :avatar_url, :oauth_provider, NOW(), NOW())";
+                $insert = "INSERT INTO usertable (name, email, password, status, google_id, avatar_url, oauth_provider) 
+                          VALUES (:name, :email, :password, :status, :google_id, :avatar_url, :oauth_provider)";
                 $insert_stmt = $conn->prepare($insert);
                 $insert_stmt->bindParam(':name', $name);
                 $insert_stmt->bindParam(':email', $email);
@@ -131,7 +86,6 @@ if(isset($_GET['code'])) {
                     $_SESSION['email'] = $email;
                     $_SESSION['avatar_url'] = $avatar_url;
                     
-                    // Redirect to user dashboard for new Google users
                     header('Location: dashboard.php');
                     exit();
                 }
@@ -143,17 +97,19 @@ if(isset($_GET['code'])) {
     }
 }
 
-// Function to verify OTP
+// Verify OTP
 if(isset($_POST['check'])) {
-    $email = isset($_SESSION['email']) ? $_SESSION['email'] : (isset($_POST['email']) ? $_POST['email'] : '');
+    $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
     
     if(empty($email)) {
-        $errors['otp-error'] = 'Session expired or email missing. Please sign up again.';
+        $errors['otp-error'] = 'Session expired. Please sign up again.';
     } else {
         $entered_otp = '';
         for ($i = 1; $i <= 6; $i++) {
             $entered_otp .= isset($_POST["otp$i"]) ? trim($_POST["otp$i"]) : '';
         }
+
+        error_log("🔍 OTP Verification Attempt: Email=$email, Entered OTP=$entered_otp");
 
         try {
             $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > NOW()";
@@ -163,29 +119,29 @@ if(isset($_POST['check'])) {
             $stmt->execute();
 
             if($stmt->rowCount() > 0){
-                $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL, updated_at = NOW() WHERE email = :email";
+                error_log("✅ OTP Verified Successfully for $email");
+                
+                $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL WHERE email = :email";
                 $update_stmt = $conn->prepare($update_status);
                 $update_stmt->bindParam(':email', $email);
                 
                 if($update_stmt->execute()){
                     $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
+                    $_SESSION['name'] = $user_data['name'];
+                    $_SESSION['email'] = $email;
                     unset($_SESSION['show_otp_modal']);
-                    unset($_SESSION['info']);
-                    
-                    $_SESSION['verification_success'] = true;
-                    $_SESSION['verified_name'] = $user_data['name'];
-                    $_SESSION['verified_email'] = $email;
-                    
-                    error_log("OTP Verified Successfully for: " . $email);
 
-                    header('Location: auth.php');
+                    $_SESSION['verification_success'] = 'Email verified successfully! You can now sign in.';
+                    header('Location: ' . $_SERVER['PHP_SELF']);
                     exit();
                 } else {
-                    $errors['otp-error'] = 'Failed to update account status. Please try again.';
+                    error_log("❌ Failed to update user status for $email");
+                    $errors['otp-error'] = 'Failed to update account. Please try again.';
                     $_SESSION['show_otp_modal'] = true;
                 }
             } else {
+                error_log("❌ OTP Verification Failed: Invalid or expired OTP for $email");
+                
                 $check_expired = "SELECT * FROM usertable WHERE email = :email AND code = :otp";
                 $expired_stmt = $conn->prepare($check_expired);
                 $expired_stmt->bindParam(':email', $email);
@@ -197,11 +153,11 @@ if(isset($_POST['check'])) {
                 } else {
                     $errors['otp-error'] = 'Invalid OTP. Please check and try again.';
                 }
-
                 $_SESSION['show_otp_modal'] = true;
             }
         } catch(PDOException $e) {
-            $errors['otp-error'] = 'Database error occurred. Please try again.';
+            error_log("❌ Database error during OTP verification: " . $e->getMessage());
+            $errors['otp-error'] = 'Database error occurred.';
             $_SESSION['show_otp_modal'] = true;
         }
     }
@@ -243,8 +199,8 @@ if(isset($_POST['signup'])){
 
             error_log("🔐 Generated OTP for $email: $otp (Expires: $otp_expiry)");
 
-            $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry, created_at, updated_at)
-                            VALUES (:name, :email, :password, :status, :code, :otp_expiry, NOW(), NOW())";
+            $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry)
+                            VALUES (:name, :email, :password, :status, :code, :otp_expiry)";
             $insert_stmt = $conn->prepare($insert_data);
             $insert_stmt->bindParam(':name', $name);
             $insert_stmt->bindParam(':email', $email);
@@ -305,7 +261,7 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
         error_log("🔄 Resending OTP to $email: $new_otp (Expires: $otp_expiry)");
         
         try {
-            $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry, updated_at = NOW() WHERE email = :email";
+            $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
             $stmt = $conn->prepare($update_otp);
             $stmt->bindParam(':code', $new_otp);
             $stmt->bindParam(':otp_expiry', $otp_expiry);
@@ -369,16 +325,13 @@ if(isset($_POST['signin'])){
                 $fetch = $stmt->fetch(PDO::FETCH_ASSOC);
                 $fetch_pass = $fetch['password'];
                 
-                // Check if user is blocked
-                if($fetch['status'] === 'blocked') {
-                    $errors['email'] = "Your account has been blocked. Please contact support.";
-                } else if(!password_verify($password, $fetch_pass)){
+                if(!password_verify($password, $fetch_pass)){
                     $errors['email'] = "Incorrect email or password.";
                 } else if($fetch['status'] == 'unverified'){
                     $new_otp = generateOTP();
                     $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
                     
-                    $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry, updated_at = NOW() WHERE email = :email";
+                    $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
                     $update_stmt = $conn->prepare($update_otp);
                     $update_stmt->bindParam(':code', $new_otp);
                     $update_stmt->bindParam(':otp_expiry', $otp_expiry);
@@ -409,18 +362,7 @@ if(isset($_POST['signin'])){
                     $_SESSION['email'] = $email;
                     $_SESSION['avatar_url'] = $fetch['avatar_url'] ?? '';
                     
-                    // Update last login time
-                    $update_login = "UPDATE usertable SET updated_at = NOW() WHERE id = :user_id";
-                    $login_stmt = $conn->prepare($update_login);
-                    $login_stmt->bindParam(':user_id', $fetch['id']);
-                    $login_stmt->execute();
-                    
-                    // Redirect to appropriate dashboard
-                    if($email === 'admin@zafskitchen.com' || $email === 'admin@gmail.com') {
-                        header('Location: admin-dashboard.php');
-                    } else {
-                        header('Location: dashboard.php');
-                    }
+                    header('Location: dashboard.php');
                     exit();
                 }
             } else {
@@ -434,7 +376,7 @@ if(isset($_POST['signin'])){
     }
 }
 
-// FORGOT PASSWORD
+// FORGOT PASSWORD - WITH DEBUGGING
 if(isset($_POST['forgot-password'])){
     $email = trim($_POST['email']);
     
@@ -452,48 +394,43 @@ if(isset($_POST['forgot-password'])){
             if($stmt->rowCount() > 0){
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                // Check if user is blocked
-                if($user['status'] === 'blocked') {
-                    $errors['forgot-error'] = "Your account has been blocked. Please contact support.";
-                } else {
-                    $reset_token = generateResetToken();
-                    $reset_expiry = date('Y-m-d H:i:s', strtotime('+30 minutes'));
+                $reset_token = generateResetToken();
+                $reset_expiry = date('Y-m-d H:i:s', strtotime('+30 minutes'));
+                
+                error_log("🔑 Generated Token: $reset_token");
+                error_log("⏰ Expiry: $reset_expiry");
+                
+                $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry WHERE email = :email";
+                $token_stmt = $conn->prepare($update_token);
+                $token_stmt->bindParam(':token', $reset_token);
+                $token_stmt->bindParam(':expiry', $reset_expiry);
+                $token_stmt->bindParam(':email', $email);
+                
+                if($token_stmt->execute()){
+                    error_log("✅ Token saved to database");
                     
-                    error_log("🔑 Generated Token: $reset_token");
-                    error_log("⏰ Expiry: $reset_expiry");
+                    $reset_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset-password.php?token=" . $reset_token;
                     
-                    $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry, updated_at = NOW() WHERE email = :email";
-                    $token_stmt = $conn->prepare($update_token);
-                    $token_stmt->bindParam(':token', $reset_token);
-                    $token_stmt->bindParam(':expiry', $reset_expiry);
-                    $token_stmt->bindParam(':email', $email);
+                    error_log("🔗 Reset Link: $reset_link");
+                    error_log("📧 Attempting to send email to: $email");
                     
-                    if($token_stmt->execute()){
-                        error_log("✅ Token saved to database");
-                        
-                        $reset_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset-password.php?token=" . $reset_token;
-                        
-                        error_log("🔗 Reset Link: $reset_link");
-                        error_log("📧 Attempting to send email to: $email");
-                        
-                        $email_result = sendPasswordResetEmail($email, $reset_link, $user['name']);
-                        
-                        error_log("📬 Email send result: " . ($email_result ? 'SUCCESS' : 'FAILED'));
-                        
-                        if($email_result){
-                            error_log("✅ Password reset email sent successfully to $email");
-                            $_SESSION['forgot_success'] = "Password reset link sent to your email. Please check your inbox.";
-                            $_SESSION['show_forgot_success'] = true;
-                            header('Location: ' . $_SERVER['PHP_SELF']);
-                            exit();
-                        } else {
-                            error_log("❌ CRITICAL: Email sending failed for $email");
-                            $errors['forgot-error'] = "Failed to send email. Please try again.";
-                        }
+                    $email_result = sendPasswordResetEmail($email, $reset_link, $user['name']);
+                    
+                    error_log("📬 Email send result: " . ($email_result ? 'SUCCESS' : 'FAILED'));
+                    
+                    if($email_result){
+                        error_log("✅ Password reset email sent successfully to $email");
+                        $_SESSION['forgot_success'] = "Password reset link sent to your email. Please check your inbox.";
+                        $_SESSION['show_forgot_success'] = true;
+                        header('Location: ' . $_SERVER['PHP_SELF']);
+                        exit();
                     } else {
-                        error_log("❌ Failed to save token to database");
-                        $errors['forgot-error'] = "Failed to process request.";
+                        error_log("❌ CRITICAL: Email sending failed for $email");
+                        $errors['forgot-error'] = "Failed to send email. Please try again.";
                     }
+                } else {
+                    error_log("❌ Failed to save token to database");
+                    $errors['forgot-error'] = "Failed to process request.";
                 }
             } else {
                 error_log("⚠️ Email not found or not verified: $email");
@@ -518,4 +455,3 @@ if(isset($_POST['login-now'])){
     exit();
 }
 ?>
-
