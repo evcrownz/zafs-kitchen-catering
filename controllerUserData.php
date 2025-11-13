@@ -1,7 +1,7 @@
 <?php 
 date_default_timezone_set('Asia/Manila');
 
-// Only start session if not already started
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -518,3 +518,4 @@ if(isset($_POST['login-now'])){
     exit();
 }
 ?>
+
