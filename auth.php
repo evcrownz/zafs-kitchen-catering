@@ -89,7 +89,7 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 75%;
+    height: 80%;
     background: #fff;
     display: flex;
     align-items: center;
@@ -102,7 +102,7 @@ body::before {
 }
 
 .container.active .form-box{
-    bottom: 35%;
+    bottom: 30%;
 }
 
 .container.forgot-active .form-box{
