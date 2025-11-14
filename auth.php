@@ -89,7 +89,7 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60%;
+    height: 65%;
     background: #fff;
     display: flex;
     align-items: center;
@@ -98,6 +98,7 @@ body::before {
     padding: 20px 25px;
     z-index: 1;
     transition: .6s ease-in-out 0.8s, visibility 0s 1s;
+    margin-bottom: 
     overflow: hidden;
 }
 
