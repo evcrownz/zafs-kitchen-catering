@@ -1567,6 +1567,29 @@
   </footer>
 
   <script>
+    // 🔴 CRITICAL: Check for logout flag in localStorage
+      (function() {
+          // Check if we're in a logout state
+          const logoutFlag = localStorage.getItem('logout_in_progress');
+          
+          if (logoutFlag === 'true') {
+              console.log('🔴 Logout detected, preventing dashboard load...');
+              localStorage.clear();
+              sessionStorage.clear();
+              window.location.replace('auth.php?logout=1');
+              return;
+          }
+          
+          // Check if logout cookie exists
+          if (document.cookie.includes('logout_flag=1')) {
+              console.log('🔴 Logout cookie detected, redirecting...');
+              localStorage.clear();
+              sessionStorage.clear();
+              window.location.replace('auth.php?logout=1');
+              return;
+          }
+      })();
+
     // Initialize scroll animations
     document.addEventListener('DOMContentLoaded', function() {
       // Scroll animation observer

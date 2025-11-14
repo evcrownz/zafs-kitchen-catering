@@ -9820,18 +9820,37 @@ if (nextStep2) {
                     });
                 }
 
-                const confirmSignout = document.getElementById('confirm-signout');
-                if (confirmSignout) {
-                    confirmSignout.addEventListener('click', function() {
-                        // Clear localStorage before redirecting
-                        localStorage.removeItem('currentSection');
-                        localStorage.removeItem('bookingFormData');
-                        
-                        // Redirect to logout.php instead of auth.php directly
-                        window.location.href = 'logout.php';
-                    });
-                }
-
+const confirmSignout = document.getElementById('confirm-signout');
+if (confirmSignout) {
+    confirmSignout.addEventListener('click', function() {
+        console.log('🔴 Sign out confirmed');
+        
+        // 1. Set logout flag FIRST
+        localStorage.setItem('logout_in_progress', 'true');
+        
+        // 2. Clear all storage
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+        } catch (e) {
+            console.error('Storage clear error:', e);
+        }
+        
+        // 3. Prevent any back navigation
+        history.pushState(null, '', location.href);
+        window.onpopstate = function() {
+            history.pushState(null, '', location.href);
+        };
+        
+        // 4. Force redirect with replace (no history)
+        window.location.replace('logout.php?t=' + Date.now());
+        
+        // 5. Backup redirect
+        setTimeout(function() {
+            window.location.href = 'logout.php?t=' + Date.now();
+        }, 500);
+    });
+}
                 // Modal event listeners
                 const messageModal = document.getElementById('message-modal');
                 if (messageModal) {

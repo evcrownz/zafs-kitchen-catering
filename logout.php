@@ -21,6 +21,9 @@ session_destroy();
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: 0");
+
+// CRITICAL: Set a logout flag cookie
+setcookie('logout_flag', '1', time() + 10, '/');
 ?>
 <!DOCTYPE html>
 <html>
@@ -73,35 +76,53 @@ header("Expires: 0");
     </div>
     
     <script>
-        // CRITICAL: Clear ALL browser storage IMMEDIATELY
+        // CRITICAL: Aggressive cleanup and redirect
         (function() {
+            console.log('🔴 LOGOUT: Starting cleanup...');
+            
+            // 1. Clear ALL storage FIRST
             try {
-                // Clear all storage
                 localStorage.clear();
                 sessionStorage.clear();
-                
-                // Clear specific keys as backup
-                ['currentSection', 'bookingFormData', 'user_id', 'email', 'name'].forEach(key => {
-                    localStorage.removeItem(key);
-                    sessionStorage.removeItem(key);
-                });
-                
-                console.log('All storage cleared');
+                console.log('✅ Storage cleared');
             } catch (e) {
-                console.error('Storage clear error:', e);
+                console.error('❌ Storage clear error:', e);
             }
-        })();
-        
-        // Prevent back button immediately
-        history.pushState(null, '', location.href);
-        window.addEventListener('popstate', function() {
+            
+            // 2. Clear ALL cookies
+            document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+            });
+            console.log('✅ Cookies cleared');
+            
+            // 3. Prevent back button
             history.pushState(null, '', location.href);
-        });
-        
-        // Force redirect with location.replace (no history)
-        setTimeout(function() {
-            window.location.replace('auth.php?logout=1');
-        }, 800);
+            window.onpopstate = function() {
+                history.pushState(null, '', location.href);
+            };
+            
+            // 4. Remove ALL event listeners
+            window.onbeforeunload = null;
+            
+            // 5. FORCE redirect with location.replace (no history entry)
+            setTimeout(function() {
+                console.log('🔴 LOGOUT: Redirecting to auth.php...');
+                
+                // Use multiple methods to ensure redirect works
+                window.location.replace('auth.php?logout=1&t=' + Date.now());
+                
+                // Backup redirect in case replace fails
+                setTimeout(function() {
+                    window.location.href = 'auth.php?logout=1&t=' + Date.now();
+                }, 500);
+                
+                // Final fallback - hard reload to auth page
+                setTimeout(function() {
+                    window.location = 'auth.php?logout=1&t=' + Date.now();
+                }, 1000);
+            }, 300);
+            
+        })();
     </script>
 </body>
 </html>
