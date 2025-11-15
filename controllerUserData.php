@@ -1,4 +1,9 @@
 <?php 
+// ============================================
+// CONTROLLERUSERDATA.PHP - 100% FIXED VERSION
+// For: Zaf's Kitchen Password Reset
+// ============================================
+
 date_default_timezone_set('Asia/Manila');
 
 // Only start session if not already started
@@ -25,7 +30,6 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['email'])) {
         if($stmt->rowCount() > 0) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Check if user is blocked
             if($user['status'] === 'blocked') {
                 session_unset();
                 session_destroy();
@@ -33,7 +37,6 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['email'])) {
                 exit();
             }
             
-            // Redirect to appropriate dashboard
             if($user['email'] === 'admin@zafskitchen.com' || $user['email'] === 'admin@gmail.com') {
                 header('Location: admin-dashboard.php');
             } else {
@@ -70,12 +73,10 @@ if(isset($_GET['code'])) {
             if($stmt->rowCount() > 0) {
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                // Check if user is blocked
                 if($user['status'] === 'blocked') {
                     $errors['google-error'] = 'Your account has been blocked. Please contact support.';
                 } else {
                     if(empty($user['google_id'])) {
-                        // Remove updated_at - let the database handle it with DEFAULT
                         $update = "UPDATE usertable SET google_id = :google_id, avatar_url = :avatar_url, oauth_provider = 'google' WHERE email = :email";
                         $update_stmt = $conn->prepare($update);
                         $update_stmt->bindParam(':google_id', $google_id);
@@ -90,7 +91,6 @@ if(isset($_GET['code'])) {
                     $_SESSION['email'] = $email;
                     $_SESSION['avatar_url'] = $avatar_url;
                     
-                    // Redirect to appropriate dashboard
                     if($email === 'admin@zafskitchen.com' || $email === 'admin@gmail.com') {
                         header('Location: admin-dashboard.php');
                     } else {
@@ -103,7 +103,6 @@ if(isset($_GET['code'])) {
                 $oauth_provider = 'google';
                 $random_password = password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT);
                 
-                // Remove created_at and updated_at - let database handle with DEFAULT
                 $insert = "INSERT INTO usertable (name, email, password, status, google_id, avatar_url, oauth_provider) 
                           VALUES (:name, :email, :password, :status, :google_id, :avatar_url, :oauth_provider)";
                 $insert_stmt = $conn->prepare($insert);
@@ -124,7 +123,6 @@ if(isset($_GET['code'])) {
                     $_SESSION['email'] = $email;
                     $_SESSION['avatar_url'] = $avatar_url;
                     
-                    // Redirect to user dashboard for new Google users
                     header('Location: dashboard.php');
                     exit();
                 }
@@ -136,7 +134,7 @@ if(isset($_GET['code'])) {
     }
 }
 
-// Function to verify OTP
+// VERIFY OTP
 if(isset($_POST['check'])) {
     $email = isset($_SESSION['email']) ? $_SESSION['email'] : (isset($_POST['email']) ? $_POST['email'] : '');
     
@@ -149,7 +147,6 @@ if(isset($_POST['check'])) {
         }
 
         try {
-            // Use CURRENT_TIMESTAMP for PostgreSQL/Supabase
             $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > CURRENT_TIMESTAMP";
             $stmt = $conn->prepare($check_otp);
             $stmt->bindParam(':email', $email);
@@ -157,7 +154,6 @@ if(isset($_POST['check'])) {
             $stmt->execute();
 
             if($stmt->rowCount() > 0){
-                // Remove updated_at - let database handle it
                 $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL WHERE email = :email";
                 $update_stmt = $conn->prepare($update_status);
                 $update_stmt->bindParam(':email', $email);
@@ -209,7 +205,7 @@ if(isset($_POST['signup'])){
     $password = $_POST['password'];
     $cpassword = $_POST['cpassword'];
 
-    error_log("🔍 Signup Attempt: Name=$name, Email=$email");
+    error_log("📝 Signup Attempt: Name=$name, Email=$email");
 
     if($password !== $cpassword){
         $errors['password'] = "Confirm password not matched!";
@@ -233,14 +229,11 @@ if(isset($_POST['signup'])){
         if(count($errors) === 0){
             $encpass = password_hash($password, PASSWORD_BCRYPT);
             $otp = generateOTP();
-            
-            // Use PostgreSQL interval notation for timestamp calculation
             $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
             $status = "unverified";
 
             error_log("🔐 Generated OTP for $email: $otp (Expires: $otp_expiry)");
 
-            // Remove created_at and updated_at - let database DEFAULT handle them
             $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry)
                             VALUES (:name, :email, :password, :status, :code, :otp_expiry)";
             $insert_stmt = $conn->prepare($insert_data);
@@ -303,7 +296,6 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
         error_log("🔄 Resending OTP to $email: $new_otp (Expires: $otp_expiry)");
         
         try {
-            // Remove updated_at - let database handle it
             $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
             $stmt = $conn->prepare($update_otp);
             $stmt->bindParam(':code', $new_otp);
@@ -368,7 +360,6 @@ if(isset($_POST['signin'])){
                 $fetch = $stmt->fetch(PDO::FETCH_ASSOC);
                 $fetch_pass = $fetch['password'];
                 
-                // Check if user is blocked
                 if($fetch['status'] === 'blocked') {
                     $errors['email'] = "Your account has been blocked. Please contact support.";
                 } else if(!password_verify($password, $fetch_pass)){
@@ -377,7 +368,6 @@ if(isset($_POST['signin'])){
                     $new_otp = generateOTP();
                     $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
                     
-                    // Remove updated_at
                     $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
                     $update_stmt = $conn->prepare($update_otp);
                     $update_stmt->bindParam(':code', $new_otp);
@@ -409,13 +399,11 @@ if(isset($_POST['signin'])){
                     $_SESSION['email'] = $email;
                     $_SESSION['avatar_url'] = $fetch['avatar_url'] ?? '';
                     
-                    // Update last login time - just update, database will handle updated_at
                     $update_login = "UPDATE usertable SET id = :user_id WHERE id = :user_id";
                     $login_stmt = $conn->prepare($update_login);
                     $login_stmt->bindParam(':user_id', $fetch['id']);
                     $login_stmt->execute();
                     
-                    // Redirect to appropriate dashboard
                     if($email === 'admin@zafskitchen.com' || $email === 'admin@gmail.com') {
                         header('Location: admin-dashboard.php');
                     } else {
@@ -434,35 +422,46 @@ if(isset($_POST['signin'])){
     }
 }
 
-// FORGOT PASSWORD
+// FORGOT PASSWORD - 100% FIXED VERSION
 if(isset($_POST['forgot-password'])){
     $email = trim($_POST['email']);
     
-    error_log("🔍 FORGOT PASSWORD TRIGGERED for: $email");
+    error_log("🔐 ========================================");
+    error_log("🔐 FORGOT PASSWORD REQUEST STARTED");
+    error_log("🔐 ========================================");
+    error_log("📧 Email: $email");
+    error_log("⏰ Time: " . date('Y-m-d H:i:s'));
     
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
         try {
+            error_log("✅ Email format is valid");
+            
             $check_email = "SELECT * FROM usertable WHERE email = :email AND status = 'verified'";
             $stmt = $conn->prepare($check_email);
             $stmt->bindParam(':email', $email);
             $stmt->execute();
             
-            error_log("📊 User found count: " . $stmt->rowCount());
+            $user_count = $stmt->rowCount();
+            error_log("📊 Users found in database: $user_count");
             
-            if($stmt->rowCount() > 0){
+            if($user_count > 0){
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                error_log("👤 User found: " . $user['name']);
                 
-                // Check if user is blocked
                 if($user['status'] === 'blocked') {
+                    error_log("🚫 User is BLOCKED");
                     $errors['forgot-error'] = "Your account has been blocked. Please contact support.";
                 } else {
+                    error_log("✅ User is ACTIVE, proceeding with reset...");
+                    
+                    // Generate token
                     $reset_token = generateResetToken();
                     $reset_expiry = date('Y-m-d H:i:s', strtotime('+30 minutes'));
                     
                     error_log("🔑 Generated Token: $reset_token");
-                    error_log("⏰ Expiry: $reset_expiry");
+                    error_log("⏰ Token Expiry: $reset_expiry");
                     
-                    // Remove updated_at
+                    // Save to database
                     $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry WHERE email = :email";
                     $token_stmt = $conn->prepare($update_token);
                     $token_stmt->bindParam(':token', $reset_token);
@@ -470,35 +469,43 @@ if(isset($_POST['forgot-password'])){
                     $token_stmt->bindParam(':email', $email);
                     
                     if($token_stmt->execute()){
-                        error_log("✅ Token saved to database");
+                        error_log("✅ Token saved to database successfully");
                         
-                        $reset_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/reset-password.php?token=" . $reset_token;
+                        // Build reset link
+                        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                        $host = $_SERVER['HTTP_HOST'];
+                        $path = dirname($_SERVER['PHP_SELF']);
+                        $reset_link = $protocol . "://" . $host . $path . "/reset-password.php?token=" . $reset_token;
                         
-                        error_log("🔗 Reset Link: $reset_link");
-                        error_log("📧 Attempting to send email to: $email");
+                        error_log("🔗 Reset Link Generated: $reset_link");
+                        error_log("📧 Attempting to send email via Brevo...");
                         
+                        // Send email
                         $email_result = sendPasswordResetEmail($email, $reset_link, $user['name']);
                         
-                        error_log("📬 Email send result: " . ($email_result ? 'SUCCESS' : 'FAILED'));
+                        error_log("📬 Email Send Result: " . ($email_result ? 'SUCCESS ✅' : 'FAILED ❌'));
                         
                         if($email_result){
-                            error_log("✅ Password reset email sent successfully to $email");
-                            $_SESSION['forgot_success'] = "Password reset link sent to your email. Please check your inbox.";
+                            error_log("🎉 SUCCESS! Password reset email sent to $email");
+                            error_log("🔐 ========================================");
+                            
+                            $_SESSION['forgot_success'] = "Password reset link has been sent to your email. Please check your inbox (and spam folder).";
                             $_SESSION['show_forgot_success'] = true;
                             header('Location: ' . $_SERVER['PHP_SELF']);
                             exit();
                         } else {
-                            error_log("❌ CRITICAL: Email sending failed for $email");
-                            $errors['forgot-error'] = "Failed to send email. Please try again.";
+                            error_log("❌ CRITICAL: Email sending FAILED!");
+                            error_log("🔐 ========================================");
+                            $errors['forgot-error'] = "Failed to send email. Please try again or contact support.";
                         }
                     } else {
                         error_log("❌ Failed to save token to database");
-                        $errors['forgot-error'] = "Failed to process request.";
+                        $errors['forgot-error'] = "Failed to process request. Please try again.";
                     }
                 }
             } else {
                 error_log("⚠️ Email not found or not verified: $email");
-                // Security: Don't reveal if email exists or not
+                // Security: Don't reveal if email exists
                 $_SESSION['forgot_success'] = "If this email exists, a reset link will be sent.";
                 $_SESSION['show_forgot_success'] = true;
                 header('Location: ' . $_SERVER['PHP_SELF']);
@@ -506,10 +513,12 @@ if(isset($_POST['forgot-password'])){
             }
         } catch(PDOException $e) {
             error_log("❌ Database error during forgot password: " . $e->getMessage());
-            $errors['forgot-error'] = "Database error occurred.";
+            error_log("🔐 ========================================");
+            $errors['forgot-error'] = "Database error occurred. Please try again.";
         }
     } else {
         error_log("❌ Invalid email format: $email");
+        error_log("🔐 ========================================");
         $errors['forgot-error'] = "Enter a valid email address.";
     }
 }
