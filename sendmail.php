@@ -216,4 +216,8 @@ function sendPasswordResetEmail($email, $reset_link, $name) {
 function generateOTP($length = 6) {
     return str_pad(random_int(0, 999999), $length, '0', STR_PAD_LEFT);
 }
+
+function generateResetToken($length = 32) {
+    return bin2hex(random_bytes($length));
+}
 ?>
