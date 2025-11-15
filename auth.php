@@ -98,7 +98,6 @@ body::before {
     padding: 20px 25px;
     z-index: 1;
     transition: .6s ease-in-out 0.8s, visibility 0s 1s;
-    margin-bottom: 30px;
     overflow: hidden;
 }
 
