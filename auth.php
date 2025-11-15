@@ -761,7 +761,7 @@ form{
 .otp-modal-card {
     background: white;
     border-radius: 16px;
-    width: 70%;
+    width: 90%;
     max-width: 450px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
     animation: slideDown 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -972,7 +972,7 @@ form{
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .otp-modal-card {
-        max-width: 350px;
+        max-width:350px;
     }
     
     .otp-modal-header {
