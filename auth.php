@@ -1633,72 +1633,67 @@ form{
     </div>
 <?php endif; ?>
 
-    <!-- Success Modal -->
-    <?php if (isset($_SESSION['verification_success'])): ?>
-    <div id="successModal" class="custom-modal">
-        <div class="custom-modal-content">
-            <div class="custom-modal-header">
-                <h5>Success!</h5>
-                <span class="close-btn" id="closeModal">&times;</span>
-            </div>
-            <div class="custom-modal-body">
-                <?php echo $_SESSION['verification_success']; ?>
-            </div>
-            <div class="custom-modal-footer">
-                <button id="closeModalBtn" class="custom-btn">Okay</button>
-            </div>
-        </div>
-    </div>
-    <?php unset($_SESSION['verification_success']); ?>
-    <?php endif; ?>
-
-    <!-- Reset Success Modal -->
-    <?php if (isset($_SESSION['reset_success'])): ?>
-    <div id="resetSuccessModal" class="custom-modal">
-        <div class="custom-modal-content">
-            <div class="custom-modal-header">
-                <h5>Password Reset Successful!</h5>
-                <span class="close-btn" id="closeResetModal">&times;</span>
-            </div>
-            <div class="custom-modal-body">
-                <?php echo $_SESSION['reset_success']; ?>
-            </div>
-            <div class="custom-modal-footer">
-                <button id="closeResetModalBtn" class="custom-btn">Continue to Login</button>
-            </div>
-        </div>
-    </div>
-    <?php unset($_SESSION['reset_success']); ?>
-    <?php endif; ?>
-
-    <!-- Forgot Password Success Modal -->
-    <?php if (isset($_SESSION['show_forgot_success'])): ?>
-    <div id="forgotSuccessModal" class="custom-modal">
-        <div class="custom-modal-content">
-            <div class="custom-modal-header">
-                <h5>Email Sent!</h5>
-                <span class="close-btn" id="closeForgotModal">&times;</span>
-            </div>
-            <div class="custom-modal-body">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <i class="bx bx-envelope" style="font-size: 48px; color: #DC2626;"></i>
+        <!-- Reset Success Modal - New Design -->
+        <?php if (isset($_SESSION['reset_success'])): ?>
+        <div class="error-modal-overlay show" id="resetSuccessModal">
+            <div class="error-modal-card">
+                <div class="error-modal-header">
+                    <div class="red-bar-left"></div>
+                    <div class="red-bar-right"></div>
+                    <div class="center-notch"></div>
+                    
+                    <div class="logo-circle">
+                        <img src="logo/logo.png" alt="Logo">
+                    </div>
                 </div>
-                <?php echo $_SESSION['forgot_success']; ?>
-                <br><br>
-                <small style="color: #666;">
-                    Don't see the email? Check your spam folder or wait a few minutes for delivery.
-                </small>
-            </div>
-            <div class="custom-modal-footer">
-                <button id="closeForgotModalBtn" class="custom-btn">Okay</button>
+                
+                <div class="error-modal-body">
+                    <h3 class="error-title">🎉 Password Reset Successful!</h3>
+                    <p class="error-message-text">
+                        <?php echo $_SESSION['reset_success']; ?>
+                    </p>
+                    <button class="try-again-btn" onclick="closeResetSuccessModal()">
+                        Continue to Sign In
+                    </button>
+                </div>
             </div>
         </div>
+        <?php unset($_SESSION['reset_success']); ?>
+        <?php endif; ?>
+
+<!-- Forgot Password Success Modal - New Design -->
+<?php if (isset($_SESSION['show_forgot_success'])): ?>
+<div class="error-modal-overlay show" id="forgotSuccessModal">
+    <div class="error-modal-card">
+        <div class="error-modal-header">
+            <div class="red-bar-left"></div>
+            <div class="red-bar-right"></div>
+            <div class="center-notch"></div>
+            
+            <div class="logo-circle">
+                <img src="logo/logo.png" alt="Logo">
+            </div>
+        </div>
+        
+        <div class="error-modal-body">
+            <h3 class="error-title">📧 Email Sent!</h3>
+            <p class="error-message-text">
+                <?php echo $_SESSION['forgot_success']; ?>
+            </p>
+            <p class="error-message-text" style="font-size: 13px; color: #888; margin-top: 10px;">
+                Don't see the email? Check your spam folder or wait a few minutes for delivery.
+            </p>
+            <button class="try-again-btn" onclick="closeForgotSuccessModal()">
+                Okay, Got It!
+            </button>
+        </div>
     </div>
-    <?php 
-        unset($_SESSION['forgot_success']);
-        unset($_SESSION['show_forgot_success']);
-    ?>
-    <?php endif; ?>
+</div>
+<?php 
+    unset($_SESSION['forgot_success']);
+    unset($_SESSION['show_forgot_success']);
+?>
+<?php endif; ?>
 
 <!-- OTP Verification Modal -->
 <div class="otp-modal-overlay" id="otpModal" style="display: none;">
@@ -1906,13 +1901,21 @@ form{
 
     <?php if(isset($_SESSION['reset_success'])): ?>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('resetSuccessModal').style.display = 'flex';
+            const modal = document.getElementById('resetSuccessModal');
+            if(modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('show'), 50);
+            }
         });
     <?php endif; ?>
 
     <?php if(isset($_SESSION['show_forgot_success'])): ?>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('forgotSuccessModal').style.display = 'flex';
+            const modal = document.getElementById('forgotSuccessModal');
+            if(modal) {
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('show'), 50);
+            }
         });
     <?php endif; ?>
 
@@ -1953,38 +1956,6 @@ form{
             });
         }
 
-        const resetModal = document.getElementById('resetSuccessModal');
-        const closeResetBtn = document.getElementById('closeResetModalBtn');
-        const closeResetX = document.getElementById('closeResetModal');
-        
-        if(closeResetBtn) {
-            closeResetBtn.addEventListener('click', function() {
-                resetModal.style.display = 'none';
-            });
-        }
-        
-        if(closeResetX) {
-            closeResetX.addEventListener('click', function() {
-                resetModal.style.display = 'none';
-            });
-        }
-
-        const forgotModal = document.getElementById('forgotSuccessModal');
-        const closeForgotBtn = document.getElementById('closeForgotModalBtn');
-        const closeForgotX = document.getElementById('closeForgotModal');
-        
-        if(closeForgotBtn) {
-            closeForgotBtn.addEventListener('click', function() {
-                forgotModal.style.display = 'none';
-            });
-        }
-        
-        if(closeForgotX) {
-            closeForgotX.addEventListener('click', function() {
-                forgotModal.style.display = 'none';
-            });
-        }
-
         const form = document.querySelector(".form-box.signup form");
         const loadingScreen = document.getElementById("loading-screen");
         
@@ -2001,6 +1972,28 @@ form{
             modal.classList.remove("show");
             setTimeout(() => {
                 modal.style.display = "none";
+            }, 300);
+        }
+    }
+
+    function closeResetSuccessModal() {
+        const modal = document.getElementById("resetSuccessModal");
+        if (modal) {
+            modal.classList.remove("show");
+            setTimeout(() => {
+                modal.style.display = "none";
+                window.location.href = window.location.pathname;
+            }, 300);
+        }
+    }
+
+    function closeForgotSuccessModal() {
+        const modal = document.getElementById("forgotSuccessModal");
+        if (modal) {
+            modal.classList.remove("show");
+            setTimeout(() => {
+                modal.style.display = "none";
+                window.location.href = window.location.pathname;
             }, 300);
         }
     }
@@ -2050,7 +2043,6 @@ form{
         }
     }
 </script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const container = document.querySelector('.container');
