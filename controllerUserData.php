@@ -14,6 +14,15 @@ $email = "";
 $name = "";
 $errors = [];
 
+// Remove duplicate function declarations - keep them only in sendmail.php
+// function generateResetToken($length = 32) {
+//     return bin2hex(random_bytes($length));
+// }
+
+// function generateOTP() {
+//     return sprintf("%06d", mt_rand(1, 999999));
+// }
+
 // Check if user is blocked and redirect to admin if admin
 if (isset($_SESSION['user_id']) && isset($_SESSION['email'])) {
     try {
@@ -75,8 +84,7 @@ if(isset($_GET['code'])) {
                     $errors['google-error'] = 'Your account has been blocked. Please contact support.';
                 } else {
                     if(empty($user['google_id'])) {
-                        // Remove updated_at - let the database handle it with DEFAULT
-                        $update = "UPDATE usertable SET google_id = :google_id, avatar_url = :avatar_url, oauth_provider = 'google' WHERE email = :email";
+                        $update = "UPDATE usertable SET google_id = :google_id, avatar_url = :avatar_url, oauth_provider = 'google', updated_at = NOW() WHERE email = :email";
                         $update_stmt = $conn->prepare($update);
                         $update_stmt->bindParam(':google_id', $google_id);
                         $update_stmt->bindParam(':avatar_url', $avatar_url);
@@ -103,9 +111,8 @@ if(isset($_GET['code'])) {
                 $oauth_provider = 'google';
                 $random_password = password_hash(bin2hex(random_bytes(16)), PASSWORD_BCRYPT);
                 
-                // Remove created_at and updated_at - let database handle with DEFAULT
-                $insert = "INSERT INTO usertable (name, email, password, status, google_id, avatar_url, oauth_provider) 
-                          VALUES (:name, :email, :password, :status, :google_id, :avatar_url, :oauth_provider)";
+                $insert = "INSERT INTO usertable (name, email, password, status, google_id, avatar_url, oauth_provider, created_at, updated_at) 
+                          VALUES (:name, :email, :password, :status, :google_id, :avatar_url, :oauth_provider, NOW(), NOW())";
                 $insert_stmt = $conn->prepare($insert);
                 $insert_stmt->bindParam(':name', $name);
                 $insert_stmt->bindParam(':email', $email);
@@ -149,35 +156,34 @@ if(isset($_POST['check'])) {
         }
 
         try {
-            // Use CURRENT_TIMESTAMP for PostgreSQL/Supabase
-            $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > CURRENT_TIMESTAMP";
+            $check_otp = "SELECT * FROM usertable WHERE email = :email AND code = :otp AND otp_expiry > NOW()";
             $stmt = $conn->prepare($check_otp);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':otp', $entered_otp);
             $stmt->execute();
 
-            if($stmt->rowCount() > 0){
-                // Remove updated_at - let database handle it
-                $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL WHERE email = :email";
-                $update_stmt = $conn->prepare($update_status);
-                $update_stmt->bindParam(':email', $email);
+        if($stmt->rowCount() > 0){
+            $update_status = "UPDATE usertable SET status = 'verified', code = NULL, otp_expiry = NULL, updated_at = NOW() WHERE email = :email";
+            $update_stmt = $conn->prepare($update_status);
+            $update_stmt->bindParam(':email', $email);
+            
+            if($update_stmt->execute()){
+                $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                if($update_stmt->execute()){
-                    $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
-                    unset($_SESSION['show_otp_modal']);
-                    unset($_SESSION['info']);
-                    
-                    $_SESSION['verification_success'] = true;
-                    $_SESSION['verified_name'] = $user_data['name'];
-                    $_SESSION['verified_email'] = $email;
-                    
-                    error_log("OTP Verified Successfully for: " . $email);
+                unset($_SESSION['show_otp_modal']);
+                unset($_SESSION['info']);
+                
+                // ✅ NEW: Show success registration modal instead
+                $_SESSION['show_success_reg_modal'] = true;
+                $_SESSION['verified_name'] = $user_data['name'];
+                $_SESSION['verified_email'] = $email;
+                
+                error_log("OTP Verified Successfully for: " . $email);
 
-                    header('Location: auth.php');
-                    exit();
-                } else {
-                    $errors['otp-error'] = 'Failed to update account status. Please try again.';
+                header('Location: auth.php');
+                exit();
+            } else {
+                            $errors['otp-error'] = 'Failed to update account status. Please try again.';
                     $_SESSION['show_otp_modal'] = true;
                 }
             } else {
@@ -233,16 +239,13 @@ if(isset($_POST['signup'])){
         if(count($errors) === 0){
             $encpass = password_hash($password, PASSWORD_BCRYPT);
             $otp = generateOTP();
-            
-            // Use PostgreSQL interval notation for timestamp calculation
             $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
             $status = "unverified";
 
             error_log("🔐 Generated OTP for $email: $otp (Expires: $otp_expiry)");
 
-            // Remove created_at and updated_at - let database DEFAULT handle them
-            $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry)
-                            VALUES (:name, :email, :password, :status, :code, :otp_expiry)";
+            $insert_data = "INSERT INTO usertable (name, email, password, status, code, otp_expiry, created_at, updated_at)
+                            VALUES (:name, :email, :password, :status, :code, :otp_expiry, NOW(), NOW())";
             $insert_stmt = $conn->prepare($insert_data);
             $insert_stmt->bindParam(':name', $name);
             $insert_stmt->bindParam(':email', $email);
@@ -303,8 +306,7 @@ if(isset($_POST['resend-otp']) || (isset($_POST['action']) && $_POST['action'] =
         error_log("🔄 Resending OTP to $email: $new_otp (Expires: $otp_expiry)");
         
         try {
-            // Remove updated_at - let database handle it
-            $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
+            $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry, updated_at = NOW() WHERE email = :email";
             $stmt = $conn->prepare($update_otp);
             $stmt->bindParam(':code', $new_otp);
             $stmt->bindParam(':otp_expiry', $otp_expiry);
@@ -377,8 +379,7 @@ if(isset($_POST['signin'])){
                     $new_otp = generateOTP();
                     $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
                     
-                    // Remove updated_at
-                    $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry WHERE email = :email";
+                    $update_otp = "UPDATE usertable SET code = :code, otp_expiry = :otp_expiry, updated_at = NOW() WHERE email = :email";
                     $update_stmt = $conn->prepare($update_otp);
                     $update_stmt->bindParam(':code', $new_otp);
                     $update_stmt->bindParam(':otp_expiry', $otp_expiry);
@@ -409,8 +410,8 @@ if(isset($_POST['signin'])){
                     $_SESSION['email'] = $email;
                     $_SESSION['avatar_url'] = $fetch['avatar_url'] ?? '';
                     
-                    // Update last login time - just update, database will handle updated_at
-                    $update_login = "UPDATE usertable SET id = :user_id WHERE id = :user_id";
+                    // Update last login time
+                    $update_login = "UPDATE usertable SET updated_at = NOW() WHERE id = :user_id";
                     $login_stmt = $conn->prepare($update_login);
                     $login_stmt->bindParam(':user_id', $fetch['id']);
                     $login_stmt->execute();
@@ -462,8 +463,7 @@ if(isset($_POST['forgot-password'])){
                     error_log("🔑 Generated Token: $reset_token");
                     error_log("⏰ Expiry: $reset_expiry");
                     
-                    // Remove updated_at
-                    $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry WHERE email = :email";
+                    $update_token = "UPDATE usertable SET reset_token = :token, reset_expiry = :expiry, updated_at = NOW() WHERE email = :email";
                     $token_stmt = $conn->prepare($update_token);
                     $token_stmt->bindParam(':token', $reset_token);
                     $token_stmt->bindParam(':expiry', $reset_expiry);

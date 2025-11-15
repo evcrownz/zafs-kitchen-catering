@@ -89,7 +89,7 @@ body::before {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 65%;
+    height: 60%;
     background: #fff;
     display: flex;
     align-items: center;
@@ -432,190 +432,199 @@ form{
     display: none;
     font-size: 13px;
 }
-
-/* Modal Error Overlay */
-.modal-error-overlay {
+/* NEW ERROR MODAL - With Logo & Notch */
+.error-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    display: flex;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    animation: fadeInOverlay 0.3s ease-out;
+    animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeInOverlay {
-    from {
-        opacity: 0;
-        backdrop-filter: blur(0px);
-    }
-    to {
-        opacity: 1;
-        backdrop-filter: blur(8px);
-    }
-}
-
-.modal-error-content {
-    background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
-    padding: 35px 30px 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 450px;
-    text-align: left;
-    color: #2c3e50;
-    border: 2px solid #991B1B;
-    box-shadow: 
-        0 20px 60px rgba(220, 38, 38, 0.15),
-        0 8px 25px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    position: relative;
-    z-index: 10000;
-    transform: scale(0.7);
-    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-}
-
-@keyframes popIn {
-    to {
-        transform: scale(1);
-    }
-}
-
-.modal-error-content::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg,rgb(255, 255, 255),rgba(255, 255, 255, 0.76), rgb(250, 130, 130));
-    border-radius: 22px;
-    z-index: -1;
-    background-size: 300% 300%;
-    animation: gradientShift 3s ease infinite;
-}
-
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-.modal-error-content h3 {
-    margin-bottom: 20px;
-    color: #DC2626;
-    font-size: 25px;
-    font-weight: 700;
+.error-modal-overlay.show {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: 'Poppins', sans-serif;
 }
 
-.modal-error-content h3::before {
-    content: '⚠';
-    font-size: 28px;
-    animation: pulse 2s infinite;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
-.modal-error-content ul {
-    padding-left: 0;
-    list-style: none;
-    font-size: 15px;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.modal-error-content ul li {
+.error-modal-card {
+    background: white;
+    border-radius: 16px;
+    width: 70%;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    animation: slideDown 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    overflow: hidden;
     position: relative;
-    padding: 8px 0 8px 35px;
-    margin-bottom: 5px;
-    background: rgba(220, 38, 38, 0.05);
-    border-radius: 8px;
-    padding-left: 45px;
-    padding-right: 15px;
-    transition: all 0.3s ease;
 }
 
-.modal-error-content ul li:hover {
-    background: rgba(220, 38, 38, 0.1);
-    transform: translateX(3px);
+@keyframes slideDown {
+    from {
+        transform: translateY(-100px) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
 
-.modal-error-content ul li::before {
-    content: '🛑';
+.error-modal-header {
+    position: relative;
+    height: 80px;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+}
+
+.red-bar-left {
     position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #DC2626;
-    font-weight: bold;
-    font-size: 14px;
-    width: 18px;
-    height: 18px;
-    background: rgba(220, 38, 38, 0.15);
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    top: 0;
+    left: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    border-radius: 16px 0 0 0;
 }
 
-.close-error-btn {
+.red-bar-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    border-radius: 0 16px 0 0;
+}
+
+.center-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 50px;
+    background: white;
+    border-radius: 0 0 50px 50px;
+}
+
+.logo-circle {
     position: absolute;
     top: 15px;
-    right: 20px;
-    width: 35px;
-    height: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
     background: white;
-    border: 2px solid #DC2626;
+    border: 3px solid #DC2626;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #DC2626;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10001;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
 }
 
-.close-error-btn:hover {
-    background: #DC2626;
+.logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.error-modal-body {
+    padding: 40px 30px 35px;
+    background: white;
+}
+
+.error-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.error-message-text {
+    font-size: 15px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.try-again-btn {
+    width: 100%;
+    padding: 7px;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    border: none;
+    border-radius: 10px;
     color: white;
-    transform: rotate(90deg) scale(1.1);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.try-again-btn:hover {
+    transform: translateY(-0px);
     box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
 }
 
-.close-error-btn::before {
-    font-size: 20px;
-    line-height: 1;
+.try-again-btn:active {
+    transform: translateY(0);
 }
 
-.modal-error-content {
-    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
-               subtleGlow 4s ease-in-out infinite alternate;
-}
-
-@keyframes subtleGlow {
-    from {
-        box-shadow: 
-            0 20px 60px rgba(220, 38, 38, 0.15),
-            0 8px 25px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+/* Responsive */
+@media (max-width: 480px) {
+    .error-modal-card {
+        max-width: 350px;
     }
-    to {
-        box-shadow: 
-            0 20px 60px rgba(220, 38, 38, 0.25),
-            0 8px 25px rgba(0, 0, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    
+    .error-modal-header {
+        height: 70px;
+    }
+    
+    .red-bar-left,
+    .red-bar-right {
+        width: 37%;
+    }
+    
+    .center-notch {
+        width: 90px;
+        height: 45px;
+    }
+    
+    .logo-circle {
+        top: 12px;
+        width: 45px;
+        height: 45px;
+        border-width: 2px;
+    }
+    
+    .error-modal-body {
+        padding: 35px 20px 30px;
+    }
+    
+    .error-title {
+        font-size: 15px;
+    }
+    
+    .error-message-text {
+        font-size: 11px;
+    }
+    
+    .try-again-btn {
+        padding: 8px;
+        font-size: 11px;
     }
 }
 
@@ -730,76 +739,116 @@ form{
     }
 }
 
-/* OTP Modal */
 .otp-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    display: flex;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    animation: fadeInOverlay 0.3s ease-out;
+    animation: fadeIn 0.3s ease;
 }
 
-.otp-modal-content {
-    background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
-    padding: 35px 30px 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 480px;
-    text-align: center;
-    color: #2c3e50;
-    border: 2px solid #DC2626;
-    box-shadow: 
-        0 20px 60px rgba(220, 38, 38, 0.15),
-        0 8px 25px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+.otp-modal-overlay.show {
+    display: flex;
+}
+
+.otp-modal-card {
+    background: white;
+    border-radius: 16px;
+    width: 70%;
+    max-width: 450px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    animation: slideDown 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    overflow: hidden;
     position: relative;
-    z-index: 10000;
-    transform: scale(0.7);
-    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 }
 
-.otp-modal-content::before {
-    content: '';
+.otp-modal-header {
+    position: relative;
+    height: 80px;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+}
+
+.otp-red-bar-left {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg,rgb(255, 255, 255),rgb(255, 255, 255),rgba(185, 28, 28, 0.37),rgb(85, 66, 60));
-    border-radius: 22px;
-    z-index: -1;
-    background-size: 300% 300%;
-    animation: gradientShift 3s ease infinite;
+    top: 0;
+    left: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    border-radius: 16px 0 0 0;
 }
 
-.otp-modal-content h2 {
-    margin-bottom: 12px;
-    color: #2c3e50;
-    font-size: 24px;
-    font-weight: 700;
-    font-family: 'Poppins', sans-serif;
+.otp-red-bar-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    border-radius: 0 16px 0 0;
+}
+
+.otp-center-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 50px;
+    background: white;
+    border-radius: 0 0 50px 50px;
+}
+
+.otp-logo-circle {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 3px solid #DC2626;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    overflow: hidden;
 }
 
-.otp-modal-content h2::before {
-    content: '📧';
-    font-size: 28px;
-    animation: emailBounce 2s infinite;
+.otp-logo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-@keyframes emailBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+.otp-modal-body {
+    padding: 40px 30px 35px;
+    background: white;
+}
+
+.otp-modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.otp-instruction {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .otp-instruction span {
@@ -807,134 +856,168 @@ form{
     font-weight: 600;
 }
 
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+}
+
+.otp-input {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    background: #f9f9f9;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+    border-color: #DC2626;
+    background: #fff;
+    box-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
+}
+
+.otp-input.filled {
+    background: #DC2626;
+    color: white;
+    border-color: #DC2626;
+}
+
+.otp-timer {
+    font-size: 13px;
+    color: #666;
+    margin: 12px 0;
+    text-align: center;
+}
+
 .otp-verify-btn {
     width: 100%;
-    height: 42px;
-    background: linear-gradient(145deg, #DC2626, #B91C1C);
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3);
+    padding: 12px;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
     border: none;
-    cursor: pointer;
-    font-size: 15px;
-    color: #fff;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
     font-weight: 600;
-    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
     transition: all 0.3s ease;
-    margin: 15px 0 12px 0;
-    position: relative;
-    overflow: hidden;
+    margin-top: 15px;
 }
 
-.otp-verify-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
-}
-
-.otp-verify-btn:hover {
+.otp-verify-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
-}
-
-.otp-verify-btn:hover::before {
-    left: 100%;
+    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
 }
 
 .otp-verify-btn:active {
     transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(220, 38, 38, 0.3);
 }
 
 .otp-verify-btn:disabled {
     background: #ccc;
     cursor: not-allowed;
     transform: none;
-    box-shadow: none;
+}
+
+.resend-link {
+    color: #DC2626;
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+.resend-link:hover {
+    color: #B91C1C;
+    text-decoration: underline;
+}
+
+.resend-link.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: none;
 }
 
 .otp-error {
-    background: linear-gradient(145deg, #f8d7da, #f5c6cb);
+    background: #f8d7da;
     color: #721c24;
     padding: 10px;
     border-radius: 8px;
     margin: 12px 0;
     border: 1px solid #f5c6cb;
     font-size: 13px;
-    font-weight: 500;
-    position: relative;
-    animation: slideIn 0.3s ease;
-}
-
-.otp-error::before {
-    content: '✖';
-    margin-right: 8px;
+    text-align: center;
 }
 
 .otp-success {
-    background: linear-gradient(145deg, #d4edda, #c3e6cb);
+    background: #d4edda;
     color: #155724;
     padding: 10px;
     border-radius: 8px;
     margin: 12px 0;
     border: 1px solid #c3e6cb;
     font-size: 13px;
-    font-weight: 500;
-    position: relative;
-    animation: slideIn 0.3s ease;
+    text-align: center;
 }
 
-.otp-success::before {
-    content: '✓';
-    margin-right: 8px;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .otp-modal-card {
+        max-width: 350px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .otp-modal-header {
+        height: 70px;
     }
-}
-
-.otp-close-btn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    width: 35px;
-    height: 35px;
-    background: white;
-    border: 2px solid #DC2626;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #DC2626;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10001;
-}
-
-.otp-close-btn:hover {
-    background: #DC2626;
-    color: white;
-    transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
-}
-
-.otp-close-btn::before {
-    content: '×';
-    font-size: 20px;
-    line-height: 1;
+    
+    .otp-red-bar-left,
+    .otp-red-bar-right {
+        width: 37%;
+    }
+    
+    .otp-center-notch {
+        width: 90px;
+        height: 45px;
+    }
+    
+    .otp-logo-circle {
+        top: 12px;
+        width: 45px;
+        height: 45px;
+        border-width: 2px;
+    }
+    
+    .otp-modal-body {
+        padding: 35px 20px 30px;
+    }
+    
+    .otp-modal-title {
+        font-size: 18px;
+    }
+    
+    .otp-instruction {
+        font-size: 12px;
+    }
+    
+    .otp-input {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+    
+    .otp-verify-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
 }
 
 /* Custom Modal */
@@ -1523,20 +1606,32 @@ form{
         </ul>
     </nav>
 
-    <!-- Error Modal -->
-    <?php if(count($errors) > 0): ?>
-        <div class="modal-error-overlay" id="errorModal">
-            <div class="modal-error-content">
-                <span class="close-error-btn" onclick="closeErrorModal()">&times;</span>
-                <h3>Try Again</h3>
-                <ul>
-                    <?php foreach($errors as $error): ?>
-                        <li><?php echo htmlspecialchars($error); ?></li>
-                    <?php endforeach; ?>
-                </ul>
+<!-- Error Modal - New Design -->
+<?php if(count($errors) > 0): ?>
+    <div class="error-modal-overlay show" id="errorModal">
+        <div class="error-modal-card">
+            <div class="error-modal-header">
+                <div class="red-bar-left"></div>
+                <div class="red-bar-right"></div>
+                <div class="center-notch"></div>
+                
+                <div class="logo-circle">
+                    <img src="logo/logo.png" alt="Logo">
+                </div>
+            </div>
+            
+            <div class="error-modal-body">
+                <h3 class="error-title">Oops! Something went wrong</h3>
+                <p class="error-message-text">
+                    <?php echo htmlspecialchars($errors[array_key_first($errors)]); ?>
+                </p>
+                <button class="try-again-btn" onclick="closeErrorModal()">
+                    Try Again
+                </button>
             </div>
         </div>
-    <?php endif; ?>
+    </div>
+<?php endif; ?>
 
     <!-- Success Modal -->
     <?php if (isset($_SESSION['verification_success'])): ?>
@@ -1605,11 +1700,24 @@ form{
     ?>
     <?php endif; ?>
 
-    <!-- OTP Verification Modal -->
-    <div class="otp-modal-overlay" id="otpModal" style="display: none;">
-        <div class="otp-modal-content">
-            <h2>Verify Your Email</h2>
-            <p class="otp-instruction">We've sent a 6-digit verification code to <span id="userEmail"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?></span></p>
+<!-- OTP Verification Modal -->
+<div class="otp-modal-overlay" id="otpModal" style="display: none;">
+    <div class="otp-modal-card">
+        <div class="otp-modal-header">
+            <div class="otp-red-bar-left"></div>
+            <div class="otp-red-bar-right"></div>
+            <div class="otp-center-notch"></div>
+            
+            <div class="otp-logo-circle">
+                <img src="logo/logo.png" alt="Logo">
+            </div>
+        </div>
+        
+        <div class="otp-modal-body">
+            <h3 class="otp-modal-title">Verify Your Email</h3>
+            <p class="otp-instruction">
+                We've sent a 6-digit code to <span id="userEmail"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?></span>
+            </p>
             
             <?php if(isset($_SESSION['info'])): ?>
                 <div class="otp-success" style="display: block;">
@@ -1640,14 +1748,42 @@ form{
                 <div class="otp-error" id="otpError" style="display: none;"></div>
                 <div class="otp-success" id="otpSuccess" style="display: none;"></div>
                 
-                <button type="submit" name="check" class="btn otp-verify-btn" id="verifyBtn" disabled>Verify OTP</button>
+                <button type="submit" name="check" class="otp-verify-btn" id="verifyBtn" disabled>Verify OTP</button>
             </form>
             
-            <form id="resendForm" method="POST" action="" style="display: inline;">
+           <form id="resendForm" method="POST" action="" 
+            style="display:flex; justify-content:center; align-items:center; background:none; padding:0; margin:0;">
+
                 <button type="submit" name="resend-otp" class="resend-link disabled" id="resendOtp">Resend OTP</button>
             </form>
         </div>
     </div>
+</div>
+
+<!-- Success Registration Modal -->
+<div class="error-modal-overlay" id="successRegModal" style="display: none;">
+    <div class="error-modal-card">
+        <div class="error-modal-header">
+            <div class="red-bar-left"></div>
+            <div class="red-bar-right"></div>
+            <div class="center-notch"></div>
+            
+            <div class="logo-circle">
+                <img src="logo/logo.png" alt="Logo">
+            </div>
+        </div>
+        
+        <div class="error-modal-body">
+            <h3 class="error-title">Registration Successful!</h3>
+            <p class="error-message-text">
+                Your account has been verified successfully. You can now sign in to your account.
+            </p>
+            <button class="try-again-btn" onclick="closeSuccessRegModal()">
+                Continue to Sign In
+            </button>
+        </div>
+    </div>
+</div>
 
     <!-- Main Container -->
     <div class="container <?php echo (isset($_POST['signup']) || isset($_POST['name']) || (count($errors) > 0 && !empty($name))) ? 'active show-signup' : ''; ?>">
@@ -1758,356 +1894,400 @@ form{
         </div>
     </div>
 
-    <script>
-        <?php if(isset($_SESSION['verification_success'])): ?>
-            window.onload = function() {
-                document.getElementById('successModal').style.display = 'flex';
-                setTimeout(function() {
-                    document.getElementById('successModal').classList.add('fade-in');
-                }, 50);
-            }
-        <?php endif; ?>
+<script>
+    <?php if(isset($_SESSION['verification_success'])): ?>
+        window.onload = function() {
+            document.getElementById('successModal').style.display = 'flex';
+            setTimeout(function() {
+                document.getElementById('successModal').classList.add('fade-in');
+            }, 50);
+        }
+    <?php endif; ?>
 
-        <?php if(isset($_SESSION['reset_success'])): ?>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('resetSuccessModal').style.display = 'flex';
-            });
-        <?php endif; ?>
-
-        <?php if(isset($_SESSION['show_forgot_success'])): ?>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('forgotSuccessModal').style.display = 'flex';
-            });
-        <?php endif; ?>
-
-        <?php if((isset($_SESSION['show_otp_modal']) && $_SESSION['show_otp_modal'] === true) || isset($errors['otp-error'])): ?>
-            document.addEventListener('DOMContentLoaded', function() {
-                showOTPModal();
-            });
-            <?php unset($_SESSION['show_otp_modal']); ?>
-        <?php endif; ?>
-
+    <?php if(isset($_SESSION['reset_success'])): ?>
         document.addEventListener('DOMContentLoaded', function() {
-            const successModal = document.getElementById('successModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const closeModal = document.getElementById('closeModal');
-            
-            if(closeModalBtn) {
-                closeModalBtn.addEventListener('click', function() {
-                    successModal.classList.remove('fade-in');
-                    setTimeout(function() { 
-                        successModal.style.display = 'none';
-                    }, 300);
-                });
-            }
-            
-            if(closeModal) {
-                closeModal.addEventListener('click', function() {
-                    successModal.classList.remove('fade-in');
-                    setTimeout(function() {
-                        successModal.style.display = 'none';
-                    }, 300);
-                });
-            }
-
-            const resetModal = document.getElementById('resetSuccessModal');
-            const closeResetBtn = document.getElementById('closeResetModalBtn');
-            const closeResetX = document.getElementById('closeResetModal');
-            
-            if(closeResetBtn) {
-                closeResetBtn.addEventListener('click', function() {
-                    resetModal.style.display = 'none';
-                });
-            }
-            
-            if(closeResetX) {
-                closeResetX.addEventListener('click', function() {
-                    resetModal.style.display = 'none';
-                });
-            }
-
-            const forgotModal = document.getElementById('forgotSuccessModal');
-            const closeForgotBtn = document.getElementById('closeForgotModalBtn');
-            const closeForgotX = document.getElementById('closeForgotModal');
-            
-            if(closeForgotBtn) {
-                closeForgotBtn.addEventListener('click', function() {
-                    forgotModal.style.display = 'none';
-                });
-            }
-            
-            if(closeForgotX) {
-                closeForgotX.addEventListener('click', function() {
-                    forgotModal.style.display = 'none';
-                });
-            }
-
-            const form = document.querySelector(".form-box.signup form");
-            const loadingScreen = document.getElementById("loading-screen");
-            
-            if(form && loadingScreen) {
-                form.addEventListener("submit", function () {
-                    loadingScreen.style.display = "flex";
-                });
-            }
+            document.getElementById('resetSuccessModal').style.display = 'flex';
         });
+    <?php endif; ?>
 
-        function closeErrorModal() {
-            const modal = document.getElementById("errorModal");
-            if (modal) modal.style.display = "none";
-        }
-
-        function showOTPModal() {
-            const modal = document.getElementById("otpModal");
-            if (modal) {
-                modal.style.display = "flex";
-                startCountdown();
-            }
-        }
-
-        function hideOTPModal() {
-            const modal = document.getElementById("otpModal");
-            if (modal) modal.style.display = "none";
-        }
-    </script>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const container = document.querySelector('.container');
-            const signupBtn = document.querySelector('.signup-btn');
-            const signinBtn = document.querySelector('.signin-btn');
-            const forgotPasswordLink = document.querySelector('.forgot-password-link');
-
-            if (signupBtn) {
-                signupBtn.addEventListener('click', () => {
-                    container.classList.remove('forgot-active');
-                    container.classList.add('active');
-                });
-            }
-
-            if (signinBtn) {
-                signinBtn.addEventListener('click', () => {
-                    container.classList.remove('active', 'forgot-active');
-                });
-            }
-
-            if (forgotPasswordLink) {
-                forgotPasswordLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    container.classList.remove('active');
-                    container.classList.add('forgot-active');
-                });
-            }
-
-            initializeOTPModal();
-
-            const otpModal = document.getElementById('otpModal');
-            const expiry = localStorage.getItem('otp_expiry');
-            if (otpModal && otpModal.style.display !== 'none' && expiry) {
-                const now = Date.now();
-                if (now < parseInt(expiry)) {
-                    startCountdown();
-                } else {
-                    localStorage.removeItem('otp_expiry');
-                }
-            }
+    <?php if(isset($_SESSION['show_forgot_success'])): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('forgotSuccessModal').style.display = 'flex';
         });
+    <?php endif; ?>
 
-        function initializeOTPModal() {
-            const otpInputs = document.querySelectorAll('.otp-input');
-            const verifyBtn = document.getElementById('verifyBtn');
-            const resendBtn = document.getElementById('resendOtp');
-            const resendForm = document.getElementById('resendForm');
+    <?php if((isset($_SESSION['show_otp_modal']) && $_SESSION['show_otp_modal'] === true) || isset($errors['otp-error'])): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            showOTPModal();
+        });
+        <?php unset($_SESSION['show_otp_modal']); ?>
+    <?php endif; ?>
 
-            if (!otpInputs.length) return;
+    <?php if(isset($_SESSION['show_success_reg_modal'])): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            showSuccessRegModal();
+        });
+        <?php unset($_SESSION['show_success_reg_modal']); ?>
+    <?php endif; ?>
 
-            otpInputs.forEach((input, index) => {
-                input.addEventListener('input', function () {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                    if (this.value.length > 1) this.value = this.value.slice(0, 1);
-                    this.classList.toggle('filled', this.value.length === 1);
-                    if (this.value && index < otpInputs.length - 1) {
-                        otpInputs[index + 1].focus();
-                    }
-                    checkOTPComplete();
-                });
-
-                input.addEventListener('keydown', function (e) {
-                    if (e.key === 'Backspace') {
-                        if (this.value === '' && index > 0) {
-                            otpInputs[index - 1].focus();
-                            otpInputs[index - 1].value = '';
-                            otpInputs[index - 1].classList.remove('filled');
-                        } else {
-                            this.value = '';
-                            this.classList.remove('filled');
-                        }
-                        checkOTPComplete();
-                    } else if (e.key === 'ArrowLeft' && index > 0) {
-                        otpInputs[index - 1].focus();
-                    } else if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
-                        otpInputs[index + 1].focus();
-                    }
-                });
-
-                input.addEventListener('paste', function (e) {
-                    e.preventDefault();
-                    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
-                    if (pastedData.length === 6) {
-                        otpInputs.forEach((input, i) => {
-                            input.value = pastedData[i] || '';
-                            input.classList.toggle('filled', !!pastedData[i]);
-                        });
-                        checkOTPComplete();
-                        verifyBtn.focus();
-                    }
-                });
-
-                input.addEventListener('focus', function () {
-                    this.select();
-                });
+    document.addEventListener('DOMContentLoaded', function() {
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeModal = document.getElementById('closeModal');
+        
+        if(closeModalBtn) {
+            closeModalBtn.addEventListener('click', function() {
+                successModal.classList.remove('fade-in');
+                setTimeout(function() { 
+                    successModal.style.display = 'none';
+                }, 300);
             });
-
-            if (resendForm) {
-                resendForm.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    if (!resendBtn.classList.contains('disabled')) {
-                        resendOTP();
-                    }
-                });
-            }
-
-            function checkOTPComplete() {
-                const complete = Array.from(otpInputs).every(input => input.value.length === 1);
-                if (verifyBtn) {
-                    verifyBtn.disabled = !complete;
-                    verifyBtn.classList.toggle('enabled', complete);
-                }
-            }
         }
-
-        let countdownInterval;
-
-        function startCountdown() {
-            const resendBtn = document.getElementById('resendOtp');
-            const countdownElement = document.getElementById('countdown');
-            const timerElement = document.getElementById('timer');
-
-            clearInterval(countdownInterval);
-
-            let expiryTime = localStorage.getItem('otp_expiry');
-            if (!expiryTime) {
-                expiryTime = Date.now() + 60000;
-                localStorage.setItem('otp_expiry', expiryTime);
-            } else {
-                expiryTime = parseInt(expiryTime);
-            }
-
-            function updateCountdown() {
-                const remaining = Math.floor((expiryTime - Date.now()) / 1000);
-
-                if (remaining >= 0 && countdownElement) {
-                    countdownElement.textContent = remaining;
-                }
-
-                if (remaining <= 0) {
-                    clearInterval(countdownInterval);
-                    if (timerElement) {
-                        timerElement.innerHTML = '<span style="color: #DC2626; font-weight: bold;">You can now resend OTP</span>';
-                    }
-                    if (resendBtn) {
-                        resendBtn.classList.remove('disabled');
-                        resendBtn.style.pointerEvents = 'auto';
-                        resendBtn.innerHTML = 'Resend OTP';
-                    }
-                    localStorage.removeItem('otp_expiry');
-                }
-            }
-
-            updateCountdown();
-            countdownInterval = setInterval(updateCountdown, 1000);
-
-            if (resendBtn) {
-                resendBtn.classList.add('disabled');
-                resendBtn.style.pointerEvents = 'none';
-                resendBtn.innerHTML = 'Resend OTP';
-            }
-        }
-
-        function resendOTP() {
-            const resendBtn = document.getElementById('resendOtp');
-            showLoadingState(resendBtn, 'Sending...');
-
-            fetch(window.location.href, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'action=resend-otp'
-            })
-                .then(response => response.json())
-                .then(data => {
-                    hideLoadingState(resendBtn);
-                    if (data.success) {
-                        showOTPMessage(data.message, 'success');
-                        clearOTPInputs();
-                        localStorage.setItem('otp_expiry', Date.now() + 60000);
-                        startCountdown();
-                    } else {
-                        showOTPMessage(data.message, 'error');
-                    }
-                })
-                .catch(error => {
-                    hideLoadingState(resendBtn);
-                    document.getElementById('resendForm').submit();
-                });
-        }
-
-        function showLoadingState(element, loadingText = 'Loading...') {
-            if (element) {
-                element.disabled = true;
-                element.dataset.originalText = element.innerHTML;
-                element.innerHTML = `<span class="spinner"></span> ${loadingText}`;
-            }
-        }
-
-        function hideLoadingState(element) {
-            if (element && element.dataset.originalText) {
-                element.disabled = false;
-                element.innerHTML = element.dataset.originalText;
-                delete element.dataset.originalText;
-            }
-        }
-
-        function clearOTPInputs() {
-            const otpInputs = document.querySelectorAll('.otp-input');
-            otpInputs.forEach((input, index) => {
-                setTimeout(() => {
-                    input.value = '';
-                    input.classList.remove('filled');
-                    input.classList.add('shake');
-                    setTimeout(() => input.classList.remove('shake'), 500);
-                }, index * 50);
+        
+        if(closeModal) {
+            closeModal.addEventListener('click', function() {
+                successModal.classList.remove('fade-in');
+                setTimeout(function() {
+                    successModal.style.display = 'none';
+                }, 300);
             });
+        }
 
+        const resetModal = document.getElementById('resetSuccessModal');
+        const closeResetBtn = document.getElementById('closeResetModalBtn');
+        const closeResetX = document.getElementById('closeResetModal');
+        
+        if(closeResetBtn) {
+            closeResetBtn.addEventListener('click', function() {
+                resetModal.style.display = 'none';
+            });
+        }
+        
+        if(closeResetX) {
+            closeResetX.addEventListener('click', function() {
+                resetModal.style.display = 'none';
+            });
+        }
+
+        const forgotModal = document.getElementById('forgotSuccessModal');
+        const closeForgotBtn = document.getElementById('closeForgotModalBtn');
+        const closeForgotX = document.getElementById('closeForgotModal');
+        
+        if(closeForgotBtn) {
+            closeForgotBtn.addEventListener('click', function() {
+                forgotModal.style.display = 'none';
+            });
+        }
+        
+        if(closeForgotX) {
+            closeForgotX.addEventListener('click', function() {
+                forgotModal.style.display = 'none';
+            });
+        }
+
+        const form = document.querySelector(".form-box.signup form");
+        const loadingScreen = document.getElementById("loading-screen");
+        
+        if(form && loadingScreen) {
+            form.addEventListener("submit", function () {
+                loadingScreen.style.display = "flex";
+            });
+        }
+    });
+
+    function closeErrorModal() {
+        const modal = document.getElementById("errorModal");
+        if (modal) {
+            modal.classList.remove("show");
             setTimeout(() => {
-                if (otpInputs[0]) otpInputs[0].focus();
+                modal.style.display = "none";
             }, 300);
         }
+    }
 
-        function showOTPMessage(message, type) {
-            const errorElement = document.getElementById('otpError');
-            const successElement = document.getElementById('otpSuccess');
+    function showOTPModal() {
+        const modal = document.getElementById("otpModal");
+        if (modal) {
+            modal.style.display = "flex";
+            setTimeout(() => {
+                modal.classList.add("show");
+            }, 50);
+            startCountdown();
+        }
+    }
 
-            if (errorElement) errorElement.style.display = 'none';
-            if (successElement) successElement.style.display = 'none';
+    function hideOTPModal() {
+        const modal = document.getElementById("otpModal");
+        if (modal) {
+            modal.classList.remove("show");
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        }
+    }
 
-            if (type === 'error' && errorElement) {
-                errorElement.textContent = message;
-                errorElement.style.display = 'block';
-            } else if (type === 'success' && successElement) {
-                successElement.textContent = message;
-                successElement.style.display = 'block';
+    function showSuccessRegModal() {
+        hideOTPModal();
+        setTimeout(() => {
+            const modal = document.getElementById("successRegModal");
+            if (modal) {
+                modal.style.display = "flex";
+                setTimeout(() => {
+                    modal.classList.add("show");
+                }, 50);
+            }
+        }, 400);
+    }
+
+    function closeSuccessRegModal() {
+        const modal = document.getElementById("successRegModal");
+        if (modal) {
+            modal.classList.remove("show");
+            setTimeout(() => {
+                modal.style.display = "none";
+                window.location.href = window.location.pathname;
+            }, 300);
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const container = document.querySelector('.container');
+        const signupBtn = document.querySelector('.signup-btn');
+        const signinBtn = document.querySelector('.signin-btn');
+        const forgotPasswordLink = document.querySelector('.forgot-password-link');
+
+        if (signupBtn) {
+            signupBtn.addEventListener('click', () => {
+                container.classList.remove('forgot-active');
+                container.classList.add('active');
+            });
+        }
+
+        if (signinBtn) {
+            signinBtn.addEventListener('click', () => {
+                container.classList.remove('active', 'forgot-active');
+            });
+        }
+
+        if (forgotPasswordLink) {
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                container.classList.remove('active');
+                container.classList.add('forgot-active');
+            });
+        }
+
+        initializeOTPModal();
+
+        const otpModal = document.getElementById('otpModal');
+        const expiry = localStorage.getItem('otp_expiry');
+        if (otpModal && otpModal.style.display !== 'none' && expiry) {
+            const now = Date.now();
+            if (now < parseInt(expiry)) {
+                startCountdown();
+            } else {
+                localStorage.removeItem('otp_expiry');
             }
         }
-    </script>
+    });
+
+    function initializeOTPModal() {
+        const otpInputs = document.querySelectorAll('.otp-input');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const resendBtn = document.getElementById('resendOtp');
+        const resendForm = document.getElementById('resendForm');
+
+        if (!otpInputs.length) return;
+
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value.length > 1) this.value = this.value.slice(0, 1);
+                this.classList.toggle('filled', this.value.length === 1);
+                if (this.value && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+                checkOTPComplete();
+            });
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Backspace') {
+                    if (this.value === '' && index > 0) {
+                        otpInputs[index - 1].focus();
+                        otpInputs[index - 1].value = '';
+                        otpInputs[index - 1].classList.remove('filled');
+                    } else {
+                        this.value = '';
+                        this.classList.remove('filled');
+                    }
+                    checkOTPComplete();
+                } else if (e.key === 'ArrowLeft' && index > 0) {
+                    otpInputs[index - 1].focus();
+                } else if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('paste', function (e) {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+                if (pastedData.length === 6) {
+                    otpInputs.forEach((input, i) => {
+                        input.value = pastedData[i] || '';
+                        input.classList.toggle('filled', !!pastedData[i]);
+                    });
+                    checkOTPComplete();
+                    verifyBtn.focus();
+                }
+            });
+
+            input.addEventListener('focus', function () {
+                this.select();
+            });
+        });
+
+        if (resendForm) {
+            resendForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!resendBtn.classList.contains('disabled')) {
+                    resendOTP();
+                }
+            });
+        }
+
+        function checkOTPComplete() {
+            const complete = Array.from(otpInputs).every(input => input.value.length === 1);
+            if (verifyBtn) {
+                verifyBtn.disabled = !complete;
+                verifyBtn.classList.toggle('enabled', complete);
+            }
+        }
+    }
+
+    let countdownInterval;
+
+    function startCountdown() {
+        const resendBtn = document.getElementById('resendOtp');
+        const countdownElement = document.getElementById('countdown');
+        const timerElement = document.getElementById('timer');
+
+        clearInterval(countdownInterval);
+
+        let expiryTime = localStorage.getItem('otp_expiry');
+        if (!expiryTime) {
+            expiryTime = Date.now() + 60000;
+            localStorage.setItem('otp_expiry', expiryTime);
+        } else {
+            expiryTime = parseInt(expiryTime);
+        }
+
+        function updateCountdown() {
+            const remaining = Math.floor((expiryTime - Date.now()) / 1000);
+
+            if (remaining >= 0 && countdownElement) {
+                countdownElement.textContent = remaining;
+            }
+
+            if (remaining <= 0) {
+                clearInterval(countdownInterval);
+                if (timerElement) {
+                    timerElement.innerHTML = '<span style="color: #DC2626; font-weight: bold;">You can now resend OTP</span>';
+                }
+                if (resendBtn) {
+                    resendBtn.classList.remove('disabled');
+                    resendBtn.style.pointerEvents = 'auto';
+                    resendBtn.innerHTML = 'Resend OTP';
+                }
+                localStorage.removeItem('otp_expiry');
+            }
+        }
+
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 1000);
+
+        if (resendBtn) {
+            resendBtn.classList.add('disabled');
+            resendBtn.style.pointerEvents = 'none';
+            resendBtn.innerHTML = 'Resend OTP';
+        }
+    }
+
+    function resendOTP() {
+        const resendBtn = document.getElementById('resendOtp'); 
+        showLoadingState(resendBtn, 'Sending...');
+
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'action=resend-otp'
+        })
+            .then(response => response.json())
+            .then(data => {
+                hideLoadingState(resendBtn);
+                if (data.success) {
+                    showOTPMessage(data.message, 'success');
+                    clearOTPInputs();
+                    localStorage.setItem('otp_expiry', Date.now() + 60000);
+                    startCountdown();
+                } else {
+                    showOTPMessage(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                hideLoadingState(resendBtn);
+                document.getElementById('resendForm').submit();
+            });
+    }
+
+    function showLoadingState(element, loadingText = 'Loading...') {
+        if (element) {
+            element.disabled = true;
+            element.dataset.originalText = element.innerHTML;
+            element.innerHTML = `<span class="spinner"></span> ${loadingText}`;
+        }
+    }
+
+    function hideLoadingState(element) {
+        if (element && element.dataset.originalText) {
+            element.disabled = false;
+            element.innerHTML = element.dataset.originalText;
+            delete element.dataset.originalText;
+        }
+    }
+
+    function clearOTPInputs() {
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            setTimeout(() => {
+                input.value = '';
+                input.classList.remove('filled');
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 500);
+            }, index * 50);
+        });
+
+        setTimeout(() => {
+            if (otpInputs[0]) otpInputs[0].focus();
+        }, 300);
+    }
+
+    function showOTPMessage(message, type) {
+        const errorElement = document.getElementById('otpError');
+        const successElement = document.getElementById('otpSuccess');
+
+        if (errorElement) errorElement.style.display = 'none';
+        if (successElement) successElement.style.display = 'none';
+
+        if (type === 'error' && errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        } else if (type === 'success' && successElement) {
+            successElement.textContent = message;
+            successElement.style.display = 'block';
+        }
+    }
+</script>
 </body>
 </html>
