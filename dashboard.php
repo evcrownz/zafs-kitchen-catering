@@ -2779,6 +2779,52 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         text-align: center !important;
     }
 
+    /* ========== SELECTED PRICE DISPLAY - LEFT RIGHT ALIGN ========== */
+    #selected-price-display .flex.justify-between {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    #selected-price-display .text-gray-700 {
+        text-align: left !important;
+    }
+
+    #selected-pax-text,
+    #selected-price-text {
+        text-align: right !important;
+        margin-left: auto !important;
+    }
+
+    /* ========== SELECTED PRICE DISPLAY - PROPER ALIGNMENT ========== */
+    #selected-price-display {
+        padding: 0.5rem !important;
+        margin-top: 0.5rem !important;
+    }
+
+    #selected-price-display .flex.justify-between.items-center {
+        display: grid !important;
+        grid-template-columns: auto 1fr !important;
+        gap: 1rem !important;
+        align-items: center !important;
+    }
+
+    #selected-price-display .text-gray-700 {
+        text-align: left !important;
+        white-space: nowrap !important;
+    }
+
+    #selected-pax-text {
+        text-align: right !important;
+        justify-self: end !important;
+    }
+
+    #selected-price-text {
+        text-align: right !important;
+        justify-self: end !important;
+        font-size: 1.1rem !important;
+    }
+
     /* ========== MODALS ========== */
     .fixed.inset-0.bg-black.bg-opacity-50 {
         padding: 0.5rem;
@@ -3018,6 +3064,67 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     #menu-modal #book-package-btn i {
         font-size: 0.65rem !important;
         margin-right: 0.2rem !important;
+    }
+
+    /* ========== GUEST SELECTION - SUPER LIIT ========== */
+    #modal-guest-selection button {
+        padding: 0.3rem 0.2rem !important;
+        font-size: 0.55rem !important;
+        min-height: 28px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.1rem !important;
+        line-height: 1.1 !important;
+        border-radius: 0.3rem !important;
+    }
+
+    #modal-guest-selection button span {
+        font-size: 0.55rem !important;
+        font-weight: 500 !important;
+    }
+
+    #modal-guest-selection button .font-bold {
+        font-size: 0.6rem !important;
+        font-weight: 600 !important;
+    }
+
+    /* Price/Pax text inside buttons */
+    #modal-guest-selection button > div {
+        font-size: 0.55rem !important;
+    }
+
+/* Checkbox size - SUPER FORCE */
+    #menu-modal #modal-guest-selection input[type="checkbox"],
+    #menu-modal #modal-guest-selection input[type="radio"],
+    #modal-guest-selection input[type="checkbox"],
+    #modal-guest-selection input[type="radio"],
+    input[type="checkbox"],
+    input[type="radio"] {
+        width: 14px !important;
+        height: 14px !important;
+        min-width: 14px !important;
+        max-width: 14px !important;
+        min-height: 14px !important;
+        max-height: 14px !important;
+        margin: 0 0.3rem 0 0 !important;
+        transform: none !important;
+    }
+
+    /* Override any existing checkbox styles */
+    label input[type="checkbox"],
+    label input[type="radio"] {
+        width: 14px !important;
+        height: 14px !important;
+        min-width: 14px !important;
+        min-height: 14px !important;
+    }
+
+    /* Selected state styling */
+    #modal-guest-selection button.selected,
+    #modal-guest-selection button.bg-\[\\#DC2626\] {
+        font-weight: 600 !important;
     }
 
     /* ========== GALLERY ========== */
@@ -4878,7 +4985,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         </div>
     </section>
 
-<<!-- Menu Package Details Modal - ENHANCED -->
+<!-- Menu Package Details Modal - ENHANCED -->
 <div id="menu-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-lg shadow-xl w-full max-h-[90vh] overflow-hidden" style="max-width: 60%;">
         <!-- Header -->
@@ -4926,14 +5033,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                     <h4 class="text-sm font-semibold text-gray-800">Select Number of Guests</h4>
                 </div>
                 <div id="modal-guest-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
-                <div id="selected-price-display" class="hidden mt-3 p-3 bg-white rounded-lg">
-                    <div class="flex justify-between items-center">
+                <div id="selected-price-display" class="hidden mt-2 p-2 bg-white rounded-lg">
+                    <div class="flex justify-between items-center gap-4">
                         <span class="text-gray-700 font-medium text-xs">Selected Package:</span>
-                        <span id="selected-pax-text" class="text-[#DC2626] font-bold text-xs"></span>
+                        <span id="selected-pax-text" class="text-[#DC2626] font-bold text-xs text-right"></span>
                     </div>
-                    <div class="flex justify-between items-center mt-1">
+                    <div class="flex justify-between items-center gap-4 mt-0.5">
                         <span class="text-gray-700 font-medium text-xs">Total Price:</span>
-                        <span id="selected-price-text" class="text-lg text-[#DC2626] font-bold"></span>
+                        <span id="selected-price-text" class="text-base text-[#DC2626] font-bold text-right"></span>
                     </div>
                 </div>
             </div>
@@ -4941,8 +5048,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         
         <!-- Footer with Book Button -->
         <div class="sticky bottom-0 px-4 py-3 border-t bg-white shadow-lg">
-            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-2 px-3 rounded-lg font-semibold text-sm transition-all cursor-not-allowed">
-                <i class="fas fa-calendar-plus mr-2 text-xs"></i>
+            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-2.5 px-4 rounded-lg font-semibold text-base transition-all cursor-not-allowed">
+                <i class="fas fa-calendar-plus mr-2 text-sm"></i>
                 Select Guest Count to Continue
             </button>
         </div>
