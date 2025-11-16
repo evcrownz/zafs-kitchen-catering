@@ -1143,6 +1143,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                 margin-right: 8px;
             }
 
+            /* ========== GUEST SELECTION BUTTONS ========== */
+    #modal-guest-selection button {
+        padding: 0.4rem 0.3rem !important;
+        font-size: 0.65rem !important;
+        min-height: 32px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.1rem !important;
+        line-height: 1.2 !important;
+    }
+
+    #modal-guest-selection button span {
+        font-size: 0.65rem !important;
+    }
+
+    #modal-guest-selection button .font-bold {
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+    }
+
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
@@ -1602,32 +1624,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             }
         }
 
-
-/* ============================================
+/*============================================
    PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
    ============================================ */
 
-   /* Force proper grid behavior on mobile */
+/* Force proper grid behavior on mobile */
 @media (max-width: 768px) {
     #section-dashboard .grid-cols-2 {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
     
-    /* Ensure cards don't overflow */
     #section-dashboard .grid-cols-2 > * {
         min-width: 0;
         max-width: 100%;
     }
     
-    /* Prevent any margin/padding issues */
     #section-dashboard {
         max-width: 100vw;
         overflow-x: hidden;
     }
 }
 
-/* Hover effects only on desktop */
 @media (hover: hover) {
     #section-dashboard .hover\:scale-105:hover {
         transform: scale(1.05);
@@ -1843,7 +1861,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         background-size: 16px;
     }
 
-    /* Helper text */
     .text-xs.text-gray-500 {
         font-size: 0.65rem !important;
         margin-top: 0.2rem;
@@ -1952,7 +1969,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.75rem !important;
     }
 
-    /* Step navigation buttons */
     #next-step1,
     #next-step2,
     #back-step2,
@@ -1963,10 +1979,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-weight: 600;
     }
 
-    /* Button groups */
     .flex.justify-between button {
-        min-width: 90px;
-        font-size: 0.8rem !important;
+        font-size: 0.9rem !important;
     }
 
     .flex.justify-end button {
@@ -2006,9 +2020,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.75rem !important;
     }
 
-    /* ========== MY BOOKINGS SECTION - FIXED LAYOUT ========== */
+    /* ========== MY BOOKINGS SECTION ========== */
     
-    /* Status Legend */
     .flex.flex-wrap.gap-4.items-center {
         flex-direction: row !important;
         flex-wrap: wrap !important;
@@ -2029,18 +2042,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         white-space: nowrap;
     }
 
-    /* ========== UPCOMING EVENTS (IMAGE 1) ========== */
-    
-    /* Upcoming Events Card Container */
+    /* ========== BOOKING CARDS ========== */
     .booking-card-enhanced {
         padding: 0.65rem !important;
         margin-bottom: 0.75rem;
         position: relative;
         border-radius: 12px;
-        overflow: visible; /* Allow elements to overflow */
+        overflow: visible;
     }
 
-    /* Header Section - Keep Status Badge at Top Right */
     .booking-card-enhanced > .flex.justify-between:first-child {
         flex-direction: column !important;
         gap: 0.3rem !important;
@@ -2048,7 +2058,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         position: relative;
     }
 
-    /* Status Badge - TOP RIGHT (Image 1) */
     .booking-card-enhanced .status-badge {
         position: absolute !important;
         top: -0.5rem !important;
@@ -2061,7 +2070,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
     }
 
-    /* Booking ID - BOTTOM LEFT (Image 1) */
     .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
         position: absolute !important;
         bottom: -2rem !important;
@@ -2082,7 +2090,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         color: #374151 !important;
     }
 
-    /* Price Tag - TOP RIGHT (below status) */
     .booking-price-tag {
         position: absolute !important;
         top: 1.5rem !important;
@@ -2092,12 +2099,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         z-index: 9 !important;
     }
 
-    /* Event Title Section */
     .booking-card-enhanced .flex.items-center.gap-3 {
         flex-wrap: wrap !important;
         gap: 0.3rem !important;
-        padding-right: 5rem !important; /* Space for price tag */
-        margin-bottom: 2rem !important; /* Space for booking ID */
+        padding-right: 5rem !important;
+        margin-bottom: 2rem !important;
     }
 
     .booking-card-enhanced .text-xl {
@@ -2113,7 +2119,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.7rem !important;
     }
 
-    /* Data Grid - SINGLE COLUMN, TIGHT SPACING */
     .booking-card-enhanced .grid.md\\:grid-cols-2 {
         grid-template-columns: 1fr !important;
         gap: 0.25rem !important;
@@ -2141,7 +2146,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         min-width: 0.9rem !important;
     }
 
-    /* Action Buttons - SIDE BY SIDE */
     .booking-card-enhanced .flex.gap-2:has(button) {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
@@ -2167,7 +2171,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         margin-right: 0.2rem !important;
     }
 
-    /* Status Sections - Compact */
     .booking-card-enhanced > div[class*="bg-gradient-to-r"] {
         padding: 0.5rem !important;
         margin-top: 0.5rem !important;
@@ -2188,34 +2191,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.75rem !important;
     }
 
-    /* Countdown Timers - Compact */
     .booking-card-enhanced [id^="payment-countdown-"],
     .booking-card-enhanced [id^="event-countdown-"] {
         font-size: 0.8rem !important;
         padding: 0.3rem !important;
     }
 
-    /* Special Requests Section */
     .booking-card-enhanced .p-3.bg-gray-50 {
         padding: 0.5rem !important;
         margin-top: 0.5rem !important;
     }
 
-    /* Refresh Button */
     #refresh-bookings {
         font-size: 0.75rem !important;
         padding: 0.5rem 0.85rem !important;
     }
 
-    /* ========== PROFILE SETTINGS (IMAGE 2) ========== */
-    
-    /* Profile Card Container */
+    /* ========== PROFILE SETTINGS ========== */
     #section-settings .bg-white.rounded-lg.shadow-md.p-6 {
         padding: 0.75rem !important;
         position: relative;
     }
 
-    /* Profile Layout - CENTERED COLUMN */
     .flex.flex-col.md\\:flex-row.items-center.gap-6 {
         flex-direction: column !important;
         align-items: center !important;
@@ -2224,7 +2221,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         text-align: center;
     }
 
-    /* Avatar Section - Centered */
     .flex.flex-col.items-center:has(#profile-avatar) {
         flex-direction: column !important;
         align-items: center !important;
@@ -2233,8 +2229,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     #profile-avatar {
-        width: 80px !important;
-        height: 80px !important;
+        width: 100px !important;
+        height: 100px !important;
         border-width: 3px !important;
         flex-shrink: 0 !important;
         border-color: #DC2626 !important;
@@ -2258,7 +2254,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         margin-top: 0.3rem;
     }
 
-    /* User Info Section - Centered */
     .flex-1.text-center.md\\:text-left {
         flex: 1 !important;
         text-align: center !important;
@@ -2273,7 +2268,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         width: 100% !important;
     }
 
-    /* Name and Email - Centered */
     #profile-name {
         font-size: 1.1rem !important;
         font-weight: 700 !important;
@@ -2289,16 +2283,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         text-align: center;
     }
 
-    /* Profile Menu Button - TOP RIGHT (Image 2) */
     .relative.self-start {
         position: absolute !important;
-        top: 0.75rem !important;
-        right: 0.75rem !important;
+        top: 0.5rem !important;
+        right: 0.5rem !important;
     }
 
     #profile-menu-btn {
         padding: 0.35rem !important;
-        background: #f3f4f6 !important;
         border-radius: 0.4rem !important;
     }
 
@@ -2307,7 +2299,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         height: 1.1rem !important;
     }
 
-    /* Profile Dropdown */
     #profile-dropdown {
         right: 0 !important;
         top: calc(100% + 0.4rem) !important;
@@ -2326,7 +2317,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         height: 0.9rem !important;
     }
 
-    /* Statistics Grid - COMPACT 3 COLUMNS (Image 2) */
     .grid.grid-cols-2.md\\:grid-cols-3.gap-4.mt-4 {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 0.4rem !important;
@@ -2340,7 +2330,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         text-align: center !important;
     }
 
-    /* Statistics Numbers - Positioned as in Image 2 */
     .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
         font-size: 1.1rem !important;
         font-weight: 700 !important;
@@ -2354,12 +2343,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-weight: 500 !important;
     }
 
-    /* Clickable Stats Card */
     #upcoming-events-card.cursor-pointer:active {
         transform: scale(0.95);
     }
 
-    /* Next Event Card - BOTTOM LEFT (Image 2) */
     #next-event-card {
         padding: 0.65rem !important;
         margin-top: 0.6rem !important;
@@ -2394,7 +2381,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.8rem !important;
     }
 
-    /* Account Information Card - COMPACT */
     #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:last-of-type {
         padding: 0.65rem !important;
         margin-bottom: 0.6rem !important;
@@ -2436,9 +2422,76 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         text-align: center !important;
     }
 
+    /* ========== PASSWORD MODAL - FIXED CLOSE BUTTON ========== */
+    #password-modal .max-w-md {
+        max-width: calc(100% - 1rem) !important;
+        margin: 0.5rem;
+    }
+
+    #password-modal .p-6 {
+        padding: 1.12rem !important;
+    }
+
+    #password-modal .border-b {
+        padding: 0.75rem !important;
+    }
+
+    #password-modal .flex.items-center.justify-between {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    #password-modal h3 {
+        font-size: 1rem !important;
+        margin: 0 !important;
+    }
+
+    #close-password-modal {
+        margin-left: auto !important;
+    }
+
+    #close-password-modal svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    #close-password-modal {
+        right: 0.26rem !important;
+    }
+
+    #password-modal form {
+        padding: 0.75rem !important;
+    }
+
+    #password-modal label {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    #password-modal input {
+        font-size: 0.75rem !important;
+        padding: 0.5rem !important;
+        min-height: 38px !important;
+    }
+
+    #password-modal .text-xs {
+        font-size: 0.65rem !important;
+    }
+
+    #password-modal .flex.gap-3 {
+        gap: 0.5rem !important;
+        margin-top: 1rem !important;
+    }
+
+    #password-modal .flex.gap-3 button {
+        flex: 1;
+        font-size: 0.75rem !important;
+        padding: 0.6rem 0.8rem !important;
+        min-height: 38px !important;
+    }
+
     /* ========== CALENDAR ========== */
-    
-    /* Calendar Navigation */
     .calendar-nav {
         display: grid;
         grid-template-columns: auto 1fr auto;
@@ -2450,9 +2503,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .calendar-nav button {
         padding: 0.5rem 0.75rem !important;
-        font-size: 0.75rem !important;
+        font-size: 0.65rem !important;
         white-space: nowrap;
         min-width: 70px;
+        min-height: 30px;
     }
 
     #calendar-title {
@@ -2473,7 +2527,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         grid-column: 3;
     }
 
-    /* Calendar Legend - Compact */
     .mb-4.flex.flex-wrap.gap-4.text-sm {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -2503,7 +2556,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         line-height: 1.2;
     }
 
-    /* Calendar Header Days */
     .calendar-header {
         gap: 1px;
         margin-bottom: 1px;
@@ -2516,7 +2568,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         letter-spacing: -0.3px;
     }
 
-    /* Calendar Grid */
     .calendar {
         gap: 1px;
         background-color: #cbd5e1;
@@ -2563,7 +2614,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-weight: 700;
     }
 
-    /* Calendar Status Colors - More Visible */
     .calendar-day.no-bookings,
     .calendar-day.one-booking {
         background-color: #dcfce7 !important;
@@ -2576,7 +2626,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .calendar-day.three-bookings,
-.calendar-day.unavailable {
+    .calendar-day.unavailable {
         background-color: #fee2e2 !important;
         border: 1.5px solid #ef4444;
     }
@@ -2585,7 +2635,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         box-shadow: inset 0 0 0 2px #3b82f6;
     }
 
-    /* Booking Details Modal */
     #booking-details-modal .modal-content {
         max-width: 95% !important;
     }
@@ -2599,8 +2648,25 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         padding: 0.5rem !important;
     }
 
+    #booking-details-modal .flex.justify-between {
+        position: relative !important;
+        align-items: flex-start !important;
+    }
+
+    #booking-details-modal h3 {
+        flex: 1 !important;
+        text-align: center !important;;
+        margin-top: 0.25rem !important;
+    }
+
+    #close-booking-details {
+        position: absolute !important;
+        right: -18px !important;
+        top: -20px !important;
+        
+    }
+
     /* ========== ABOUT US ========== */
-    
     .bg-gradient-to-r.from-\\[\\#DC2626\\] {
         padding: 1rem !important;
     }
@@ -2613,7 +2679,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.9rem !important;
     }
 
-    /* Vision/Mission Cards */
     .bg-white.rounded-lg.shadow-lg.border-2.p-6 {
         padding: 0.75rem !important;
     }
@@ -2631,7 +2696,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 1.1rem !important;
     }
 
-    /* Core Values Grid */
     .bg-gradient-to-br {
         padding: 0.75rem !important;
     }
@@ -2644,22 +2708,25 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.85rem !important;
     }
 
-    /* Terms & Conditions */
     .flex.items-start .text-\\[\\#DC2626\\] {
         min-width: 1.5rem;
         font-size: 0.85rem !important;
     }
 
     /* ========== MENU PACKAGES ========== */
-    
-    .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
-        grid-template-columns: 1fr !important;
-        gap: 0.75rem !important;
+    #section-menu .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
+    }
+
+    #section-menu .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
     }
 
     .package-card {
         transform: none !important;
-        border-width: 1.5px !important;
+        border-width: 1px !important;
     }
 
     .package-card:hover {
@@ -2667,41 +2734,62 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .package-card img {
-        height: 160px !important;
+        height: 120px !important;
     }
 
     .package-card .p-6 {
-        padding: 0.75rem !important;
+        padding: 0.5rem !important;
     }
 
     .package-card .text-xl {
-        font-size: 1rem !important;
+        font-size: 0.85rem !important;
+        margin-bottom: 0.25rem !important;
     }
 
     .package-card .text-sm {
-        font-size: 0.75rem !important;
+        font-size: 0.65rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .package-card .absolute {
+        font-size: 0.6rem !important;
+        padding: 2px 6px !important;
+    }
+
+    .package-card .flex.items-center.justify-between {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.4rem !important;
+    }
+
+    .package-card .flex.items-center.justify-between > span {
+        font-size: 0.65rem !important;
+        text-align: center !important;
+    }
+
+    .package-card i {
+        font-size: 0.7rem !important;
     }
 
     .view-menu-btn {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.75rem !important;
+        padding: 0.4rem 0.6rem !important;
+        font-size: 0.7rem !important;
+        width: 100% !important;
+        text-align: center !important;
     }
 
-    /* ========== MODALS - ACCURATE SIZING ========== */
-    
-    /* General Modal Container */
+    /* ========== MODALS ========== */
     .fixed.inset-0.bg-black.bg-opacity-50 {
         padding: 0.5rem;
     }
 
-    /* Modal Content Boxes */
     .modal-content,
     #menu-modal > div:not(.hidden),
     #preview-modal > div:not(.hidden),
     #delete-modal > div,
-    #password-modal > div,
-    #avatar-modal > div,
-    #password-popup-modal > div {
+    #password-popup-modal > div,
+    #avatar-modal > div {
         width: calc(100% - 1rem) !important;
         max-width: calc(100% - 1rem) !important;
         margin: 0.5rem auto;
@@ -2709,28 +2797,24 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         overflow-y: auto;
     }
 
-    /* Modal Headers */
     .modal-content h3,
     #modal-package-name,
     .text-2xl.font-bold {
         font-size: 1.1rem !important;
     }
 
-    /* Modal Content Padding */
     .modal-content .p-6,
     .modal-content .p-8,
     #preview-content {
         padding: 0.75rem !important;
     }
 
-    /* Modal Text */
     .modal-content p,
     .modal-content li,
     .modal-content div {
         font-size: 0.8rem !important;
     }
 
-    /* Menu Modal Specific */
     #modal-menu-items {
         grid-template-columns: 1fr !important;
         gap: 0.75rem !important;
@@ -2756,7 +2840,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.7rem !important;
     }
 
-    /* Invoice Modal */
     #preview-content {
         font-size: 0.75rem !important;
         max-height: 70vh;
@@ -2791,7 +2874,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.65rem !important;
     }
 
-    /* Delete Modal */
     #delete-modal .max-w-md {
         max-width: calc(100% - 1rem) !important;
     }
@@ -2809,7 +2891,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         padding: 0.6rem 1rem !important;
     }
 
-    /* Avatar Modal */
     #avatar-grid {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 0.5rem !important;
@@ -2819,18 +2900,181 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         aspect-ratio: 1;
     }
 
-    /* Password Modal */
-    #password-modal input {
-        font-size: 0.8rem !important;
+    /* ========== MENU MODAL MOBILE - SUPER LIIT ========== */
+    #menu-modal .bg-white.rounded-lg.shadow-xl {
+        max-width: 95% !important;
+        margin: 0.5rem !important;
+    }
+
+    /* Header */
+    #menu-modal .px-4.py-3.border-b {
         padding: 0.5rem 0.6rem !important;
     }
 
-    #password-modal label {
+    #menu-modal #modal-package-name {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.2rem !important;
+        line-height: 1.2 !important;
+    }
+
+    #menu-modal #modal-package-price {
+        font-size: 0.65rem !important;
+    }
+
+    #menu-modal #close-menu-modal {
+        margin-right: 0 !important;
+    }
+
+    #menu-modal #close-menu-modal i {
+        font-size: 0.9rem !important;
+    }
+
+    /* Content */
+    #menu-modal .px-4.py-3.overflow-y-auto {
+        padding: 0.6rem !important;
+    }
+
+    #menu-modal #modal-package-image {
+        height: 120px !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    #menu-modal .mb-4 {
+        margin-bottom: 0.5rem !important;
+    }
+
+    #menu-modal .flex.items-center.gap-2.mb-2 {
+        gap: 0.3rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    #menu-modal .flex.items-center.gap-2 i {
+        font-size: 0.7rem !important;
+    }
+
+    #menu-modal h4 {
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+    }
+
+    #menu-modal #modal-description,
+    #menu-modal #modal-inclusions {
+        font-size: 0.65rem !important;
+        padding-left: 1rem !important;
+        line-height: 1.3 !important;
+    }
+
+    #menu-modal #modal-inclusions > div {
+        font-size: 0.55rem !important;
+    }
+
+    /* Guest Selection */
+    #menu-modal .bg-gray-50.p-3 {
+        padding: 0.5rem !important;
+    }
+
+    #menu-modal #modal-guest-selection {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.3rem !important;
+    }
+
+    #menu-modal #modal-guest-selection button {
+        padding: 0.35rem 0.25rem !important;
+        font-size: 0.6rem !important;
+        min-height: 28px !important;
+        border-radius: 0.3rem !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Price Display */
+    #menu-modal #selected-price-display {
+        padding: 0.4rem !important;
+        margin-top: 0.4rem !important;
+    }
+
+    #menu-modal #selected-price-display .text-xs {
+        font-size: 0.65rem !important;
+    }
+
+    #menu-modal #selected-pax-text {
+        font-size: 0.65rem !important;
+    }
+
+    #menu-modal #selected-price-text {
+        font-size: 0.9rem !important;
+    }
+
+    /* Footer */
+    #menu-modal .sticky.bottom-0.px-4.py-3 {
+        padding: 0.5rem 0.6rem !important;
+    }
+
+    #menu-modal #book-package-btn {
+        padding: 0.5rem 0.6rem !important;
+        font-size: 0.7rem !important;
+        min-height: 32px !important;
+    }
+
+    #menu-modal #book-package-btn i {
+        font-size: 0.65rem !important;
+        margin-right: 0.2rem !important;
+    }
+
+    /* ========== GALLERY ========== */
+    #section-gallery {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .category-dot {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    #category-label {
+        font-size: 0.7rem !important;
+    }
+
+    #gallery-carousel-container .relative {
+        min-height: 250px;
+    }
+
+    #gallery-main-image {
+        max-height: 300px !important;
+    }
+
+    .category-dot i {
         font-size: 0.8rem !important;
     }
 
-    #password-modal button {
-        font-size: 0.8rem !important;
+    #gallery-overlay {
+        padding: 0.75rem !important;
+    }
+
+    #gallery-overlay h3 {
+        font-size: 1rem !important;
+    }
+
+    #gallery-overlay p {
+        font-size: 0.7rem !important;
+    }
+
+    #gallery-highlights {
+        grid-template-columns: 1fr !important;
+        gap: 0.3rem !important;
+    }
+
+    #gallery-highlights .flex {
+        font-size: 0.65rem !important;
+    }
+
+    .thumbnail {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    #gallery-promo-video {
+        min-height: 250px;
     }
 
     /* ========== SPACING ADJUSTMENTS ========== */
@@ -2911,28 +3155,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     /* ========== UTILITY CLASSES ========== */
-    
-    /* Icons */
     .fas,
     .far,
     .fab {
         font-size: 0.9rem;
     }
 
-    /* Loading Spinner */
     .loading-spinner {
         width: 14px !important;
         height: 14px !important;
         margin-right: 0.4rem;
     }
 
-    /* Divider Lines */
     .w-full.h-0\\.5 {
         height: 1px !important;
         margin-bottom: 0.75rem !important;
     }
 
-    /* Border Radius */
     .rounded-lg {
         border-radius: 0.5rem !important;
     }
@@ -2941,7 +3180,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         border-radius: 0.75rem !important;
     }
 
-    /* Shadows */
     .shadow-lg {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
@@ -2950,7 +3188,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
     }
 
-    /* ========== LANDSCAPE MODE (Mobile) ========== */
+    /* ========== LANDSCAPE MODE ========== */
     @media (max-height: 500px) and (orientation: landscape) {
         main {
             padding-top: 55px;
@@ -3062,8 +3300,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     #profile-avatar {
-        width: 75px !important;
-        height: 75px !important;
+        width: 100px !important;
+        height: 100px !important;
     }
 
     .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
@@ -3323,7 +3561,94 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+/* ========== FORCE MENU PACKAGES 2 COLUMNS ON MOBILE ========== */
+@media (max-width: 768px) {
+    #section-menu > div.grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.4rem !important;
+    }
 
+    #section-menu .package-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+
+    #section-menu .package-card > div:first-child {
+        height: 110px !important;
+    }
+
+    #section-menu .package-card > div:first-child > img {
+        height: 110px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+    }
+
+    #section-menu .package-card > div:last-child {
+        padding: 0.4rem !important;
+    }
+
+    #section-menu .package-card h3 {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.2rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+    }
+
+    #section-menu .package-card p {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.4rem !important;
+        line-height: 1.3 !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+    #section-menu .package-card .absolute {
+        font-size: 0.5rem !important;
+        padding: 2px 5px !important;
+        font-weight: 600 !important;
+    }
+
+    #section-menu .package-card .flex.items-center.justify-between {
+        flex-direction: row !important;
+        gap: 0.3rem !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    #section-menu .package-card .flex.items-center.justify-between > span {
+        font-size: 0.55rem !important;
+        text-align: left !important;
+        padding: 0 !important;
+        flex: 1 !important;
+    }
+
+    #section-menu .package-card .flex.items-center.justify-between i {
+        font-size: 0.6rem !important;
+        margin-right: 0.25rem !important;
+    }
+
+#section-menu .view-menu-btn {
+        font-size: 0.40rem !important;
+        padding: 0.2rem 0.35rem !important;
+        width: auto !important;
+        height: 22px !important;
+        min-height: 22px !important;
+        max-height: 22px !important;
+        text-align: center !important;
+        border-radius: 0.3rem !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        line-height: 1 !important;
+    }
+}
             </style>
             </head>
             <body class="bg-gray-100">
@@ -4208,8 +4533,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                     <h2 class="text-2xl font-bold mb-2">Available Schedule</h2>
                     <div class="w-full h-0.5 bg-gray-400 mb-6"></div>
                     
-                    <!-- Calendar Container -->
-                    <div class="bg-white rounded-lg shadow-lg border-2 border-gray-300 p-6">
+                        <!-- Calendar Container -->
+                        <div class="bg-white rounded-lg shadow-lg border-2 border-gray-300 p-6 overflow-x-auto">
                         <!-- Calendar Navigation -->
                         <div class="calendar-nav">
                             <button id="prev-month" class="flex items-center gap-2">
@@ -4245,8 +4570,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                             </div>
                         </div>
                         
-                        <!-- Calendar Header -->
-                        <div class="calendar-header">
+                        <!-- Scrollable Calendar Wrapper -->
+                        <div class="overflow-x-auto">
+                            <!-- Calendar Header -->
+                            <div class="calendar-header" style="min-width: 600px;">
                             <div class="calendar-header-day">Sun</div>
                             <div class="calendar-header-day">Mon</div>
                             <div class="calendar-header-day">Tue</div>
@@ -4256,9 +4583,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                             <div class="calendar-header-day">Sat</div>
                         </div>
                         
-                        <!-- Calendar Grid -->
-                        <div id="calendar-grid" class="calendar">
-                            <!-- Calendar days will be dynamically generated here -->
+                            <!-- Calendar Grid -->
+                            <div id="calendar-grid" class="calendar" style="min-width: 600px;">
+                                <!-- Calendar days will be dynamically generated here -->
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -4550,71 +4878,71 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         </div>
     </section>
 
-<!-- Menu Package Details Modal - ENHANCED -->
+<<!-- Menu Package Details Modal - ENHANCED -->
 <div id="menu-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-h-[90vh] overflow-hidden" style="max-width: 60%;">
         <!-- Header -->
-        <div class="p-6 border-b bg-gradient-to-r from-[#DC2626] to-[#B91C1C]">
+        <div class="px-4 py-3 border-b bg-gradient-to-r from-[#DC2626] to-[#B91C1C]">
             <div class="flex justify-between items-start">
                 <div class="flex-1">
-                    <h3 id="modal-package-name" class="text-2xl font-bold text-white mb-2"></h3>
-                    <p id="modal-package-price" class="text-lg text-white font-semibold opacity-90"></p>
+                    <h3 id="modal-package-name" class="text-base font-bold text-white mb-0.5"></h3>
+                    <p id="modal-package-price" class="text-xs text-white font-semibold opacity-90"></p>
                 </div>
-                <button id="close-menu-modal" class="text-white hover:text-gray-200 transition-colors">
-                    <i class="fas fa-times text-2xl"></i>
+                <button id="close-menu-modal" class="text-white hover:text-gray-200 transition-colors mr-3">
+                    <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
         </div>
         
-        <!-- Content -->
-        <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+         <!-- Content -->
+        <div class="px-4 py-3 overflow-y-auto max-h-[calc(90vh-180px)]">
             <!-- Package Image -->
-            <div class="mb-6">
-                <img id="modal-package-image" src="" alt="" class="w-full h-64 object-cover rounded-lg shadow-lg">
+            <div class="mb-4">
+                <img id="modal-package-image" src="" alt="" class="w-full h-40 object-cover rounded-lg shadow-lg">
             </div>
             
             <!-- Description -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fas fa-info-circle text-[#DC2626] text-xl"></i>
-                    <h4 class="text-lg font-semibold text-gray-800">Description</h4>
+            <div class="mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-info-circle text-[#DC2626] text-sm"></i>
+                    <h4 class="text-sm font-semibold text-gray-800">Description</h4>
                 </div>
-                <div id="modal-description" class="text-gray-700 leading-relaxed pl-7"></div>
+                <div id="modal-description" class="text-xs text-gray-700 leading-relaxed pl-6"></div>
             </div>
             
             <!-- Inclusions -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fas fa-check-circle text-[#DC2626] text-xl"></i>
-                    <h4 class="text-lg font-semibold text-gray-800">Package Inclusions</h4>
+            <div class="mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-check-circle text-[#DC2626] text-sm"></i>
+                    <h4 class="text-sm font-semibold text-gray-800">Package Inclusions</h4>
                 </div>
-                <div id="modal-inclusions" class="space-y-2 pl-7"></div>
+                <div id="modal-inclusions" class="space-y-1 pl-6 text-xs"></div>
             </div>
 
             <!-- Guest Selection -->
-            <div class="mb-6 bg-gray-50 p-4 rounded-lg border-2 border-[#DC2626]">
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fas fa-users text-[#DC2626] text-xl"></i>
-                    <h4 class="text-lg font-semibold text-gray-800">Select Number of Guests</h4>
+            <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-users text-[#DC2626] text-sm"></i>
+                    <h4 class="text-sm font-semibold text-gray-800">Select Number of Guests</h4>
                 </div>
-                <div id="modal-guest-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-3 pl-7"></div>
-                <div id="selected-price-display" class="hidden mt-4 p-3 bg-white rounded-lg border border-[#DC2626]">
+                <div id="modal-guest-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+                <div id="selected-price-display" class="hidden mt-3 p-3 bg-white rounded-lg">
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-700 font-medium">Selected Package:</span>
-                        <span id="selected-pax-text" class="text-[#DC2626] font-bold"></span>
+                        <span class="text-gray-700 font-medium text-xs">Selected Package:</span>
+                        <span id="selected-pax-text" class="text-[#DC2626] font-bold text-xs"></span>
                     </div>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-gray-700 font-medium">Total Price:</span>
-                        <span id="selected-price-text" class="text-2xl text-[#DC2626] font-bold"></span>
+                    <div class="flex justify-between items-center mt-1">
+                        <span class="text-gray-700 font-medium text-xs">Total Price:</span>
+                        <span id="selected-price-text" class="text-lg text-[#DC2626] font-bold"></span>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Footer with Book Button -->
-        <div class="sticky bottom-0 p-4 border-t bg-white shadow-lg">
-            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold text-lg transition-all cursor-not-allowed">
-                <i class="fas fa-calendar-plus mr-2"></i>
+        <div class="sticky bottom-0 px-4 py-3 border-t bg-white shadow-lg">
+            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-2 px-3 rounded-lg font-semibold text-sm transition-all cursor-not-allowed">
+                <i class="fas fa-calendar-plus mr-2 text-xs"></i>
                 Select Guest Count to Continue
             </button>
         </div>
@@ -5234,7 +5562,7 @@ if (typeof window !== 'undefined') {
                                 </div>
                                 
                                 <!-- Booking Statistics -->
-                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                                <div class="grid grid-cols-3 md:grid-cols-3 gap-4 mt-4">
                                     <div class="bg-blue-50 rounded-lg p-3">
                                         <p class="text-2xl font-bold text-blue-600" id="total-bookings">0</p>
                                         <p class="text-xs text-gray-600">Total Events</p>
@@ -5300,89 +5628,91 @@ if (typeof window !== 'undefined') {
                     </div>
                 </div>
 
-                    <!-- Change Password Modal -->
-                    <div id="password-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                            <div class="p-6 border-b flex items-center justify-between">
-                                <h3 class="text-xl font-bold">Change Password</h3>
-                                <button id="close-password-modal" class="text-gray-500 hover:text-gray-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <form id="change-password-form" class="p-6">
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
-                                    <input type="password" id="current-password" required
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-                                    <input type="password" id="new-password" required minlength="11"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <p class="text-xs text-gray-500 mt-1">Minimum 11 characters</p>
-                                </div>
-                                <div class="mb-6">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
-                                    <input type="password" id="confirm-password" required minlength="11"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                </div>
-                                <div class="flex gap-3">
-                                    <button type="button" id="cancel-password-btn" 
-                                            class="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                                        Cancel
-                                    </button>
-                                    <button type="submit" 
-                                            class="flex-1 px-6 py-2 text-white rounded-lg hover:opacity-90 transition"
-                                            style="background-color: #DC2626;">
-                                        Update Password
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+            <!-- Change Password Modal -->
+            <div id="password-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6 border-b relative">
+                  <div class="flex items-center justify-center">
+                    <h3 class="text-xl font-bold flex-1 text-center">Change Password</h3>
+                         <button id="close-password-modal" class="text-gray-500 hover:text-gray-700 absolute right-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
-
-                    <!-- Password Popup Modal -->
-                    <div id="password-popup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
-                        <div class="bg-white rounded-lg shadow-xl w-80 p-6 text-center">
-                            <div id="password-popup-icon" class="flex justify-center mb-3"></div>
-                            <p id="password-popup-message" class="text-base font-semibold text-gray-800 mb-4"></p>
-                            <button id="close-password-popup" class="px-6 py-2 text-white rounded-lg hover:opacity-90 w-full" style="background-color: #DC2626;">
-                                OK
+                </div>
+                    <form id="change-password-form" class="p-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                            <input type="password" id="current-password" required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                            <input type="password" id="new-password" required minlength="11"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <p class="text-xs text-gray-500 mt-1">Minimum 11 characters</p>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                            <input type="password" id="confirm-password" required minlength="11"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div class="flex gap-3">
+                            <button type="button" id="cancel-password-btn" 
+                                    class="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 px-6 py-2 text-white rounded-lg hover:opacity-90 transition"
+                                    style="background-color: #DC2626;">
+                                Update Password
                             </button>
                         </div>
-                    </div>
+                    </form>
+                </div>
+            </div>
 
-                    <!-- Avatar Selection Modal -->
-                    <div id="avatar-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
-                            <div class="p-6 border-b">
-                                <h3 class="text-xl font-bold">Choose Your Avatar</h3>
-                            </div>
-                            <div class="p-6 overflow-y-auto max-h-[60vh]">
-                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="avatar-grid"></div>
-                            </div>
-                            <div class="p-6 border-t flex justify-end gap-3">
-                                <button id="cancel-avatar-btn" 
-                                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Password Popup Modal -->
+            <div id="password-popup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
+                <div class="bg-white rounded-lg shadow-xl w-80 p-6 text-center">
+                    <div id="password-popup-icon" class="flex justify-center mb-3"></div>
+                    <p id="password-popup-message" class="text-base font-semibold text-gray-800 mb-4"></p>
+                    <button id="close-password-popup" class="px-6 py-2 text-white rounded-lg hover:opacity-90 w-full" style="background-color: #DC2626;">
+                        OK
+                    </button>
+                </div>
+            </div>
 
-                    <!-- Sign Out Modal -->
-                    <div id="signout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-80 text-center">
-                            <h3 class="text-lg font-semibold mb-4">Are you sure you want to sign out?</h3>
-                            <div class="flex justify-center gap-4">
-                                <button id="cancel-signout" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 w-24">NO</button>
-                                <button id="confirm-signout" class="px-4 py-2 rounded text-white w-24" style="background-color:#DC2626;">YES</button>
-                            </div>
-                        </div>
+            <!-- Avatar Selection Modal -->
+            <div id="avatar-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                    <div class="p-6 border-b">
+                        <h3 class="text-xl font-bold">Choose Your Avatar</h3>
                     </div>
-                </section>
+                    <div class="p-6 overflow-y-auto max-h-[60vh]">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="avatar-grid"></div>
+                    </div>
+                    <div class="p-6 border-t flex justify-end gap-3">
+                        <button id="cancel-avatar-btn" 
+                                class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sign Out Modal -->
+            <div id="signout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+                    <h3 class="text-lg font-semibold mb-4">Are you sure you want to sign out?</h3>
+                    <div class="flex justify-center gap-4">
+                        <button id="cancel-signout" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 w-24">NO</button>
+                        <button id="confirm-signout" class="px-4 py-2 rounded text-white w-24" style="background-color:#DC2626;">YES</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 <section id="section-about" class="hidden">
     <h2 class="text-3xl font-bold mb-2 text-gray-800">About Zaf's Kitchen</h2>
@@ -5657,12 +5987,12 @@ if (typeof window !== 'undefined') {
 
             <div id="booking-details-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-96 max-h-96 overflow-y-auto">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-semibold">Bookings for <span id="selected-date"></span></h3>
-                        <button id="close-booking-details" class="text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-times text-xl"></i>
-                        </button>
-                    </div>
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-lg font-semibold flex-1 pr-4">Bookings for <span id="selected-date"></span></h3>
+                    <button id="close-booking-details" class="text-gray-500 hover:text-gray-700 flex-shrink-0">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
                     <div id="booking-details-content">
                         <!-- Booking details will be populated here -->
                     </div>
