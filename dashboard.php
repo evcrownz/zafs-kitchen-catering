@@ -2042,13 +2042,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         white-space: nowrap;
     }
 
-    /* ========== BOOKING CARDS ========== */
     .booking-card-enhanced {
-        padding: 0.65rem !important;
-        margin-bottom: 0.75rem;
+        padding: 0.75rem !important;
+        padding-top: 1rem !important;
+        margin-bottom: 1rem;
         position: relative;
         border-radius: 12px;
         overflow: visible;
+        min-height: fit-content !important;
     }
 
     .booking-card-enhanced > .flex.justify-between:first-child {
@@ -2060,23 +2061,37 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .booking-card-enhanced .status-badge {
         position: absolute !important;
-        top: -0.5rem !important;
-        right: -0.5rem !important;
-        z-index: 10 !important;
-        font-size: 0.65rem !important;
-        padding: 3px 8px !important;
-        border-radius: 12px !important;
+        top: 0.5rem !important;
+        right: 0.5rem !important;
+        z-index: 15 !important;
+        font-size: 0.6rem !important;
+        padding: 4px 8px !important;
+        border-radius: 8px !important;
         font-weight: 700 !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .booking-card-enhanced .status-badge {
+    position: absolute !important;
+    top: 1rem !important;
+    right: 1rem !important;
+    z-index: 10 !important;
     }
 
     .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
-        position: absolute !important;
-        bottom: -2rem !important;
-        left: 0.65rem !important;
-        right: auto !important;
+        position: relative !important;
+        display: block !important;
+        text-align: right !important;
+        margin-top: 3rem !important;
+        margin-bottom: 0.5rem !important;
+        padding-right: 0 !important;
+        clear: both !important;
+    }
+
+    .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
+        position: static !important;
+        margin-top: 0.5rem !important;
         text-align: left !important;
-        margin: 0 !important;
     }
 
     .booking-card-enhanced > .flex.justify-between:first-child > .text-right .text-sm {
@@ -2092,19 +2107,37 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .booking-price-tag {
         position: absolute !important;
-        top: 1.5rem !important;
-        right: -0.5rem !important;
-        font-size: 0.75rem !important;
-        padding: 0.3rem 0.6rem !important;
-        z-index: 9 !important;
+        top: -1px !important;
+        right: 0.5rem !important;
+        font-size: 0.7rem !important;
+        padding: 0.25rem 0.5rem !important;
+        z-index: 8 !important;
+        background: #DC2626 !important;
+        color: white !important;
+        border-radius: 6px !important;
     }
 
     .booking-card-enhanced .flex.items-center.gap-3 {
         flex-wrap: wrap !important;
         gap: 0.3rem !important;
         padding-right: 5rem !important;
-        margin-bottom: 2rem !important;
     }
+
+    @media (max-width: 768px) {
+    .booking-card-enhanced .flex.gap-2 button {
+        width: 100% !important;
+        padding: 0.5rem 0.5rem !important;
+        font-size: 0.7rem !important;
+        white-space: nowrap !important;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.2rem;
+        font-weight: 600 !important;
+        min-height: 32px !important;
+    }
+}
 
     .booking-card-enhanced .text-xl {
         font-size: 0.95rem !important;
@@ -2147,16 +2180,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .booking-card-enhanced .flex.gap-2:has(button) {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 0.4rem !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        gap: 0.5rem !important;
         width: 100% !important;
-        margin-top: 0.5rem !important;
+        margin-top: 2.5rem !important;
+        position: relative !important;
+        z-index: 1 !important;
     }
 
+    
+
     .booking-card-enhanced .flex.gap-2 button {
-        width: 100% !important;
-        padding: 0.45rem 0.5rem !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
+        padding: 0.5rem 1rem !important;
         font-size: 0.7rem !important;
         white-space: nowrap !important;
         border-radius: 6px;
@@ -2164,6 +2203,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         align-items: center;
         justify-content: center;
         gap: 0.2rem;
+        font-weight: 600 !important;
+        min-height: 32px !important;
     }
 
     .booking-card-enhanced .flex.gap-2 button i {
@@ -2193,8 +2234,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .booking-card-enhanced [id^="payment-countdown-"],
     .booking-card-enhanced [id^="event-countdown-"] {
-        font-size: 0.8rem !important;
-        padding: 0.3rem !important;
+        font-size: 0.75rem !important;
+        padding: 0.25rem !important;
+        font-weight: 700 !important;
     }
 
     .booking-card-enhanced .p-3.bg-gray-50 {
@@ -2913,7 +2955,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     #preview-content .text-sm {
-        font-size: 0.75rem !important;
+        font-size: 0.7rem !important;
+    }
+
+    #preview-content .flex.justify-between {
+        align-items: flex-start !important;
+        gap: 0.3rem !important;
     }
 
     #preview-content .text-xs {
@@ -7096,49 +7143,49 @@ function showpreviewModal(booking) {
                         </div>
                         ` : ''}
                         
-${!isPast ? (booking.booking_status === 'approved' ? `
-<div class="mt-4 p-4 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg">
-    <div class="flex items-center gap-3">
-        <div class="flex-shrink-0">
-            <i class="fas fa-check-circle text-green-600 text-xl"></i>
-        </div>
-        <div class="flex-1">
-            <div class="font-semibold text-green-800">Event Confirmed!</div>
-            
-            ${booking.payment_status !== 'paid' ? `
-                <!-- Payment Countdown -->
-                <div class="mt-2 p-3 bg-yellow-50 rounded-lg">
-                    <div class="flex items-center gap-2 mb-1">
-                        <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
-                        <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
+                ${!isPast ? (booking.booking_status === 'approved' ? `
+                <div class="mt-4 p-4 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold text-green-800">Event Confirmed!</div>
+                            
+                            ${booking.payment_status !== 'paid' ? `
+                                <!-- Payment Countdown -->
+                                <div class="mt-2 p-3 bg-yellow-50 rounded-lg">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
+                                        <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
+                                    </div>
+                                    <div class="text-xs text-yellow-700 mb-1">Complete downpayment within:</div>
+                                    <div id="payment-countdown-${booking.id}" class="text-base font-bold text-yellow-800 payment-countdown" 
+                                        data-booking-id="${booking.id}">
+                                        Calculating...
+                                    </div>
+                                    <p class="text-xs text-yellow-600 mt-1">⚠️ Booking will auto-cancel if not paid</p>
+                                </div>
+                            ` : ''}
+                            
+                            <!-- Event Countdown -->
+                            <div class="mt-2 p-3 bg-blue-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i class="fas fa-calendar-check text-blue-600 text-sm"></i>
+                                    <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
+                                </div>
+                                <div id="event-countdown-${booking.id}" class="text-base font-bold text-blue-800 event-countdown" 
+                                    data-booking-id="${booking.id}">
+                                    Calculating...
+                                </div>
+                                <p class="text-xs text-blue-600 mt-1">${formattedDate} at ${startTime12}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-green-600 font-medium">Total: ${displayPrice}</div>
+                        </div>
                     </div>
-                    <div class="text-xs text-yellow-700 mb-1">Complete downpayment within:</div>
-                    <div id="payment-countdown-${booking.id}" class="text-base font-bold text-yellow-800 payment-countdown" 
-                         data-booking-id="${booking.id}">
-                        Calculating...
-                    </div>
-                    <p class="text-xs text-yellow-600 mt-1">⚠️ Booking will auto-cancel if not paid</p>
                 </div>
-            ` : ''}
-            
-            <!-- Event Countdown -->
-            <div class="mt-2 p-3 bg-blue-50 rounded-lg">
-                <div class="flex items-center gap-2 mb-1">
-                    <i class="fas fa-calendar-check text-blue-600 text-sm"></i>
-                    <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
-                </div>
-                <div id="event-countdown-${booking.id}" class="text-base font-bold text-blue-800 event-countdown" 
-                     data-booking-id="${booking.id}">
-                    Calculating...
-                </div>
-                <p class="text-xs text-blue-600 mt-1">${formattedDate} at ${startTime12}</p>
-            </div>
-        </div>
-        <div class="text-right">
-            <div class="text-sm text-green-600 font-medium">Total: ${displayPrice}</div>
-        </div>
-    </div>
-</div>
                         ` : booking.booking_status === 'pending' ? `
                         <div class="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-lg">
                             <div class="flex items-center gap-3">
