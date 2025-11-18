@@ -1143,6 +1143,28 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                 margin-right: 8px;
             }
 
+            /* ========== GUEST SELECTION BUTTONS ========== */
+    #modal-guest-selection button {
+        padding: 0.4rem 0.3rem !important;
+        font-size: 0.65rem !important;
+        min-height: 32px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.1rem !important;
+        line-height: 1.2 !important;
+    }
+
+    #modal-guest-selection button span {
+        font-size: 0.65rem !important;
+    }
+
+    #modal-guest-selection button .font-bold {
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+    }
+
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
@@ -1385,6 +1407,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                 position: relative;
             }
 
+
             .step-circle {
                 width: 40px;
                 height: 40px;
@@ -1602,32 +1625,30 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             }
         }
 
+        
 
-/* ============================================
+/*============================================
    PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
    ============================================ */
 
-   /* Force proper grid behavior on mobile */
+/* Force proper grid behavior on mobile */
 @media (max-width: 768px) {
     #section-dashboard .grid-cols-2 {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
     
-    /* Ensure cards don't overflow */
     #section-dashboard .grid-cols-2 > * {
         min-width: 0;
         max-width: 100%;
     }
     
-    /* Prevent any margin/padding issues */
     #section-dashboard {
         max-width: 100vw;
         overflow-x: hidden;
     }
 }
 
-/* Hover effects only on desktop */
 @media (hover: hover) {
     #section-dashboard .hover\:scale-105:hover {
         transform: scale(1.05);
@@ -1738,6 +1759,149 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.7rem !important;
     }
 
+    /* ========== MY BOOKINGS (MOBILE) =========== */
+@media (max-width: 767px) {
+    .booking-price-tag {
+        background: linear-gradient(135deg, #DC2626, #B91C1C);
+        color: white;
+        font-weight: bold;
+        font-size: 0.85em;
+        padding: 5px 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    }
+
+    .status-badge {
+        font-size: 9px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 12px;
+        text-transform: uppercase;
+    }
+
+    /* Payment Countdown - Mobile */
+    .bg-yellow-50 {
+        padding: 6px !important;
+        margin-top: 6px !important;
+    }
+    
+    .bg-yellow-50 .flex.items-center {
+        gap: 3px !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .bg-yellow-50 .font-semibold {
+        font-size: 0.6rem !important;
+    }
+    
+    .bg-yellow-50 .text-xs {
+        font-size: 0.55rem !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .payment-countdown {
+        font-size: 0.75rem !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        font-weight: 700 !important;
+    }
+    
+    .bg-yellow-50 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Event Countdown - Mobile */
+    .bg-blue-50 {
+        padding: 6px !important;
+        margin-top: 6px !important;
+    }
+    
+    .bg-blue-50 .flex.items-center {
+        gap: 3px !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .bg-blue-50 .font-semibold {
+        font-size: 0.6rem !important;
+    }
+    
+    .bg-blue-50 .text-xs {
+        font-size: 0.55rem !important;
+    }
+    
+    .event-countdown {
+        font-size: 0.75rem !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        font-weight: 700 !important;
+    }
+    
+    .bg-blue-50 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Total Price - Lipat sa baba */
+    .booking-card .text-right {
+        margin-top: 8px !important;
+        text-align: left !important;
+    }
+    
+    .booking-card .text-right .text-sm {
+        font-size: 0.7rem !important;
+    }
+    
+    /* Pending/Cancelled Status - Mobile */
+    .bg-gradient-to-r.from-yellow-50,
+    .bg-gradient-to-r.from-red-50 {
+        padding: 8px !important;
+        margin-top: 8px !important;
+    }
+    
+    .bg-gradient-to-r .flex.items-center {
+        gap: 6px !important;
+    }
+    
+    .bg-gradient-to-r .font-semibold {
+        font-size: 0.7rem !important;
+    }
+    
+    .bg-gradient-to-r .text-sm {
+        font-size: 0.6rem !important;
+        margin-top: 3px !important;
+        line-height: 1.3 !important;
+    }
+    
+    .bg-gradient-to-r i.text-xl {
+        font-size: 0.9rem !important;
+    }
+
+    /* 3 Dots Menu (Profile Dropdown) - Right Side */
+    .relative.inline-block {
+        position: absolute !important;
+        right: 0.75rem !important;
+        top: 0.75rem !important;
+    }
+
+    /* Kung nasa header yung profile */
+    header .relative.inline-block,
+    nav .relative.inline-block {
+        position: absolute !important;
+        right: 0.75rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
+
+    /* 3 dots button */
+    .relative.inline-block > button {
+        padding: 0.4rem !important;
+        min-width: auto !important;
+    }
+
+    .relative.inline-block > button i {
+        font-size: 1rem !important;
+    }
+}
+
     /* ========== DASHBOARD ========== */
     #section-dashboard .grid {
         grid-template-columns: 1fr;
@@ -1843,7 +2007,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         background-size: 16px;
     }
 
-    /* Helper text */
     .text-xs.text-gray-500 {
         font-size: 0.65rem !important;
         margin-top: 0.2rem;
@@ -1952,7 +2115,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.75rem !important;
     }
 
-    /* Step navigation buttons */
     #next-step1,
     #next-step2,
     #back-step2,
@@ -1963,11 +2125,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-weight: 600;
     }
 
-    /* Button groups */
-    .flex.justify-between button {
-        min-width: 90px;
-        font-size: 0.8rem !important;
-    }
+.flex.justify-between button {
+    font-size: 0.45rem !important;
+    padding: 4px 10px !important;
+}
+
+/* 3 dots button - exclude from small sizing */
+#section-settings .relative.self-start button {
+    font-size: 1rem !important;
+    padding: 0.5rem !important;
+}
 
     .flex.justify-end button {
         width: 100%;
@@ -1976,6 +2143,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     .flex.gap-3 button {
         font-size: 0.8rem !important;
     }
+    
 
     /* ========== EVENT PREVIEW ========== */
     #event-preview {
@@ -2006,439 +2174,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.75rem !important;
     }
 
-    /* ========== MY BOOKINGS SECTION - FIXED LAYOUT ========== */
-    
-    /* Status Legend */
-    .flex.flex-wrap.gap-4.items-center {
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        gap: 0.5rem !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-    }
-
-    .flex.flex-wrap.gap-4.items-center > div {
-        width: auto !important;
-        flex: 0 0 auto !important;
-    }
-
-    .status-badge {
-        font-size: 0.6rem !important;
-        padding: 2px 6px !important;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    /* ========== UPCOMING EVENTS (IMAGE 1) ========== */
-    
-    /* Upcoming Events Card Container */
-    .booking-card-enhanced {
-        padding: 0.65rem !important;
-        margin-bottom: 0.75rem;
-        position: relative;
-        border-radius: 12px;
-        overflow: visible; /* Allow elements to overflow */
-    }
-
-    /* Header Section - Keep Status Badge at Top Right */
-    .booking-card-enhanced > .flex.justify-between:first-child {
-        flex-direction: column !important;
-        gap: 0.3rem !important;
-        margin-bottom: 0.6rem !important;
-        position: relative;
-    }
-
-    /* Status Badge - TOP RIGHT (Image 1) */
-    .booking-card-enhanced .status-badge {
-        position: absolute !important;
-        top: -0.5rem !important;
-        right: -0.5rem !important;
-        z-index: 10 !important;
-        font-size: 0.65rem !important;
-        padding: 3px 8px !important;
-        border-radius: 12px !important;
-        font-weight: 700 !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
-    }
-
-    /* Booking ID - BOTTOM LEFT (Image 1) */
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
-        position: absolute !important;
-        bottom: -2rem !important;
-        left: 0.65rem !important;
-        right: auto !important;
-        text-align: left !important;
-        margin: 0 !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right .text-sm {
-        font-size: 0.55rem !important;
-        color: #6b7280 !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right .font-mono {
-        font-size: 0.7rem !important;
-        font-weight: 700 !important;
-        color: #374151 !important;
-    }
-
-    /* Price Tag - TOP RIGHT (below status) */
-    .booking-price-tag {
-        position: absolute !important;
-        top: 1.5rem !important;
-        right: -0.5rem !important;
-        font-size: 0.75rem !important;
-        padding: 0.3rem 0.6rem !important;
-        z-index: 9 !important;
-    }
-
-    /* Event Title Section */
-    .booking-card-enhanced .flex.items-center.gap-3 {
-        flex-wrap: wrap !important;
-        gap: 0.3rem !important;
-        padding-right: 5rem !important; /* Space for price tag */
-        margin-bottom: 2rem !important; /* Space for booking ID */
-    }
-
-    .booking-card-enhanced .text-xl {
-        font-size: 0.95rem !important;
-        line-height: 1.2 !important;
-    }
-
-    .booking-card-enhanced .text-lg {
-        font-size: 0.85rem !important;
-    }
-
-    .booking-card-enhanced .text-sm {
-        font-size: 0.7rem !important;
-    }
-
-    /* Data Grid - SINGLE COLUMN, TIGHT SPACING */
-    .booking-card-enhanced .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.25rem !important;
-        margin-bottom: 0.5rem !important;
-        margin-top: 0.5rem !important;
-    }
-
-    .booking-card-enhanced .space-y-2 {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.25rem !important;
-    }
-
-    .booking-card-enhanced .space-y-2 > * + * {
-        margin-top: 0 !important;
-    }
-
-    .booking-card-enhanced .flex.items-center.gap-2 {
-        gap: 0.3rem !important;
-        padding: 0.15rem 0 !important;
-    }
-
-    .booking-card-enhanced i {
-        font-size: 0.7rem !important;
-        min-width: 0.9rem !important;
-    }
-
-    /* Action Buttons - SIDE BY SIDE */
-    .booking-card-enhanced .flex.gap-2:has(button) {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 0.4rem !important;
-        width: 100% !important;
-        margin-top: 0.5rem !important;
-    }
-
-    .booking-card-enhanced .flex.gap-2 button {
-        width: 100% !important;
-        padding: 0.45rem 0.5rem !important;
-        font-size: 0.7rem !important;
-        white-space: nowrap !important;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.2rem;
-    }
-
-    .booking-card-enhanced .flex.gap-2 button i {
-        font-size: 0.65rem !important;
-        margin-right: 0.2rem !important;
-    }
-
-    /* Status Sections - Compact */
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] {
-        padding: 0.5rem !important;
-        margin-top: 0.5rem !important;
-        border-radius: 0.4rem !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] .flex {
-        gap: 0.4rem !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] p,
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] div {
-        font-size: 0.7rem !important;
-        line-height: 1.3 !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] .font-semibold {
-        font-size: 0.75rem !important;
-    }
-
-    /* Countdown Timers - Compact */
-    .booking-card-enhanced [id^="payment-countdown-"],
-    .booking-card-enhanced [id^="event-countdown-"] {
-        font-size: 0.8rem !important;
-        padding: 0.3rem !important;
-    }
-
-    /* Special Requests Section */
-    .booking-card-enhanced .p-3.bg-gray-50 {
-        padding: 0.5rem !important;
-        margin-top: 0.5rem !important;
-    }
-
-    /* Refresh Button */
-    #refresh-bookings {
-        font-size: 0.75rem !important;
-        padding: 0.5rem 0.85rem !important;
-    }
-
-    /* ========== PROFILE SETTINGS (IMAGE 2) ========== */
-    
-    /* Profile Card Container */
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6 {
-        padding: 0.75rem !important;
-        position: relative;
-    }
-
-    /* Profile Layout - CENTERED COLUMN */
-    .flex.flex-col.md\\:flex-row.items-center.gap-6 {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.6rem !important;
-        position: relative;
-        text-align: center;
-    }
-
-    /* Avatar Section - Centered */
-    .flex.flex-col.items-center:has(#profile-avatar) {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.5rem !important;
-        width: 100% !important;
-    }
-
-    #profile-avatar {
-        width: 80px !important;
-        height: 80px !important;
-        border-width: 3px !important;
-        flex-shrink: 0 !important;
-        border-color: #DC2626 !important;
-    }
-
-    #change-avatar-btn {
-        padding: 0.3rem !important;
-        bottom: 2px !important;
-        right: 2px !important;
-        background: #DC2626 !important;
-    }
-
-    #change-avatar-btn i {
-        font-size: 0.7rem !important;
-    }
-
-    .flex.flex-col.items-center:has(#profile-avatar) p {
-        display: block !important;
-        font-size: 0.7rem !important;
-        color: #6b7280;
-        margin-top: 0.3rem;
-    }
-
-    /* User Info Section - Centered */
-    .flex-1.text-center.md\\:text-left {
-        flex: 1 !important;
-        text-align: center !important;
-        width: 100% !important;
-        padding-right: 0 !important;
-    }
-
-    .flex.items-center.justify-between {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.3rem !important;
-        width: 100% !important;
-    }
-
-    /* Name and Email - Centered */
-    #profile-name {
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        line-height: 1.2 !important;
-        margin: 0 !important;
-        text-align: center;
-    }
-
-    #profile-email {
-        font-size: 0.75rem !important;
-        color: #6b7280 !important;
-        margin: 0 !important;
-        text-align: center;
-    }
-
-    /* Profile Menu Button - TOP RIGHT (Image 2) */
-    .relative.self-start {
-        position: absolute !important;
-        top: 0.75rem !important;
-        right: 0.75rem !important;
-    }
-
-    #profile-menu-btn {
-        padding: 0.35rem !important;
-        background: #f3f4f6 !important;
-        border-radius: 0.4rem !important;
-    }
-
-    #profile-menu-btn svg {
-        width: 1.1rem !important;
-        height: 1.1rem !important;
-    }
-
-    /* Profile Dropdown */
-    #profile-dropdown {
-        right: 0 !important;
-        top: calc(100% + 0.4rem) !important;
-        min-width: 150px !important;
-        font-size: 0.7rem !important;
-    }
-
-    #profile-dropdown button {
-        padding: 0.45rem 0.6rem !important;
-        font-size: 0.7rem !important;
-    }
-
-    #profile-dropdown i,
-    #profile-dropdown svg {
-        width: 0.9rem !important;
-        height: 0.9rem !important;
-    }
-
-    /* Statistics Grid - COMPACT 3 COLUMNS (Image 2) */
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4.mt-4 {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.4rem !important;
-        margin-top: 0.5rem !important;
-        width: 100% !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 > div {
-        padding: 0.4rem 0.3rem !important;
-        border-radius: 0.4rem !important;
-        text-align: center !important;
-    }
-
-    /* Statistics Numbers - Positioned as in Image 2 */
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        line-height: 1 !important;
-        margin-bottom: 0.2rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-xs {
-        font-size: 0.6rem !important;
-        line-height: 1.2 !important;
-        font-weight: 500 !important;
-    }
-
-    /* Clickable Stats Card */
-    #upcoming-events-card.cursor-pointer:active {
-        transform: scale(0.95);
-    }
-
-    /* Next Event Card - BOTTOM LEFT (Image 2) */
-    #next-event-card {
-        padding: 0.65rem !important;
-        margin-top: 0.6rem !important;
-        position: relative;
-    }
-
-    #next-event-card h4 {
-        font-size: 0.85rem !important;
-        margin-bottom: 0.4rem !important;
-        font-weight: 600 !important;
-        text-align: center;
-    }
-
-    #next-event-card .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.3rem !important;
-    }
-
-    #next-event-card .flex.justify-between {
-        gap: 0.3rem !important;
-        padding: 0.2rem 0 !important;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    #next-event-card .text-sm {
-        font-size: 0.65rem !important;
-    }
-
-    #next-event-card .text-lg {
-        font-size: 0.8rem !important;
-    }
-
-    /* Account Information Card - COMPACT */
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:last-of-type {
-        padding: 0.65rem !important;
-        margin-bottom: 0.6rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 h4 {
-        font-size: 0.85rem !important;
-        margin-bottom: 0.4rem !important;
-        font-weight: 600 !important;
-        text-align: center;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.3rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 > * + * {
-        margin-top: 0 !important;
-    }
-
-    #section-settings .flex.justify-between {
-        font-size: 0.7rem !important;
-        padding: 0.2rem 0 !important;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0.2rem;
-    }
-
-    #section-settings .flex.justify-between .text-gray-600 {
-        color: #6b7280 !important;
-        min-width: auto !important;
-    }
-
-    #section-settings .flex.justify-between .font-semibold {
-        font-weight: 600 !important;
-        text-align: center !important;
-    }
-
     /* ========== CALENDAR ========== */
-    
-    /* Calendar Navigation */
     .calendar-nav {
         display: grid;
         grid-template-columns: auto 1fr auto;
@@ -2450,9 +2186,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .calendar-nav button {
         padding: 0.5rem 0.75rem !important;
-        font-size: 0.75rem !important;
+        font-size: 0.65rem !important;
         white-space: nowrap;
         min-width: 70px;
+        min-height: 30px;
     }
 
     #calendar-title {
@@ -2473,7 +2210,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         grid-column: 3;
     }
 
-    /* Calendar Legend - Compact */
     .mb-4.flex.flex-wrap.gap-4.text-sm {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -2503,7 +2239,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         line-height: 1.2;
     }
 
-    /* Calendar Header Days */
     .calendar-header {
         gap: 1px;
         margin-bottom: 1px;
@@ -2516,7 +2251,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         letter-spacing: -0.3px;
     }
 
-    /* Calendar Grid */
     .calendar {
         gap: 1px;
         background-color: #cbd5e1;
@@ -2563,7 +2297,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-weight: 700;
     }
 
-    /* Calendar Status Colors - More Visible */
     .calendar-day.no-bookings,
     .calendar-day.one-booking {
         background-color: #dcfce7 !important;
@@ -2576,7 +2309,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .calendar-day.three-bookings,
-.calendar-day.unavailable {
+    .calendar-day.unavailable {
         background-color: #fee2e2 !important;
         border: 1.5px solid #ef4444;
     }
@@ -2585,7 +2318,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         box-shadow: inset 0 0 0 2px #3b82f6;
     }
 
-    /* Booking Details Modal */
     #booking-details-modal .modal-content {
         max-width: 95% !important;
     }
@@ -2599,8 +2331,25 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         padding: 0.5rem !important;
     }
 
+    #booking-details-modal .flex.justify-between {
+        position: relative !important;
+        align-items: flex-start !important;
+    }
+
+    #booking-details-modal h3 {
+        flex: 1 !important;
+        text-align: center !important;;
+        margin-top: 0.25rem !important;
+    }
+
+    #close-booking-details {
+        position: absolute !important;
+        right: -18px !important;
+        top: -20px !important;
+        
+    }
+
     /* ========== ABOUT US ========== */
-    
     .bg-gradient-to-r.from-\\[\\#DC2626\\] {
         padding: 1rem !important;
     }
@@ -2613,7 +2362,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.9rem !important;
     }
 
-    /* Vision/Mission Cards */
     .bg-white.rounded-lg.shadow-lg.border-2.p-6 {
         padding: 0.75rem !important;
     }
@@ -2631,7 +2379,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 1.1rem !important;
     }
 
-    /* Core Values Grid */
     .bg-gradient-to-br {
         padding: 0.75rem !important;
     }
@@ -2644,22 +2391,25 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.85rem !important;
     }
 
-    /* Terms & Conditions */
     .flex.items-start .text-\\[\\#DC2626\\] {
         min-width: 1.5rem;
         font-size: 0.85rem !important;
     }
 
     /* ========== MENU PACKAGES ========== */
-    
-    .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
-        grid-template-columns: 1fr !important;
-        gap: 0.75rem !important;
+    #section-menu .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
+    }
+
+    #section-menu .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
     }
 
     .package-card {
         transform: none !important;
-        border-width: 1.5px !important;
+        border-width: 1px !important;
     }
 
     .package-card:hover {
@@ -2667,41 +2417,108 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .package-card img {
-        height: 160px !important;
+        height: 120px !important;
     }
 
     .package-card .p-6 {
-        padding: 0.75rem !important;
+        padding: 0.5rem !important;
     }
 
     .package-card .text-xl {
-        font-size: 1rem !important;
+        font-size: 0.85rem !important;
+        margin-bottom: 0.25rem !important;
     }
 
     .package-card .text-sm {
-        font-size: 0.75rem !important;
+        font-size: 0.65rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .package-card .absolute {
+        font-size: 0.6rem !important;
+        padding: 2px 6px !important;
+    }
+
+    .package-card .flex.items-center.justify-between {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.4rem !important;
+    }
+
+    .package-card .flex.items-center.justify-between > span {
+        font-size: 0.65rem !important;
+        text-align: center !important;
+    }
+
+    .package-card i {
+        font-size: 0.7rem !important;
     }
 
     .view-menu-btn {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.75rem !important;
+        padding: 0.4rem 0.6rem !important;
+        font-size: 0.7rem !important;
+        width: 100% !important;
+        text-align: center !important;
     }
 
-    /* ========== MODALS - ACCURATE SIZING ========== */
-    
-    /* General Modal Container */
+    /* ========== SELECTED PRICE DISPLAY - LEFT RIGHT ALIGN ========== */
+    #selected-price-display .flex.justify-between {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    #selected-price-display .text-gray-700 {
+        text-align: left !important;
+    }
+
+    #selected-pax-text,
+    #selected-price-text {
+        text-align: right !important;
+        margin-left: auto !important;
+    }
+
+    /* ========== SELECTED PRICE DISPLAY - PROPER ALIGNMENT ========== */
+    #selected-price-display {
+        padding: 0.5rem !important;
+        margin-top: 0.5rem !important;
+    }
+
+    #selected-price-display .flex.justify-between.items-center {
+        display: grid !important;
+        grid-template-columns: auto 1fr !important;
+        gap: 1rem !important;
+        align-items: center !important;
+    }
+
+    #selected-price-display .text-gray-700 {
+        text-align: left !important;
+        white-space: nowrap !important;
+    }
+
+    #selected-pax-text {
+        text-align: right !important;
+        justify-self: end !important;
+    }
+
+    #selected-price-text {
+        text-align: right !important;
+        justify-self: end !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* ========== MODALS ========== */
     .fixed.inset-0.bg-black.bg-opacity-50 {
         padding: 0.5rem;
     }
 
-    /* Modal Content Boxes */
     .modal-content,
     #menu-modal > div:not(.hidden),
     #preview-modal > div:not(.hidden),
     #delete-modal > div,
-    #password-modal > div,
-    #avatar-modal > div,
-    #password-popup-modal > div {
+    #password-popup-modal > div,
+    #avatar-modal > div {
         width: calc(100% - 1rem) !important;
         max-width: calc(100% - 1rem) !important;
         margin: 0.5rem auto;
@@ -2709,28 +2526,24 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         overflow-y: auto;
     }
 
-    /* Modal Headers */
     .modal-content h3,
     #modal-package-name,
     .text-2xl.font-bold {
         font-size: 1.1rem !important;
     }
 
-    /* Modal Content Padding */
     .modal-content .p-6,
     .modal-content .p-8,
     #preview-content {
         padding: 0.75rem !important;
     }
 
-    /* Modal Text */
     .modal-content p,
     .modal-content li,
     .modal-content div {
         font-size: 0.8rem !important;
     }
 
-    /* Menu Modal Specific */
     #modal-menu-items {
         grid-template-columns: 1fr !important;
         gap: 0.75rem !important;
@@ -2756,42 +2569,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.7rem !important;
     }
 
-    /* Invoice Modal */
-    #preview-content {
-        font-size: 0.75rem !important;
-        max-height: 70vh;
-    }
 
-    #preview-content .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.5rem !important;
-    }
-
-    #preview-content .space-y-2 > * + * {
-        margin-top: 0.3rem !important;
-    }
-
-    #preview-content .space-y-3 > * + * {
-        margin-top: 0.5rem !important;
-    }
-
-    #preview-content .text-2xl {
-        font-size: 1.2rem !important;
-    }
-
-    #preview-content .text-lg {
-        font-size: 0.9rem !important;
-    }
-
-    #preview-content .text-sm {
-        font-size: 0.75rem !important;
-    }
-
-    #preview-content .text-xs {
-        font-size: 0.65rem !important;
-    }
-
-    /* Delete Modal */
     #delete-modal .max-w-md {
         max-width: calc(100% - 1rem) !important;
     }
@@ -2809,7 +2587,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         padding: 0.6rem 1rem !important;
     }
 
-    /* Avatar Modal */
     #avatar-grid {
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 0.5rem !important;
@@ -2819,18 +2596,242 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         aspect-ratio: 1;
     }
 
-    /* Password Modal */
-    #password-modal input {
-        font-size: 0.8rem !important;
+    /* ========== MENU MODAL MOBILE - SUPER LIIT ========== */
+    #menu-modal .bg-white.rounded-lg.shadow-xl {
+        max-width: 95% !important;
+        margin: 0.5rem !important;
+    }
+
+    /* Header */
+    #menu-modal .px-4.py-3.border-b {
         padding: 0.5rem 0.6rem !important;
     }
 
-    #password-modal label {
+    #menu-modal #modal-package-name {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.2rem !important;
+        line-height: 1.2 !important;
+    }
+
+    #menu-modal #modal-package-price {
+        font-size: 0.65rem !important;
+    }
+
+    #menu-modal #close-menu-modal {
+        margin-right: 0 !important;
+    }
+
+    #menu-modal #close-menu-modal i {
+        font-size: 0.9rem !important;
+    }
+
+    /* Content */
+    #menu-modal .px-4.py-3.overflow-y-auto {
+        padding: 0.6rem !important;
+    }
+
+    #menu-modal #modal-package-image {
+        height: 120px !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    #menu-modal .mb-4 {
+        margin-bottom: 0.5rem !important;
+    }
+
+    #menu-modal .flex.items-center.gap-2.mb-2 {
+        gap: 0.3rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    #menu-modal .flex.items-center.gap-2 i {
+        font-size: 0.7rem !important;
+    }
+
+    #menu-modal h4 {
+        font-size: 0.7rem !important;
+        font-weight: 600 !important;
+    }
+
+    #menu-modal #modal-description,
+    #menu-modal #modal-inclusions {
+        font-size: 0.65rem !important;
+        padding-left: 1rem !important;
+        line-height: 1.3 !important;
+    }
+
+    #menu-modal #modal-inclusions > div {
+        font-size: 0.55rem !important;
+    }
+
+    /* Guest Selection */
+    #menu-modal .bg-gray-50.p-3 {
+        padding: 0.5rem !important;
+    }
+
+    #menu-modal #modal-guest-selection {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.3rem !important;
+    }
+
+    #menu-modal #modal-guest-selection button {
+        padding: 0.35rem 0.25rem !important;
+        font-size: 0.6rem !important;
+        min-height: 28px !important;
+        border-radius: 0.3rem !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Price Display */
+    #menu-modal #selected-price-display {
+        padding: 0.4rem !important;
+        margin-top: 0.4rem !important;
+    }
+
+    #menu-modal #selected-price-display .text-xs {
+        font-size: 0.65rem !important;
+    }
+
+    #menu-modal #selected-pax-text {
+        font-size: 0.65rem !important;
+    }
+
+    #menu-modal #selected-price-text {
+        font-size: 0.9rem !important;
+    }
+
+    /* Footer */
+    #menu-modal .sticky.bottom-0.px-4.py-3 {
+        padding: 0.5rem 0.6rem !important;
+    }
+
+    #menu-modal #book-package-btn {
+        padding: 0.5rem 0.6rem !important;
+        font-size: 0.7rem !important;
+        min-height: 32px !important;
+    }
+
+    #menu-modal #book-package-btn i {
+        font-size: 0.65rem !important;
+        margin-right: 0.2rem !important;
+    }
+
+    /* ========== GUEST SELECTION - SUPER LIIT ========== */
+    #modal-guest-selection button {
+        padding: 0.3rem 0.2rem !important;
+        font-size: 0.55rem !important;
+        min-height: 28px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.1rem !important;
+        line-height: 1.1 !important;
+        border-radius: 0.3rem !important;
+    }
+
+    #modal-guest-selection button span {
+        font-size: 0.55rem !important;
+        font-weight: 500 !important;
+    }
+
+    #modal-guest-selection button .font-bold {
+        font-size: 0.6rem !important;
+        font-weight: 600 !important;
+    }
+
+    /* Price/Pax text inside buttons */
+    #modal-guest-selection button > div {
+        font-size: 0.55rem !important;
+    }
+
+/* Checkbox size - SUPER FORCE */
+    #menu-modal #modal-guest-selection input[type="checkbox"],
+    #menu-modal #modal-guest-selection input[type="radio"],
+    #modal-guest-selection input[type="checkbox"],
+    #modal-guest-selection input[type="radio"],
+    input[type="checkbox"],
+    input[type="radio"] {
+        width: 14px !important;
+        height: 14px !important;
+        min-width: 14px !important;
+        max-width: 14px !important;
+        min-height: 14px !important;
+        max-height: 14px !important;
+        margin: 0 0.3rem 0 0 !important;
+        transform: none !important;
+    }
+
+    /* Override any existing checkbox styles */
+    label input[type="checkbox"],
+    label input[type="radio"] {
+        width: 14px !important;
+        height: 14px !important;
+        min-width: 14px !important;
+        min-height: 14px !important;
+    }
+
+    /* Selected state styling */
+    #modal-guest-selection button.selected,
+    #modal-guest-selection button.bg-\[\\#DC2626\] {
+        font-weight: 600 !important;
+    }
+
+    /* ========== GALLERY ========== */
+    #section-gallery {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .category-dot {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    #category-label {
+        font-size: 0.7rem !important;
+    }
+
+    #gallery-carousel-container .relative {
+        min-height: 250px;
+    }
+
+    #gallery-main-image {
+        max-height: 300px !important;
+    }
+
+    .category-dot i {
         font-size: 0.8rem !important;
     }
 
-    #password-modal button {
-        font-size: 0.8rem !important;
+    #gallery-overlay {
+        padding: 0.75rem !important;
+    }
+
+    #gallery-overlay h3 {
+        font-size: 1rem !important;
+    }
+
+    #gallery-overlay p {
+        font-size: 0.7rem !important;
+    }
+
+    #gallery-highlights {
+        grid-template-columns: 1fr !important;
+        gap: 0.3rem !important;
+    }
+
+    #gallery-highlights .flex {
+        font-size: 0.65rem !important;
+    }
+
+    .thumbnail {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    #gallery-promo-video {
+        min-height: 250px;
     }
 
     /* ========== SPACING ADJUSTMENTS ========== */
@@ -2911,28 +2912,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     /* ========== UTILITY CLASSES ========== */
-    
-    /* Icons */
     .fas,
     .far,
     .fab {
         font-size: 0.9rem;
     }
 
-    /* Loading Spinner */
     .loading-spinner {
         width: 14px !important;
         height: 14px !important;
         margin-right: 0.4rem;
     }
 
-    /* Divider Lines */
     .w-full.h-0\\.5 {
         height: 1px !important;
         margin-bottom: 0.75rem !important;
     }
 
-    /* Border Radius */
     .rounded-lg {
         border-radius: 0.5rem !important;
     }
@@ -2941,7 +2937,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         border-radius: 0.75rem !important;
     }
 
-    /* Shadows */
     .shadow-lg {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
@@ -2950,7 +2945,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
     }
 
-    /* ========== LANDSCAPE MODE (Mobile) ========== */
+    /* ========== LANDSCAPE MODE ========== */
     @media (max-height: 500px) and (orientation: landscape) {
         main {
             padding-top: 55px;
@@ -3026,10 +3021,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         width: 30px !important;
     }
 
-    .booking-card-enhanced {
-        padding: 0.6rem !important;
-    }
-
     .calendar-day {
         min-height: 70px !important;
         padding: 0.15rem !important;
@@ -3053,26 +3044,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .theme-btn i {
         font-size: 1.5rem !important;
-    }
-
-    .booking-price-tag {
-        font-size: 0.7rem !important;
-        padding: 0.25rem 0.5rem !important;
-        top: 1.3rem !important;
-    }
-
-    #profile-avatar {
-        width: 75px !important;
-        height: 75px !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1rem !important;
-    }
-
-    .status-badge {
-        font-size: 0.55rem !important;
-        padding: 2px 5px !important;
     }
 }
 
@@ -3117,6 +3088,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+
+
 /* ========== PRINT STYLES ========== */
 @media print {
     #mobile-menu-btn,
@@ -3135,12 +3108,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     body {
         font-size: 11pt;
-    }
-
-    .booking-card-enhanced,
-    #preview-content {
-        break-inside: avoid;
-        page-break-inside: avoid;
     }
 
     @page {
@@ -3168,7 +3135,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .calendar-day,
-    .booking-card-enhanced,
     .package-card {
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
@@ -3182,8 +3148,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         image-rendering: crisp-edges;
     }
 
-    .package-card img,
-    #profile-avatar {
+    .package-card img {
         image-rendering: auto;
     }
 }
@@ -3272,6 +3237,27 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+/* ========== MY BOOKINGS (MOBILE) =========== */
+@media (max-width: 767px) {
+    .booking-price-tag {
+        background: linear-gradient(135deg, #DC2626, #B91C1C);
+        color: white;
+        font-weight: bold;
+        font-size: 0.85em;
+        padding: 5px 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    }
+
+    .status-badge {
+        font-size: 9px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 12px;
+        text-transform: uppercase;
+    }
+}
+
 /* ========== SMOOTH SCROLLING ========== */
 @media (max-width: 768px) {
     html {
@@ -3309,7 +3295,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
 /* ========== PERFORMANCE OPTIMIZATION ========== */
 @media (max-width: 768px) {
-    .booking-card-enhanced,
     .package-card,
     .calendar-day,
     .modal-content {
@@ -3323,6 +3308,734 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+/* ========== FORCE MENU PACKAGES 2 COLUMNS ON MOBILE ========== */
+@media (max-width: 768px) {
+    #section-menu > div.grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.4rem !important;
+    }
+
+    #section-menu .package-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+
+    #section-menu .package-card > div:first-child {
+        height: 110px !important;
+    }
+
+    #section-menu .package-card > div:first-child > img {
+        height: 110px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+    }
+
+    #section-menu .package-card > div:last-child {
+        padding: 0.4rem !important;
+    }
+
+    #section-menu .package-card h3 {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.2rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+    }
+
+    #section-menu .package-card p {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.4rem !important;
+        line-height: 1.3 !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+    #section-menu .package-card .absolute {
+        font-size: 0.5rem !important;
+        padding: 2px 5px !important;
+        font-weight: 600 !important;
+    }
+
+    #section-menu .package-card .flex.items-center.justify-between {
+        flex-direction: row !important;
+        gap: 0.3rem !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
+
+    #section-menu .package-card .flex.items-center.justify-between > span {
+        font-size: 0.55rem !important;
+        text-align: left !important;
+        padding: 0 !important;
+        flex: 1 !important;
+    }
+
+    #section-menu .package-card .flex.items-center.justify-between i {
+        font-size: 0.6rem !important;
+        margin-right: 0.25rem !important;
+    }
+
+#section-menu .view-menu-btn {
+        font-size: 0.40rem !important;
+        padding: 0.2rem 0.35rem !important;
+        width: auto !important;
+        height: 22px !important;
+        min-height: 22px !important;
+        max-height: 22px !important;
+        text-align: center !important;
+        border-radius: 0.3rem !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        line-height: 1 !important;
+    }
+}
+
+/* ========== PROFILE SETTINGS - 3 DOTS TOP RIGHT, NAME/EMAIL CENTER ========== */
+@media (max-width: 768px) {
+    /* Profile Settings Section */
+    #section-settings {
+        position: relative;
+    }
+    
+    /* Profile Card */
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:first-of-type {
+        position: relative !important;
+        padding: 1rem !important;
+    }
+    
+    /* Main flex container - make it column on mobile */
+    #section-settings .flex.flex-col.md\:flex-row.items-center.gap-6 {
+        flex-direction: column !important;
+        align-items: center !important;
+        position: relative !important;
+        padding-top: 2.5rem !important; /* Space for 3 dots button */
+    }
+    
+    /* Avatar section - centered */
+    #section-settings .flex.flex-col.items-center:has(#profile-avatar) {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* User info container - centered */
+    #section-settings .flex-1 {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 0 !important;
+    }
+    
+    /* Container for name/email and 3 dots */
+    #section-settings .flex-1 .flex.items-center.justify-between.mb-2 {
+        width: 100% !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Name/email wrapper */
+    #section-settings .flex-1 .flex.items-center.justify-between > div:first-child {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+    
+    /* Profile name - centered, smaller gap */
+    #profile-name {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Profile email - centered, smaller gap */
+    #profile-email {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+        margin-top: 0.25rem !important;
+    }
+    
+    /* 3 dots button container - TOP RIGHT corner */
+    #section-settings .relative.self-start {
+        position: absolute !important;
+        top: -2% !important;
+        right: -2% !important;
+        z-index: 10 !important;
+        align-self: auto !important;
+    }
+    
+    /* 3 dots button */
+    #profile-menu-btn {
+        padding: 0.5rem !important;
+        width: 36px !important;
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 0.5rem !important;
+        background-color: transparent !important;
+        background: none !important;
+    }
+
+    #profile-menu-btn:hover {
+        background-color: transparent !important;
+        background: none !important;
+    }
+    
+    #profile-menu-btn svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* Dropdown menu */
+    #profile-dropdown {
+        position: absolute !important;
+        top: 100% !important;
+        right: 0 !important;
+        margin-top: 0.25rem !important;
+        min-width: 200px !important;
+    }
+    
+    /* Statistics grid - FORCE 3 COLUMNS, STAY IN ONE LINE */
+    #section-settings .grid.grid-cols-3 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+    
+    /* Each stat box - smaller padding */
+    #section-settings .grid.grid-cols-3 > div {
+        padding: 0.5rem !important;
+        min-width: 0 !important;
+    }
+    
+    /* Stat values - smaller font */
+    #section-settings .grid.grid-cols-3 p.text-2xl {
+        font-size: 1.25rem !important;
+    }
+    
+    /* Stat labels - smaller font */
+    #section-settings .grid.grid-cols-3 p.text-xs {
+        font-size: 0.65rem !important;
+    }
+
+    /* Change Password Modal - Mobile Fix */
+    #password-modal .p-6.border-b.relative {
+        padding: 1rem !important;
+    }
+    
+    #password-modal h3 {
+        font-size: 1rem !important;
+        text-align: center !important;
+        padding-right: 2rem !important;
+    }
+    
+    #password-modal #close-password-modal {
+        position: absolute !important;
+        right: 1rem !important;
+        top: 29% !important;
+        transform: translateY(-50%) !important;
+    }
+    
+    #password-modal #close-password-modal svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    /* Fix button text alignment in change password modal */
+    #password-modal button {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.6rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    #password-modal .flex.gap-3 {
+        display: flex !important;
+        gap: 0.75rem !important;
+    }
+    
+    #password-modal .flex.gap-3 button {
+        flex: 1 !important;
+        text-align: center !important;
+    }
+
+    /* Form inputs inside password modal */
+    #password-modal input[type="password"] {
+        font-size: 0.85rem !important;
+        padding: 0.6rem 0.75rem !important;
+    }
+    
+    #password-modal label {
+        font-size: 0.8rem !important;
+    }
+    
+    #password-modal .text-xs {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* ========== BOOKING PREVIEW MODAL - MOBILE RESPONSIVE (FIXED STICKY BUTTONS) ========== */
+@media (max-width: 768px) {
+    /* Preview Modal Container - Remove padding that causes double scroll */
+    #preview-modal {
+        padding: 0 !important;
+        align-items: flex-start !important;
+    }
+    
+    #preview-modal > div:first-child {
+        max-height: 95vh !important;
+        margin: 0.5rem auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: calc(100% - 1rem) !important;
+    }
+    
+    #preview-modal .bg-white.rounded-lg.shadow-xl {
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 95vh !important;
+        overflow: hidden !important;
+    }
+    
+    /* Modal Header - FIXED AT TOP */
+    #preview-modal .p-6.border-b,
+    #preview-modal .px-4.py-3.border-b {
+        padding: 0.5rem 0.75rem !important;
+        flex-shrink: 0 !important;
+        background: linear-gradient(to right, #DC2626, #B91C1C) !important;
+        border-bottom: none !important;
+    }
+    
+    #preview-modal .flex.justify-between.items-start {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+    
+    #preview-modal .flex-1 h3 {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.1rem !important;
+        line-height: 1.2 !important;
+        color: white !important;
+    }
+    
+    #preview-modal .flex-1 p {
+        font-size: 0.6rem !important;
+        line-height: 1.2 !important;
+        color: white !important;
+    }
+    
+    /* Close Button */
+    #close-preview-modal {
+        padding: 0.25rem !important;
+        flex-shrink: 0 !important;
+        color: white !important;
+    }
+    
+    #close-preview-modal:hover {
+        color: #f3f4f6 !important;
+    }
+    
+    #close-preview-modal i {
+        font-size: 1rem !important;
+    }
+    
+    /* Preview Content - SCROLLABLE MIDDLE SECTION */
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        padding: 0.75rem !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex: 1 1 auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-height: none !important;
+    }
+    
+    /* Header Section */
+    #preview-content .text-center.border-b {
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content img {
+        width: 40px !important;
+        height: 40px !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content h1 {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.15rem !important;
+        font-weight: 600 !important;
+    }
+    
+    #preview-content .text-center p {
+        font-size: 0.55rem !important;
+        margin-top: 0.1rem !important;
+    }
+    
+    /* Preview Title & Status */
+    #preview-content > div > .flex.justify-between.items-start {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+        gap: 0.5rem !important;
+    }
+    
+    #preview-content h2 {
+        font-size: 0.7rem !important;
+        margin-bottom: 0.1rem !important;
+    }
+    
+    #preview-content > div > .flex.justify-between.items-start p {
+        font-size: 0.55rem !important;
+    }
+    
+    /* Status Badges */
+    #preview-content .text-right .inline-block {
+        font-size: 0.5rem !important;
+        padding: 0.15rem 0.35rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Grid Sections */
+    #preview-content .grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content h3 {
+        font-size: 0.65rem !important;
+        margin-bottom: 0.4rem !important;
+        padding-bottom: 0.3rem !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Info Rows */
+    #preview-content .space-y-2,
+    #preview-content .space-y-3 {
+        gap: 0.3rem !important;
+    }
+    
+    #preview-content .flex.justify-between {
+        margin-bottom: 0.3rem !important;
+    }
+    
+    #preview-content .flex.justify-between span {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .flex.justify-between span:first-child {
+        min-width: 60px !important;
+    }
+    
+    /* Service Package Section */
+    #preview-content .bg-gray-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .grid {
+        gap: 0.5rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .flex.justify-between {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Special Requests */
+    #preview-content .mt-3.pt-3 {
+        margin-top: 0.5rem !important;
+        padding-top: 0.5rem !important;
+    }
+    
+    #preview-content .mt-3.pt-3 p:first-child {
+        font-size: 0.55rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content .mt-3.pt-3 p:last-child {
+        font-size: 0.6rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Pricing Section */
+    #preview-content .border-t.pt-4 {
+        padding-top: 0.75rem !important;
+        margin-top: 0.75rem !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
+    
+    #preview-content .bg-gradient-to-r {
+        padding: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .flex {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        align-items: flex-start !important;
+    }
+    
+    #preview-content .bg-gradient-to-r h3 {
+        font-size: 0.7rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-sm {
+        font-size: 0.55rem !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-3xl {
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-sm.mt-1 {
+        font-size: 0.55rem !important;
+        margin-top: 0.15rem !important;
+    }
+    
+    /* Important Information Box */
+    #preview-content .bg-blue-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-blue-50 .flex-shrink-0 i {
+        font-size: 0.7rem !important;
+        margin-top: 0.1rem !important;
+    }
+    
+    #preview-content .bg-blue-50 h4 {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content .bg-blue-50 .space-y-1 p {
+        font-size: 0.55rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    /* Footer Section inside content */
+    #preview-content .text-center:last-child {
+        padding-top: 0.75rem !important;
+        margin-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
+    
+    #preview-content .flex.justify-center {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #preview-content .flex.items-center.space-x-2 {
+        font-size: 0.55rem !important;
+    }
+    
+    #preview-content .flex.items-center.space-x-2 i {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .text-center:last-child p {
+        font-size: 0.55rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* Modal Footer - TRULY STICKY AT BOTTOM */
+    #preview-modal .bg-gray-50.p-6.border-t,
+    #preview-modal .sticky.bottom-0.px-4.py-3.border-t {
+        padding: 0.6rem 0.75rem !important;
+        flex-shrink: 0 !important;
+        background: white !important;
+        border-top: 2px solid #e5e7eb !important;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1) !important;
+        position: relative !important;
+        margin-top: auto !important;
+    }
+    
+    /* Footer content wrapper */
+    #preview-modal .bg-gray-50.p-6.border-t > div,
+    #preview-modal .sticky.bottom-0.px-4.py-3.border-t > div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+    
+    /* Info text */
+    #preview-modal .bg-gray-50 .text-sm.text-gray-600,
+    #preview-modal .sticky.bottom-0 .text-sm.text-gray-600 {
+        font-size: 0.6rem !important;
+        text-align: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        order: 1 !important;
+    }
+    
+    #preview-modal .bg-gray-50 .text-sm.text-gray-600 i,
+    #preview-modal .sticky.bottom-0 .text-sm.text-gray-600 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Buttons container */
+    #preview-modal .bg-gray-50 .flex.gap-3,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0.5rem !important;
+        order: 2 !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Individual buttons */
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        flex: 1 !important;
+        font-size: 0.65rem !important;
+        padding: 0.6rem 0.5rem !important;
+        white-space: nowrap !important;
+        border-radius: 0.4rem !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.25rem !important;
+        min-height: 36px !important;
+        border: none !important;
+    }
+    
+    /* Print button - Blue */
+    #print-preview {
+        background-color: #2563eb !important;
+        color: white !important;
+    }
+    
+    #print-preview:hover {
+        background-color: #1d4ed8 !important;
+    }
+    
+    /* Close button - Gray */
+    #close-preview-btn {
+        background-color: #6b7280 !important;
+        color: white !important;
+    }
+    
+    #close-preview-btn:hover {
+        background-color: #4b5563 !important;
+    }
+    
+    /* Button icons */
+    #preview-modal .bg-gray-50 .flex.gap-3 button i,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button i {
+        font-size: 0.65rem !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Custom scrollbar for content */
+    #preview-content::-webkit-scrollbar,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar {
+        width: 4px !important;
+    }
+    
+    #preview-content::-webkit-scrollbar-track,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar-track {
+        background: #f1f5f9 !important;
+    }
+    
+    #preview-content::-webkit-scrollbar-thumb,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+        background: #DC2626 !important;
+        border-radius: 2px !important;
+    }
+}
+
+/* ========== EXTRA SMALL MOBILE (< 375px) ========== */
+@media (max-width: 374px) {
+    #preview-modal .flex-1 h3 {
+        font-size: 0.7rem !important;
+    }
+    
+    #preview-content h1 {
+        font-size: 0.75rem !important;
+    }
+    
+    #preview-content img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-3xl {
+        font-size: 1.1rem !important;
+    }
+    
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        font-size: 0.6rem !important;
+        padding: 0.5rem 0.4rem !important;
+        min-height: 34px !important;
+    }
+    
+    #preview-modal .bg-gray-50 .flex.gap-3 button i,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button i {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-modal .bg-gray-50 .text-sm,
+    #preview-modal .sticky.bottom-0 .text-sm {
+        font-size: 0.5rem !important;
+    }
+}
+
+/* ========== LANDSCAPE MODE ========== */
+@media (max-width: 768px) and (orientation: landscape) {
+    #preview-modal > div:first-child {
+        max-height: 90vh !important;
+    }
+    
+    #preview-modal .bg-gray-50,
+    #preview-modal .sticky.bottom-0 {
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        padding: 0.5rem 0.6rem !important;
+        min-height: 32px !important;
+    }
+}
 
             </style>
             </head>
@@ -4208,8 +4921,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                     <h2 class="text-2xl font-bold mb-2">Available Schedule</h2>
                     <div class="w-full h-0.5 bg-gray-400 mb-6"></div>
                     
-                    <!-- Calendar Container -->
-                    <div class="bg-white rounded-lg shadow-lg border-2 border-gray-300 p-6">
+                        <!-- Calendar Container -->
+                        <div class="bg-white rounded-lg shadow-lg border-2 border-gray-300 p-6 overflow-x-auto">
                         <!-- Calendar Navigation -->
                         <div class="calendar-nav">
                             <button id="prev-month" class="flex items-center gap-2">
@@ -4245,8 +4958,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                             </div>
                         </div>
                         
-                        <!-- Calendar Header -->
-                        <div class="calendar-header">
+                        <!-- Scrollable Calendar Wrapper -->
+                        <div class="overflow-x-auto">
+                            <!-- Calendar Header -->
+                            <div class="calendar-header" style="min-width: 600px;">
                             <div class="calendar-header-day">Sun</div>
                             <div class="calendar-header-day">Mon</div>
                             <div class="calendar-header-day">Tue</div>
@@ -4256,9 +4971,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                             <div class="calendar-header-day">Sat</div>
                         </div>
                         
-                        <!-- Calendar Grid -->
-                        <div id="calendar-grid" class="calendar">
-                            <!-- Calendar days will be dynamically generated here -->
+                            <!-- Calendar Grid -->
+                            <div id="calendar-grid" class="calendar" style="min-width: 600px;">
+                                <!-- Calendar days will be dynamically generated here -->
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -4552,69 +5268,69 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
 <!-- Menu Package Details Modal - ENHANCED -->
 <div id="menu-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-h-[90vh] overflow-hidden" style="max-width: 60%;">
         <!-- Header -->
-        <div class="p-6 border-b bg-gradient-to-r from-[#DC2626] to-[#B91C1C]">
+        <div class="px-4 py-3 border-b bg-gradient-to-r from-[#DC2626] to-[#B91C1C]">
             <div class="flex justify-between items-start">
                 <div class="flex-1">
-                    <h3 id="modal-package-name" class="text-2xl font-bold text-white mb-2"></h3>
-                    <p id="modal-package-price" class="text-lg text-white font-semibold opacity-90"></p>
+                    <h3 id="modal-package-name" class="text-base font-bold text-white mb-0.5"></h3>
+                    <p id="modal-package-price" class="text-xs text-white font-semibold opacity-90"></p>
                 </div>
-                <button id="close-menu-modal" class="text-white hover:text-gray-200 transition-colors">
-                    <i class="fas fa-times text-2xl"></i>
+                <button id="close-menu-modal" class="text-white hover:text-gray-200 transition-colors mr-3">
+                    <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
         </div>
         
-        <!-- Content -->
-        <div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+         <!-- Content -->
+        <div class="px-4 py-3 overflow-y-auto max-h-[calc(90vh-180px)]">
             <!-- Package Image -->
-            <div class="mb-6">
-                <img id="modal-package-image" src="" alt="" class="w-full h-64 object-cover rounded-lg shadow-lg">
+            <div class="mb-4">
+                <img id="modal-package-image" src="" alt="" class="w-full h-40 object-cover rounded-lg shadow-lg">
             </div>
             
             <!-- Description -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fas fa-info-circle text-[#DC2626] text-xl"></i>
-                    <h4 class="text-lg font-semibold text-gray-800">Description</h4>
+            <div class="mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-info-circle text-[#DC2626] text-sm"></i>
+                    <h4 class="text-sm font-semibold text-gray-800">Description</h4>
                 </div>
-                <div id="modal-description" class="text-gray-700 leading-relaxed pl-7"></div>
+                <div id="modal-description" class="text-xs text-gray-700 leading-relaxed pl-6"></div>
             </div>
             
             <!-- Inclusions -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fas fa-check-circle text-[#DC2626] text-xl"></i>
-                    <h4 class="text-lg font-semibold text-gray-800">Package Inclusions</h4>
+            <div class="mb-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-check-circle text-[#DC2626] text-sm"></i>
+                    <h4 class="text-sm font-semibold text-gray-800">Package Inclusions</h4>
                 </div>
-                <div id="modal-inclusions" class="space-y-2 pl-7"></div>
+                <div id="modal-inclusions" class="space-y-1 pl-6 text-xs"></div>
             </div>
 
             <!-- Guest Selection -->
-            <div class="mb-6 bg-gray-50 p-4 rounded-lg border-2 border-[#DC2626]">
-                <div class="flex items-center gap-2 mb-3">
-                    <i class="fas fa-users text-[#DC2626] text-xl"></i>
-                    <h4 class="text-lg font-semibold text-gray-800">Select Number of Guests</h4>
+            <div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-users text-[#DC2626] text-sm"></i>
+                    <h4 class="text-sm font-semibold text-gray-800">Select Number of Guests</h4>
                 </div>
-                <div id="modal-guest-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-3 pl-7"></div>
-                <div id="selected-price-display" class="hidden mt-4 p-3 bg-white rounded-lg border border-[#DC2626]">
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-700 font-medium">Selected Package:</span>
-                        <span id="selected-pax-text" class="text-[#DC2626] font-bold"></span>
+                <div id="modal-guest-selection" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+                <div id="selected-price-display" class="hidden mt-2 p-2 bg-white rounded-lg">
+                    <div class="flex justify-between items-center gap-4">
+                        <span class="text-gray-700 font-medium text-xs">Selected Package:</span>
+                        <span id="selected-pax-text" class="text-[#DC2626] font-bold text-xs text-right"></span>
                     </div>
-                    <div class="flex justify-between items-center mt-2">
-                        <span class="text-gray-700 font-medium">Total Price:</span>
-                        <span id="selected-price-text" class="text-2xl text-[#DC2626] font-bold"></span>
+                    <div class="flex justify-between items-center gap-4 mt-0.5">
+                        <span class="text-gray-700 font-medium text-xs">Total Price:</span>
+                        <span id="selected-price-text" class="text-base text-[#DC2626] font-bold text-right"></span>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Footer with Book Button -->
-        <div class="sticky bottom-0 p-4 border-t bg-white shadow-lg">
-            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold text-lg transition-all cursor-not-allowed">
-                <i class="fas fa-calendar-plus mr-2"></i>
+        <div class="sticky bottom-0 px-4 py-3 border-t bg-white shadow-lg">
+            <button id="book-package-btn" disabled class="w-full bg-gray-300 text-gray-500 py-2.5 px-4 rounded-lg font-semibold text-base transition-all cursor-not-allowed">
+                <i class="fas fa-calendar-plus mr-2 text-sm"></i>
                 Select Guest Count to Continue
             </button>
         </div>
@@ -4757,6 +5473,107 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         </div>
     </div>
 </section>
+
+<style>
+/* Gallery Styles */
+.category-dot {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.category-dot.active {
+    border-color: #DC2626;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    transform: scale(1.15);
+}
+
+.category-dot.active i {
+    color: white !important;
+}
+
+.category-dot:hover {
+    transform: scale(1.1);
+}
+
+#gallery-main-image {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#gallery-main-image.fade-out {
+    opacity: 0;
+}
+
+#gallery-overlay {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#gallery-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.thumbnail {
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.thumbnail.active {
+    border-color: #DC2626;
+    transform: scale(1.15) translateY(-8px);
+    box-shadow: 0 8px 16px rgba(220, 38, 38, 0.3);
+}
+
+.thumbnail:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Video controls disabled */
+#gallery-promo-video::-webkit-media-controls {
+    display: none !important;
+}
+
+#gallery-promo-video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+/* Scrollbar styling for thumbnails */
+#gallery-thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-thumb {
+    background: #DC2626;
+    border-radius: 10px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-thumb:hover {
+    background: #B91C1C;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    #section-gallery {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    .category-dot {
+        width: 32px !important;
+        height: 32px !important;
+    }
+}
+</style>
 
 <style>
 /* Gallery Styles */

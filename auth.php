@@ -972,7 +972,7 @@ form{
 /* Mobile Responsive */
 @media (max-width: 480px) {
     .otp-modal-card {
-        max-width:350px;
+        max-width: 350px;
     }
     
     .otp-modal-header {
