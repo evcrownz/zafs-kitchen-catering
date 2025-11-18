@@ -1625,7 +1625,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         }
 
 /*============================================
-   PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
+  PLD PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
    ============================================ */
 
 /* Force proper grid behavior on mobile */
