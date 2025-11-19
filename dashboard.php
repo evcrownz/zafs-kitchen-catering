@@ -4152,7 +4152,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                         <i class="fas fa-peso-sign text-green-600 text-sm md:text-2xl"></i>
                     </div>
                     <p class="text-[10px] md:text-sm text-gray-600 mb-0.5 md:mb-1">Spent</p>
-                    <p class="text-sm md:text-2xl font-bold text-green-600" id="dashboard-total-spent">â‚±0</p>
+                    <p class="text-sm md:text-2xl font-bold text-green-600" id="dashboard-total-spent">₱0</p>
                 </div>
             </div>
         </div>
@@ -4502,27 +4502,27 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                             <option value="">Select a package</option>
 
                                                 <optgroup label="ðŸŽ‚ Birthday/Event Packages">
-                                                    <option value="silver" data-price="767">Silver Package - â‚±767/person (â‚±23K-50K)</option>
-                                                    <option value="gold" data-price="1367">Gold Package - â‚±1,367/person (â‚±41K-69K)</option>
-                                                    <option value="platinum" data-price="1600">Platinum Package - â‚±1,600/person (â‚±48K-82K)</option>
-                                                    <option value="diamond" data-price="2233">Diamond Package - â‚±2,233/person (â‚±67K-97K)</option>
+                                                    <option value="silver" data-price="767">Silver Package - ₱767/person (₱23K-50K)</option>
+                                                    <option value="gold" data-price="1367">Gold Package - ₱1,367/person (₱41K-69K)</option>
+                                                    <option value="platinum" data-price="1600">Platinum Package - ₱1,600/person (₱48K-82K)</option>
+                                                    <option value="diamond" data-price="2233">Diamond Package - ₱2,233/person (₱67K-97K)</option>
                                                 </optgroup>
 
                                                 <optgroup label="ðŸ’ Wedding Packages">
-                                                    <option value="basic_wedding" data-price="1400">Basic Wedding - â‚±1,400/person (â‚±42K-75K)</option>
-                                                    <option value="premium_wedding" data-price="2600">Premium Wedding - â‚±2,600/person (â‚±130K-165K)</option>
+                                                    <option value="basic_wedding" data-price="1400">Basic Wedding - ₱1,400/person (₱42K-75K)</option>
+                                                    <option value="premium_wedding" data-price="2600">Premium Wedding - ₱2,600/person (₱130K-165K)</option>
                                                 </optgroup>
 
                                                 <optgroup label="ðŸ‘— Debut Packages">
-                                                    <option value="silver_debut" data-price="800">Silver Debut - â‚±800/person (â‚±24K-52K)</option>
-                                                    <option value="gold_debut" data-price="1433">Gold Debut - â‚±1,433/person (â‚±43K-72K)</option>
-                                                    <option value="platinum_debut" data-price="1800">Platinum Debut - â‚±1,800/person (â‚±54K-86K)</option>
+                                                    <option value="silver_debut" data-price="800">Silver Debut - ₱800/person (₱24K-52K)</option>
+                                                    <option value="gold_debut" data-price="1433">Gold Debut - ₱1,433/person (₱43K-72K)</option>
+                                                    <option value="platinum_debut" data-price="1800">Platinum Debut - ₱1,800/person (₱54K-86K)</option>
                                                 </optgroup>
 
                                                 <optgroup label="ðŸ¢ Corporate Packages">
-                                                    <option value="silver_corporate" data-price="833">Silver Corporate - â‚±833/person (â‚±25K-50K)</option>
-                                                    <option value="gold_corporate" data-price="1467">Gold Corporate - â‚±1,467/person (â‚±44K-69K)</option>
-                                                    <option value="platinum_corporate" data-price="1667">Platinum Corporate - â‚±1,667/person (â‚±50K-80K)</option>
+                                                    <option value="silver_corporate" data-price="833">Silver Corporate - ₱833/person (₱25K-50K)</option>
+                                                    <option value="gold_corporate" data-price="1467">Gold Corporate - ₱1,467/person (₱44K-69K)</option>
+                                                    <option value="platinum_corporate" data-price="1667">Platinum Corporate - ₱1,667/person (₱50K-80K)</option>
                                                 </optgroup>
                                         </select>
                                     </div>
@@ -4569,16 +4569,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                             <div class="space-y-1">
                                                 <div class="flex justify-between text-sm">
                                                     <span>Base Package:</span>
-                                                    <span id="base-price">â‚±0.00</span>
+                                                    <span id="base-price">₱0.00</span>
                                                 </div>
                                                 <div class="flex justify-between text-sm" id="additional-items-container" style="display: none;">
                                                     <span>Additional Items:</span>
-                                                    <span id="additional-price">â‚±0.00</span>
+                                                    <span id="additional-price">₱0.00</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <div class="text-2xl font-bold" id="total-display">â‚±0.00</div>
+                                            <div class="text-2xl font-bold" id="total-display">₱0.00</div>
                                             <div class="text-xs opacity-90">
                                                 for <span id="guest-display">0</span>
                                             </div>
@@ -4675,16 +4675,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                             <div class="space-y-1">
                                                 <div class="flex justify-between text-sm">
                                                     <span>Base Package:</span>
-                                                    <span id="base-price-step2">â‚±0.00</span>
+                                                    <span id="base-price-step2">₱0.00</span>
                                                 </div>
                                                 <div class="flex justify-between text-sm" id="additional-items-container-step2" style="display: none;">
                                                     <span>Additional Items:</span>
-                                                    <span id="additional-price-step2">â‚±0.00</span>
+                                                    <span id="additional-price-step2">₱0.00</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <div class="text-2xl font-bold text-[#DC2626]" id="total-display-step2">â‚±0.00</div>
+                                            <div class="text-2xl font-bold text-[#DC2626]" id="total-display-step2">₱0.00</div>
                                             <div class="text-xs text-gray-600">
                                                 for <span id="guest-display-step2">0</span> guests
                                             </div>
@@ -4789,22 +4789,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="lechon_kawali" data-price="50" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Lechon Kawali</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±50</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱50</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="chicken_adobo" data-price="30" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Chicken Adobo</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±30</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱30</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="beef_caldereta" data-price="75" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Beef Caldereta</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±75</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱75</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="sweet_sour_fish" data-price="60" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Sweet & Sour Fish</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±60</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱60</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -4815,22 +4815,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="pancit_canton" data-price="25" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Pancit Canton</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±25</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱25</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="fried_rice" data-price="20" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Fried Rice</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±20</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱20</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="lumpiang_shanghai" data-price="35" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Lumpiang Shanghai</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±35</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱35</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="mixed_vegetables" data-price="15" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Mixed Vegetables</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±15</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱15</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -4841,22 +4841,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="leche_flan" data-price="40" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Leche Flan</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±2240</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱2240</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="halo_halo" data-price="45" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Halo-Halo</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±45</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱45</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="buko_pie" data-price="55" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Buko Pie</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±55</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱55</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="ice_cream" data-price="30" class="mr-3 text-[#DC2626] w-4 h-4">
                                                         <span class="flex-1">Ice Cream</span>
-                                                        <span class="text-[#DC2626] font-medium">+â‚±30</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱30</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -4876,16 +4876,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                             <div class="space-y-1">
                                                 <div class="flex justify-between text-sm">
                                                     <span>Base Package:</span>
-                                                    <span id="base-price-step3">â‚±0.00</span>
+                                                    <span id="base-price-step3">₱0.00</span>
                                                 </div>
                                                 <div class="flex justify-between text-sm" id="additional-items-container-step3" style="display: none;">
                                                     <span>Additional Items:</span>
-                                                    <span id="additional-price-step3">â‚±0.00</span>
+                                                    <span id="additional-price-step3">₱0.00</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <div class="text-2xl font-bold text-gray-800" id="total-display-step3">â‚±0.00</div>
+                                            <div class="text-2xl font-bold text-gray-800" id="total-display-step3">₱0.00</div>
                                             <div class="text-xs text-gray-600">
                                                 for <span id="guest-display-step3">0</span> guests
                                             </div>
@@ -6061,7 +6061,7 @@ if (typeof window !== 'undefined') {
                                         <p class="text-xs text-gray-600">Upcoming</p>
                                     </div>
                                     <div class="bg-green-50 rounded-lg p-3">
-                                        <p class="text-2xl font-bold text-green-600" id="total-spent">â‚±0.00</p>
+                                        <p class="text-2xl font-bold text-green-600" id="total-spent">₱0.00</p>
                                         <p class="text-xs text-gray-600">Total Spent</p>
                                     </div>
                                 </div>
@@ -6520,7 +6520,7 @@ function loadDashboardData() {
             document.getElementById('dashboard-total-bookings').textContent = data.total_bookings || 0;
             document.getElementById('dashboard-upcoming-events').textContent = data.upcoming_events || 0;
             document.getElementById('dashboard-pending-bookings').textContent = data.pending_bookings || 0;
-            document.getElementById('dashboard-total-spent').textContent = 'â‚±' + (parseFloat(data.total_spent || 0)).toLocaleString('en-PH', {
+            document.getElementById('dashboard-total-spent').textContent = '₱' + (parseFloat(data.total_spent || 0)).toLocaleString('en-PH', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
@@ -6935,9 +6935,9 @@ function updatePriceCalculator() {
 
             function updateAllPriceDisplays(basePrice, additionalPrice, guestCount) {
                 const totalPrice = basePrice + additionalPrice;
-                const formattedBase = `â‚±${basePrice.toLocaleString()}.00`;
-                const formattedAdditional = `â‚±${additionalPrice.toLocaleString()}.00`;
-                const formattedTotal = `â‚±${totalPrice.toLocaleString()}.00`;
+                const formattedBase = `₱${basePrice.toLocaleString()}.00`;
+                const formattedAdditional = `₱${additionalPrice.toLocaleString()}.00`;
+                const formattedTotal = `₱${totalPrice.toLocaleString()}.00`;
                 
                 // Step 1 displays
                 document.getElementById('base-price').textContent = formattedBase;
@@ -7008,15 +7008,15 @@ function updatePriceCalculator() {
 
             function resetPriceDisplay() {
                 const priceElements = [
-                    { id: 'base-price', value: 'â‚±0.00' },
-                    { id: 'base-price-step2', value: 'â‚±0.00' },
-                    { id: 'base-price-step3', value: 'â‚±0.00' },
-                    { id: 'additional-price', value: 'â‚±0.00' },
-                    { id: 'additional-price-step2', value: 'â‚±0.00' },
-                    { id: 'additional-price-step3', value: 'â‚±0.00' },
-                    { id: 'total-display', value: 'â‚±0.00' },
-                    { id: 'total-display-step2', value: 'â‚±0.00' },
-                    { id: 'total-display-step3', value: 'â‚±0.00' },
+                    { id: 'base-price', value: '₱0.00' },
+                    { id: 'base-price-step2', value: '₱0.00' },
+                    { id: 'base-price-step3', value: '₱0.00' },
+                    { id: 'additional-price', value: '₱0.00' },
+                    { id: 'additional-price-step2', value: '₱0.00' },
+                    { id: 'additional-price-step3', value: '₱0.00' },
+                    { id: 'total-display', value: '₱0.00' },
+                    { id: 'total-display-step2', value: '₱0.00' },
+                    { id: 'total-display-step3', value: '₱0.00' },
                     { id: 'guest-display', value: '0 guests' },
                     { id: 'guest-display-step2', value: '0 guests' },
                     { id: 'guest-display-step3', value: '0 guests' }
@@ -7132,7 +7132,7 @@ function showpreviewModal(booking) {
     let priceNote = 'Final price subject to admin review and location assessment';
     
     if (booking.total_price && booking.total_price > 0) {
-        priceDisplay = `â‚±${parseFloat(booking.total_price).toLocaleString('en-PH', {
+        priceDisplay = `₱${parseFloat(booking.total_price).toLocaleString('en-PH', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}`;
@@ -7329,18 +7329,21 @@ function showpreviewModal(booking) {
                     minute: '2-digit'
                 });
                 
-                // Calculate price if total_price exists, otherwise estimate
-                let displayPrice = 'â‚±0.00';
-                if (booking.total_price && booking.total_price > 0) {
-                    displayPrice = `â‚±${parseFloat(booking.total_price).toLocaleString()}`;
-                } else if (booking.guest_count && booking.food_package) {
+                    // Calculate price if total_price exists, otherwise estimate
+                    let displayPrice = '₱0.00';
+                    if (booking.total_price && booking.total_price > 0) {
+                        displayPrice = `₱${parseFloat(booking.total_price).toLocaleString('en-PH', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}`;
+                    } else if (booking.guest_count && booking.food_package) {
                     // Estimate price based on package and guest count from pricing table
                     const packagePricing = PACKAGE_PRICES[booking.food_package];
                     const guestCount = parseInt(booking.guest_count);
                     
                     if (packagePricing && packagePricing[guestCount]) {
                         const estimatedPrice = packagePricing[guestCount];
-                        displayPrice = `â‚±${estimatedPrice.toLocaleString()}`;
+                        displayPrice = `₱${estimatedPrice.toLocaleString()}`;
                     }
                 }
                                 
@@ -7805,7 +7808,7 @@ function showSuccessModal(bookingData) {
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Booking Submitted Successfully!</h3>
                     <div class="text-sm text-gray-500 mb-6">
-                        <p class="mb-2">Your booking has been submitted with a total cost of <strong>â‚±${totalCost.toLocaleString()}</strong>.</p>
+                        <p class="mb-2">Your booking has been submitted with a total cost of <strong>₱${totalCost.toLocaleString()}</strong>.</p>
                         <div class="text-left bg-gray-50 p-4 rounded-lg">
                             <p class="font-semibold mb-2">What happens next:</p>
                             <ul class="text-xs space-y-1">
@@ -7906,7 +7909,7 @@ function showpreviewModal(booking) {
     let priceNote = 'Final price subject to admin review and location assessment';
     
     if (booking.total_price && booking.total_price > 0) {
-        priceDisplay = `â‚±${parseFloat(booking.total_price).toLocaleString('en-PH', {
+        priceDisplay = `₱${parseFloat(booking.total_price).toLocaleString('en-PH', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}`;
@@ -8192,7 +8195,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Silver Package",
                 category: "Birthday & Events",
                 image: "Catering_Photos/red_silver_package.jpg",
-                priceRange: "â‚±23,000 - â‚±50,000",
+                priceRange: "₱23,000 - ₱50,000",
                 description: "Perfect for intimate celebrations with complete buffet setup and themed decorations.",
                 
                 catering: ["Rice", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
@@ -8221,7 +8224,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Gold Package",
                 category: "Birthday & Events",
                 image: "Catering_Photos/red_gold_package.jpg",
-                priceRange: "â‚±41,000 - â‚±69,000",
+                priceRange: "₱41,000 - ₱69,000",
                 description: "Enhanced package with professional host, lights & sounds, and photographer or photobooth.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8252,7 +8255,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Platinum Package",
                 category: "Birthday & Events",
                 image: "Catering_Photos/red_platinum_package.jpg",
-                priceRange: "â‚±48,000 - â‚±82,000",
+                priceRange: "₱48,000 - ₱82,000",
                 description: "Premium package with Tiffany chairs, lighted entrance arch, welcome board, and basic balloon ceilings.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8283,7 +8286,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Diamond Package",
                 category: "Birthday & Events",
                 image: "Catering_Photos/red_diamond_package.jpg",
-                priceRange: "â‚±67,000 - â‚±97,000",
+                priceRange: "₱67,000 - ₱97,000",
                 description: "Ultimate package with elegant balloon ceilings, complete entertainment, and premium styling.",
                 
                 catering: ["Rice", "3 Main Courses", "1 Vegetable", "1 Pasta", "Juice/Water", "Dessert"],
@@ -8315,7 +8318,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Basic Wedding Package",
                 category: "Wedding",
                 image: "Catering_Photos/basic-wedding-package.jpg",
-                priceRange: "â‚±42,000 - â‚±75,000",
+                priceRange: "₱42,000 - ₱75,000",
                 description: "Beautiful wedding catering with elegant styling and complete setup.",
                 
                 catering: ["Rice", "Soup", "Appetizer", "3 Main Courses", "1 Vegetable Dish", "1 Pasta", "Dessert", "Juice/Water"],
@@ -8346,7 +8349,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Premium Wedding Package",
                 category: "Wedding",
                 image: "Catering_Photos/premium_wedding_package.jpg",
-                priceRange: "â‚±130,000 - â‚±165,000",
+                priceRange: "₱130,000 - ₱165,000",
                 description: "Ultimate wedding with host, lights & sounds, hair & makeup, coordination, and photo/video coverage (SDE).",
                 
                 catering: ["Rice", "Soup", "Appetizer", "3 Main Courses", "1 Vegetable Dish", "1 Pasta", "1 Dessert", "Juice/Water"],
@@ -8376,7 +8379,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Silver Debut Package",
                 category: "Debut (18th Birthday)",
                 image: "Catering_Photos/silver_debut_package.jpg",
-                priceRange: "â‚±24,000 - â‚±52,000",
+                priceRange: "₱24,000 - ₱52,000",
                 description: "Perfect debut package with essential styling and complete catering.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8405,7 +8408,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Gold Debut Package",
                 category: "Debut (18th Birthday)",
                 image: "Catering_Photos/gold_debut_package.jpg",
-                priceRange: "â‚±43,000 - â‚±72,000",
+                priceRange: "₱43,000 - ₱72,000",
                 description: "Enhanced debut with host, lights & sounds, and photographer from preparation to reception.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8436,7 +8439,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Platinum Debut Package",
                 category: "Debut (18th Birthday)",
                 image: "Catering_Photos/platinum_debut_package.jpg",
-                priceRange: "â‚±54,000 - â‚±86,000",
+                priceRange: "₱54,000 - ₱86,000",
                 description: "Ultimate debut with Tiffany chairs and photo/video coverage (Non-SDE).",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8468,7 +8471,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Silver Corporate Package",
                 category: "Corporate Events",
                 image: "Catering_Photos/silver_corporate_package.jpg",
-                priceRange: "â‚±25,000 - â‚±50,000",
+                priceRange: "₱25,000 - ₱50,000",
                 description: "Professional corporate package with complete setup and catering.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8497,7 +8500,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Gold Corporate Package",
                 category: "Corporate Events",
                 image: "Catering_Photos/gold_corporate_package.jpg",
-                priceRange: "â‚±44,000 - â‚±69,000",
+                priceRange: "₱44,000 - ₱69,000",
                 description: "Enhanced corporate with host, lights & sounds, and photographer.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8528,7 +8531,7 @@ document.getElementById('preview-modal')?.addEventListener('click', function(e) 
                 name: "Platinum Corporate Package",
                 category: "Corporate Events",
                 image: "Catering_Photos/platinum_corporate_package.jpg",
-                priceRange: "â‚±50,000 - â‚±80,000",
+                priceRange: "₱50,000 - ₱80,000",
                 description: "Premium corporate with Tiffany chairs, entrance arch, and welcome board.",
                 
                 catering: ["Rice", "Pasta", "3 Main Courses", "1 Vegetable Dish", "Juice/Water", "Dessert"],
@@ -8671,7 +8674,7 @@ function generateGuestSelection(packageType, rates) {
                    class="w-5 h-5 text-[#DC2626] focus:ring-[#DC2626] rounded cursor-pointer">
             <div class="flex-1">
                 <div class="font-semibold text-gray-800">${rate.pax} Guests</div>
-                <div class="text-sm text-[#DC2626] font-bold">â‚±${rate.price.toLocaleString()}</div>
+                <div class="text-sm text-[#DC2626] font-bold">₱${rate.price.toLocaleString()}</div>
             </div>
         `;
         
@@ -8718,7 +8721,7 @@ function handleGuestSelection(selectedCheckbox) {
         if (priceDisplay && paxText && priceText) {
             priceDisplay.classList.remove('hidden');
             paxText.textContent = `${pax} Guests`;
-            priceText.textContent = `â‚±${parseInt(price).toLocaleString()}`;
+            priceText.textContent = `₱${parseInt(price).toLocaleString()}`;
         }
         
         // Enable book button
@@ -11038,7 +11041,7 @@ if (nextStep2) {
                     if (totalBookingsEl) totalBookingsEl.textContent = totalBookings;
                     if (upcomingEventsEl) upcomingEventsEl.textContent = upcomingEvents;
                     if (totalSpentEl) {
-                        totalSpentEl.textContent = 'â‚±' + totalSpent.toLocaleString('en-PH', {
+                        totalSpentEl.textContent = '₱' + totalSpent.toLocaleString('en-PH', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
                         });
@@ -11057,7 +11060,7 @@ if (nextStep2) {
                     
                     if (totalBookingsEl) totalBookingsEl.textContent = '0';
                     if (upcomingEventsEl) upcomingEventsEl.textContent = '0';
-                    if (totalSpentEl) totalSpentEl.textContent = 'â‚±0.00';
+                    if (totalSpentEl) totalSpentEl.textContent = '₱0.00';
                 });
         }
 
@@ -11843,9 +11846,7 @@ if (nextStep2) {
         // ============= PERIODIC EXPIRATION CHECK =============
 
         // Check expiration every hour while page is open
-        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour         
-         
+        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Ccheck every hour         
 </script>
 </body>
 </html>
-
