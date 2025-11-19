@@ -3625,20 +3625,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
-/* ========== BOOKING PREVIEW MODAL - MOBILE RESPONSIVE (FIXED STICKY BUTTONS) ========== */
+/* ========== BOOKING PREVIEW MODAL - MOBILE RESPONSIVE FIX ========== */
 @media (max-width: 768px) {
-    /* Preview Modal Container - Remove padding that causes double scroll */
+    /* Preview Modal Container - Proper height constraint */
     #preview-modal {
         padding: 0 !important;
         align-items: flex-start !important;
+        overflow: hidden !important;
     }
     
     #preview-modal > div:first-child {
-        max-height: 95vh !important;
+        max-height: 90vh !important; /* ✅ REDUCED FROM 95vh */
         margin: 0.5rem auto !important;
         display: flex !important;
         flex-direction: column !important;
         width: calc(100% - 1rem) !important;
+        overflow: hidden !important;
     }
     
     #preview-modal .bg-white.rounded-lg.shadow-xl {
@@ -3647,7 +3649,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         border-radius: 0.5rem !important;
         display: flex !important;
         flex-direction: column !important;
-        max-height: 95vh !important;
+        max-height: 90vh !important; /* ✅ REDUCED FROM 95vh */
         overflow: hidden !important;
     }
     
@@ -3658,6 +3660,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         flex-shrink: 0 !important;
         background: linear-gradient(to right, #DC2626, #B91C1C) !important;
         border-bottom: none !important;
+        min-height: auto !important;
     }
     
     #preview-modal .flex.justify-between.items-start {
@@ -3694,7 +3697,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 1rem !important;
     }
     
-    /* Preview Content - SCROLLABLE MIDDLE SECTION */
+    /* Preview Content - SCROLLABLE MIDDLE SECTION WITH FIXED HEIGHT */
     #preview-modal .px-4.py-3.overflow-y-auto,
     #preview-content {
         padding: 0.75rem !important;
@@ -3702,7 +3705,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         overflow-x: hidden !important;
         flex: 1 1 auto !important;
         -webkit-overflow-scrolling: touch !important;
-        max-height: none !important;
+        max-height: calc(90vh - 120px) !important; /* ✅ ADDED FIXED HEIGHT CALCULATION */
+        min-height: 200px !important;
     }
     
     /* Header Section */
@@ -3915,6 +3919,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         box-shadow: 0 -2px 8px rgba(0,0,0,0.1) !important;
         position: relative !important;
         margin-top: auto !important;
+        min-height: auto !important;
+        height: auto !important;
     }
     
     /* Footer content wrapper */
@@ -3996,6 +4002,34 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         margin-right: 0 !important;
     }
     
+    /* Ensure content doesn't overflow */
+    #preview-content * {
+        max-width: 100% !important;
+        word-wrap: break-word !important;
+    }
+    
+    /* Reduce spacing in content */
+    #preview-content .space-y-2 > * + *,
+    #preview-content .space-y-3 > * + *,
+    #preview-content .space-y-4 > * + * {
+        margin-top: 0.5rem !important;
+    }
+    
+    #preview-content .mb-4,
+    #preview-content .mb-6 {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content .pt-4,
+    #preview-content .pt-3 {
+        padding-top: 0.5rem !important;
+    }
+    
+    #preview-content .mt-4,
+    #preview-content .mt-3 {
+        margin-top: 0.5rem !important;
+    }
+    
     /* Custom scrollbar for content */
     #preview-content::-webkit-scrollbar,
     #preview-modal .overflow-y-auto::-webkit-scrollbar {
@@ -4014,8 +4048,22 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
-/* ========== EXTRA SMALL MOBILE (< 375px) ========== */
+/* ========== EXTRA SMALL MOBILE (< 375px) - FURTHER HEIGHT REDUCTION ========== */
 @media (max-width: 374px) {
+    #preview-modal > div:first-child {
+        max-height: 85vh !important; /* Even smaller for very small screens */
+    }
+    
+    #preview-modal .bg-white.rounded-lg.shadow-xl {
+        max-height: 85vh !important;
+    }
+    
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        max-height: calc(85vh - 110px) !important;
+        padding: 0.5rem !important;
+    }
+    
     #preview-modal .flex-1 h3 {
         font-size: 0.7rem !important;
     }
@@ -4049,17 +4097,32 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     #preview-modal .sticky.bottom-0 .text-sm {
         font-size: 0.5rem !important;
     }
+    
+    /* Further reduce spacing */
+    #preview-content .space-y-2 > * + *,
+    #preview-content .space-y-3 > * + * {
+        margin-top: 0.3rem !important;
+    }
+    
+    #preview-content .mb-4 {
+        margin-bottom: 0.5rem !important;
+    }
 }
 
-/* ========== LANDSCAPE MODE ========== */
+/* ========== LANDSCAPE MODE - ADJUST HEIGHT ========== */
 @media (max-width: 768px) and (orientation: landscape) {
     #preview-modal > div:first-child {
-        max-height: 90vh !important;
+        max-height: 85vh !important;
+    }
+    
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        max-height: calc(85vh - 100px) !important;
     }
     
     #preview-modal .bg-gray-50,
     #preview-modal .sticky.bottom-0 {
-        padding: 0.5rem 0.75rem !important;
+        padding: 0.4rem 0.75rem !important;
     }
     
     #preview-modal .bg-gray-50 .flex.gap-3 button,
