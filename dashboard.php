@@ -1407,6 +1407,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                 position: relative;
             }
 
+
             .step-circle {
                 width: 40px;
                 height: 40px;
@@ -1624,8 +1625,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             }
         }
 
+        
+
 /*============================================
-  PLD PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
+   PROFESSIONAL MOBILE RESPONSIVE - ACCURATE & CLEAN
    ============================================ */
 
 /* Force proper grid behavior on mobile */
@@ -1755,6 +1758,149 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     .text-xs {
         font-size: 0.7rem !important;
     }
+
+    /* ========== MY BOOKINGS (MOBILE) =========== */
+@media (max-width: 767px) {
+    .booking-price-tag {
+        background: linear-gradient(135deg, #DC2626, #B91C1C);
+        color: white;
+        font-weight: bold;
+        font-size: 0.85em;
+        padding: 5px 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    }
+
+    .status-badge {
+        font-size: 9px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 12px;
+        text-transform: uppercase;
+    }
+
+    /* Payment Countdown - Mobile */
+    .bg-yellow-50 {
+        padding: 6px !important;
+        margin-top: 6px !important;
+    }
+    
+    .bg-yellow-50 .flex.items-center {
+        gap: 3px !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .bg-yellow-50 .font-semibold {
+        font-size: 0.6rem !important;
+    }
+    
+    .bg-yellow-50 .text-xs {
+        font-size: 0.55rem !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .payment-countdown {
+        font-size: 0.75rem !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        font-weight: 700 !important;
+    }
+    
+    .bg-yellow-50 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Event Countdown - Mobile */
+    .bg-blue-50 {
+        padding: 6px !important;
+        margin-top: 6px !important;
+    }
+    
+    .bg-blue-50 .flex.items-center {
+        gap: 3px !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .bg-blue-50 .font-semibold {
+        font-size: 0.6rem !important;
+    }
+    
+    .bg-blue-50 .text-xs {
+        font-size: 0.55rem !important;
+    }
+    
+    .event-countdown {
+        font-size: 0.75rem !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        font-weight: 700 !important;
+    }
+    
+    .bg-blue-50 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Total Price - Lipat sa baba */
+    .booking-card .text-right {
+        margin-top: 8px !important;
+        text-align: left !important;
+    }
+    
+    .booking-card .text-right .text-sm {
+        font-size: 0.7rem !important;
+    }
+    
+    /* Pending/Cancelled Status - Mobile */
+    .bg-gradient-to-r.from-yellow-50,
+    .bg-gradient-to-r.from-red-50 {
+        padding: 8px !important;
+        margin-top: 8px !important;
+    }
+    
+    .bg-gradient-to-r .flex.items-center {
+        gap: 6px !important;
+    }
+    
+    .bg-gradient-to-r .font-semibold {
+        font-size: 0.7rem !important;
+    }
+    
+    .bg-gradient-to-r .text-sm {
+        font-size: 0.6rem !important;
+        margin-top: 3px !important;
+        line-height: 1.3 !important;
+    }
+    
+    .bg-gradient-to-r i.text-xl {
+        font-size: 0.9rem !important;
+    }
+
+    /* 3 Dots Menu (Profile Dropdown) - Right Side */
+    .relative.inline-block {
+        position: absolute !important;
+        right: 0.75rem !important;
+        top: 0.75rem !important;
+    }
+
+    /* Kung nasa header yung profile */
+    header .relative.inline-block,
+    nav .relative.inline-block {
+        position: absolute !important;
+        right: 0.75rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
+
+    /* 3 dots button */
+    .relative.inline-block > button {
+        padding: 0.4rem !important;
+        min-width: auto !important;
+    }
+
+    .relative.inline-block > button i {
+        font-size: 1rem !important;
+    }
+}
 
     /* ========== DASHBOARD ========== */
     #section-dashboard .grid {
@@ -1979,9 +2125,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-weight: 600;
     }
 
-    .flex.justify-between button {
-        font-size: 0.9rem !important;
-    }
+.flex.justify-between button {
+    font-size: 0.45rem !important;
+    padding: 4px 10px !important;
+}
+
+/* 3 dots button - exclude from small sizing */
+#section-settings .relative.self-start button {
+    font-size: 1rem !important;
+    padding: 0.5rem !important;
+}
 
     .flex.justify-end button {
         width: 100%;
@@ -1990,6 +2143,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     .flex.gap-3 button {
         font-size: 0.8rem !important;
     }
+    
 
     /* ========== EVENT PREVIEW ========== */
     #event-preview {
@@ -2018,519 +2172,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     #conflict-details {
         font-size: 0.75rem !important;
-    }
-
-    /* ========== MY BOOKINGS SECTION ========== */
-    
-    .flex.flex-wrap.gap-4.items-center {
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        gap: 0.5rem !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-    }
-
-    .flex.flex-wrap.gap-4.items-center > div {
-        width: auto !important;
-        flex: 0 0 auto !important;
-    }
-
-    .status-badge {
-        font-size: 0.6rem !important;
-        padding: 2px 6px !important;
-        font-weight: 700;
-        white-space: nowrap;
-    }
-
-    .booking-card-enhanced {
-        padding: 0.75rem !important;
-        padding-top: 1rem !important;
-        margin-bottom: 1rem;
-        position: relative;
-        border-radius: 12px;
-        overflow: visible;
-        min-height: fit-content !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child {
-        flex-direction: column !important;
-        gap: 0.3rem !important;
-        margin-bottom: 0.6rem !important;
-        position: relative;
-    }
-
-    .booking-card-enhanced .status-badge {
-        position: absolute !important;
-        top: 0.5rem !important;
-        right: 0.5rem !important;
-        z-index: 15 !important;
-        font-size: 0.6rem !important;
-        padding: 4px 8px !important;
-        border-radius: 8px !important;
-        font-weight: 700 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
-    }
-
-    .booking-card-enhanced .status-badge {
-    position: absolute !important;
-    top: 1rem !important;
-    right: 1rem !important;
-    z-index: 10 !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
-        position: relative !important;
-        display: block !important;
-        text-align: right !important;
-        margin-top: 3rem !important;
-        margin-bottom: 0.5rem !important;
-        padding-right: 0 !important;
-        clear: both !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right {
-        position: static !important;
-        margin-top: 0.5rem !important;
-        text-align: left !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right .text-sm {
-        font-size: 0.55rem !important;
-        color: #6b7280 !important;
-    }
-
-    .booking-card-enhanced > .flex.justify-between:first-child > .text-right .font-mono {
-        font-size: 0.7rem !important;
-        font-weight: 700 !important;
-        color: #374151 !important;
-    }
-
-    .booking-price-tag {
-        position: absolute !important;
-        top: -1px !important;
-        right: 0.5rem !important;
-        font-size: 0.7rem !important;
-        padding: 0.25rem 0.5rem !important;
-        z-index: 8 !important;
-        background: #DC2626 !important;
-        color: white !important;
-        border-radius: 6px !important;
-    }
-
-    .booking-card-enhanced .flex.items-center.gap-3 {
-        flex-wrap: wrap !important;
-        gap: 0.3rem !important;
-        padding-right: 5rem !important;
-    }
-
-    @media (max-width: 768px) {
-    .booking-card-enhanced .flex.gap-2 button {
-        width: 100% !important;
-        padding: 0.5rem 0.5rem !important;
-        font-size: 0.7rem !important;
-        white-space: nowrap !important;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.2rem;
-        font-weight: 600 !important;
-        min-height: 32px !important;
-    }
-}
-
-    .booking-card-enhanced .text-xl {
-        font-size: 0.95rem !important;
-        line-height: 1.2 !important;
-    }
-
-    .booking-card-enhanced .text-lg {
-        font-size: 0.85rem !important;
-    }
-
-    .booking-card-enhanced .text-sm {
-        font-size: 0.7rem !important;
-    }
-
-    .booking-card-enhanced .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.25rem !important;
-        margin-bottom: 0.5rem !important;
-        margin-top: 0.5rem !important;
-    }
-
-    .booking-card-enhanced .space-y-2 {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.25rem !important;
-    }
-
-    .booking-card-enhanced .space-y-2 > * + * {
-        margin-top: 0 !important;
-    }
-
-    .booking-card-enhanced .flex.items-center.gap-2 {
-        gap: 0.3rem !important;
-        padding: 0.15rem 0 !important;
-    }
-
-    .booking-card-enhanced i {
-        font-size: 0.7rem !important;
-        min-width: 0.9rem !important;
-    }
-
-    .booking-card-enhanced .flex.gap-2:has(button) {
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: flex-start !important;
-        gap: 0.5rem !important;
-        width: 100% !important;
-        margin-top: 2.5rem !important;
-        position: relative !important;
-        z-index: 1 !important;
-    }
-
-    
-
-    .booking-card-enhanced .flex.gap-2 button {
-        width: auto !important;
-        flex: 0 0 auto !important;
-        padding: 0.5rem 1rem !important;
-        font-size: 0.7rem !important;
-        white-space: nowrap !important;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.2rem;
-        font-weight: 600 !important;
-        min-height: 32px !important;
-    }
-
-    .booking-card-enhanced .flex.gap-2 button i {
-        font-size: 0.65rem !important;
-        margin-right: 0.2rem !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] {
-        padding: 0.5rem !important;
-        margin-top: 0.5rem !important;
-        border-radius: 0.4rem !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] .flex {
-        gap: 0.4rem !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] p,
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] div {
-        font-size: 0.7rem !important;
-        line-height: 1.3 !important;
-    }
-
-    .booking-card-enhanced > div[class*="bg-gradient-to-r"] .font-semibold {
-        font-size: 0.75rem !important;
-    }
-
-    .booking-card-enhanced [id^="payment-countdown-"],
-    .booking-card-enhanced [id^="event-countdown-"] {
-        font-size: 0.75rem !important;
-        padding: 0.25rem !important;
-        font-weight: 700 !important;
-    }
-
-    .booking-card-enhanced .p-3.bg-gray-50 {
-        padding: 0.5rem !important;
-        margin-top: 0.5rem !important;
-    }
-
-    #refresh-bookings {
-        font-size: 0.75rem !important;
-        padding: 0.5rem 0.85rem !important;
-    }
-
-    /* ========== PROFILE SETTINGS ========== */
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6 {
-        padding: 0.75rem !important;
-        position: relative;
-    }
-
-    .flex.flex-col.md\\:flex-row.items-center.gap-6 {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.6rem !important;
-        position: relative;
-        text-align: center;
-    }
-
-    .flex.flex-col.items-center:has(#profile-avatar) {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.5rem !important;
-        width: 100% !important;
-    }
-
-    #profile-avatar {
-        width: 100px !important;
-        height: 100px !important;
-        border-width: 3px !important;
-        flex-shrink: 0 !important;
-        border-color: #DC2626 !important;
-    }
-
-    #change-avatar-btn {
-        padding: 0.3rem !important;
-        bottom: 2px !important;
-        right: 2px !important;
-        background: #DC2626 !important;
-    }
-
-    #change-avatar-btn i {
-        font-size: 0.7rem !important;
-    }
-
-    .flex.flex-col.items-center:has(#profile-avatar) p {
-        display: block !important;
-        font-size: 0.7rem !important;
-        color: #6b7280;
-        margin-top: 0.3rem;
-    }
-
-    .flex-1.text-center.md\\:text-left {
-        flex: 1 !important;
-        text-align: center !important;
-        width: 100% !important;
-        padding-right: 0 !important;
-    }
-
-    .flex.items-center.justify-between {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.3rem !important;
-        width: 100% !important;
-    }
-
-    #profile-name {
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        line-height: 1.2 !important;
-        margin: 0 !important;
-        text-align: center;
-    }
-
-    #profile-email {
-        font-size: 0.75rem !important;
-        color: #6b7280 !important;
-        margin: 0 !important;
-        text-align: center;
-    }
-
-    .relative.self-start {
-        position: absolute !important;
-        top: 0.5rem !important;
-        right: 0.5rem !important;
-    }
-
-    #profile-menu-btn {
-        padding: 0.35rem !important;
-        border-radius: 0.4rem !important;
-    }
-
-    #profile-menu-btn svg {
-        width: 1.1rem !important;
-        height: 1.1rem !important;
-    }
-
-    #profile-dropdown {
-        right: 0 !important;
-        top: calc(100% + 0.4rem) !important;
-        min-width: 150px !important;
-        font-size: 0.7rem !important;
-    }
-
-    #profile-dropdown button {
-        padding: 0.45rem 0.6rem !important;
-        font-size: 0.7rem !important;
-    }
-
-    #profile-dropdown i,
-    #profile-dropdown svg {
-        width: 0.9rem !important;
-        height: 0.9rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4.mt-4 {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 0.4rem !important;
-        margin-top: 0.5rem !important;
-        width: 100% !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 > div {
-        padding: 0.4rem 0.3rem !important;
-        border-radius: 0.4rem !important;
-        text-align: center !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
-        line-height: 1 !important;
-        margin-bottom: 0.2rem !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-xs {
-        font-size: 0.6rem !important;
-        line-height: 1.2 !important;
-        font-weight: 500 !important;
-    }
-
-    #upcoming-events-card.cursor-pointer:active {
-        transform: scale(0.95);
-    }
-
-    #next-event-card {
-        padding: 0.65rem !important;
-        margin-top: 0.6rem !important;
-        position: relative;
-    }
-
-    #next-event-card h4 {
-        font-size: 0.85rem !important;
-        margin-bottom: 0.4rem !important;
-        font-weight: 600 !important;
-        text-align: center;
-    }
-
-    #next-event-card .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.3rem !important;
-    }
-
-    #next-event-card .flex.justify-between {
-        gap: 0.3rem !important;
-        padding: 0.2rem 0 !important;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    #next-event-card .text-sm {
-        font-size: 0.65rem !important;
-    }
-
-    #next-event-card .text-lg {
-        font-size: 0.8rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:last-of-type {
-        padding: 0.65rem !important;
-        margin-bottom: 0.6rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 h4 {
-        font-size: 0.85rem !important;
-        margin-bottom: 0.4rem !important;
-        font-weight: 600 !important;
-        text-align: center;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.3rem !important;
-    }
-
-    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6 .space-y-3 > * + * {
-        margin-top: 0 !important;
-    }
-
-    #section-settings .flex.justify-between {
-        font-size: 0.7rem !important;
-        padding: 0.2rem 0 !important;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0.2rem;
-    }
-
-    #section-settings .flex.justify-between .text-gray-600 {
-        color: #6b7280 !important;
-        min-width: auto !important;
-    }
-
-    #section-settings .flex.justify-between .font-semibold {
-        font-weight: 600 !important;
-        text-align: center !important;
-    }
-
-    /* ========== PASSWORD MODAL - FIXED CLOSE BUTTON ========== */
-    #password-modal .max-w-md {
-        max-width: calc(100% - 1rem) !important;
-        margin: 0.5rem;
-    }
-
-    #password-modal .p-6 {
-        padding: 1.12rem !important;
-    }
-
-    #password-modal .border-b {
-        padding: 0.75rem !important;
-    }
-
-    #password-modal .flex.items-center.justify-between {
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-    }
-
-    #password-modal h3 {
-        font-size: 1rem !important;
-        margin: 0 !important;
-    }
-
-    #close-password-modal {
-        margin-left: auto !important;
-    }
-
-    #close-password-modal svg {
-        width: 1.25rem !important;
-        height: 1.25rem !important;
-    }
-
-    #close-password-modal {
-        right: 0.26rem !important;
-    }
-
-    #password-modal form {
-        padding: 0.75rem !important;
-    }
-
-    #password-modal label {
-        font-size: 0.75rem !important;
-        margin-bottom: 0.3rem !important;
-    }
-
-    #password-modal input {
-        font-size: 0.75rem !important;
-        padding: 0.5rem !important;
-        min-height: 38px !important;
-    }
-
-    #password-modal .text-xs {
-        font-size: 0.65rem !important;
-    }
-
-    #password-modal .flex.gap-3 {
-        gap: 0.5rem !important;
-        margin-top: 1rem !important;
-    }
-
-    #password-modal .flex.gap-3 button {
-        flex: 1;
-        font-size: 0.75rem !important;
-        padding: 0.6rem 0.8rem !important;
-        min-height: 38px !important;
     }
 
     /* ========== CALENDAR ========== */
@@ -2928,44 +2569,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         font-size: 0.7rem !important;
     }
 
-    #preview-content {
-        font-size: 0.75rem !important;
-        max-height: 70vh;
-    }
-
-    #preview-content .grid.md\\:grid-cols-2 {
-        grid-template-columns: 1fr !important;
-        gap: 0.5rem !important;
-    }
-
-    #preview-content .space-y-2 > * + * {
-        margin-top: 0.3rem !important;
-    }
-
-    #preview-content .space-y-3 > * + * {
-        margin-top: 0.5rem !important;
-    }
-
-    #preview-content .text-2xl {
-        font-size: 1.2rem !important;
-    }
-
-    #preview-content .text-lg {
-        font-size: 0.9rem !important;
-    }
-
-    #preview-content .text-sm {
-        font-size: 0.7rem !important;
-    }
-
-    #preview-content .flex.justify-between {
-        align-items: flex-start !important;
-        gap: 0.3rem !important;
-    }
-
-    #preview-content .text-xs {
-        font-size: 0.65rem !important;
-    }
 
     #delete-modal .max-w-md {
         max-width: calc(100% - 1rem) !important;
@@ -3418,10 +3021,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         width: 30px !important;
     }
 
-    .booking-card-enhanced {
-        padding: 0.6rem !important;
-    }
-
     .calendar-day {
         min-height: 70px !important;
         padding: 0.15rem !important;
@@ -3445,26 +3044,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     .theme-btn i {
         font-size: 1.5rem !important;
-    }
-
-    .booking-price-tag {
-        font-size: 0.7rem !important;
-        padding: 0.25rem 0.5rem !important;
-        top: 1.3rem !important;
-    }
-
-    #profile-avatar {
-        width: 100px !important;
-        height: 100px !important;
-    }
-
-    .grid.grid-cols-2.md\\:grid-cols-3.gap-4 .text-2xl {
-        font-size: 1rem !important;
-    }
-
-    .status-badge {
-        font-size: 0.55rem !important;
-        padding: 2px 5px !important;
     }
 }
 
@@ -3509,6 +3088,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+
+
 /* ========== PRINT STYLES ========== */
 @media print {
     #mobile-menu-btn,
@@ -3527,12 +3108,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
     body {
         font-size: 11pt;
-    }
-
-    .booking-card-enhanced,
-    #preview-content {
-        break-inside: avoid;
-        page-break-inside: avoid;
     }
 
     @page {
@@ -3560,7 +3135,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 
     .calendar-day,
-    .booking-card-enhanced,
     .package-card {
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
@@ -3574,8 +3148,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         image-rendering: crisp-edges;
     }
 
-    .package-card img,
-    #profile-avatar {
+    .package-card img {
         image-rendering: auto;
     }
 }
@@ -3664,6 +3237,27 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+/* ========== MY BOOKINGS (MOBILE) =========== */
+@media (max-width: 767px) {
+    .booking-price-tag {
+        background: linear-gradient(135deg, #DC2626, #B91C1C);
+        color: white;
+        font-weight: bold;
+        font-size: 0.85em;
+        padding: 5px 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    }
+
+    .status-badge {
+        font-size: 9px;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 12px;
+        text-transform: uppercase;
+    }
+}
+
 /* ========== SMOOTH SCROLLING ========== */
 @media (max-width: 768px) {
     html {
@@ -3701,7 +3295,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 
 /* ========== PERFORMANCE OPTIMIZATION ========== */
 @media (max-width: 768px) {
-    .booking-card-enhanced,
     .package-card,
     .calendar-day,
     .modal-content {
@@ -3803,6 +3396,647 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
         line-height: 1 !important;
     }
 }
+
+/* ========== PROFILE SETTINGS - 3 DOTS TOP RIGHT, NAME/EMAIL CENTER ========== */
+@media (max-width: 768px) {
+    /* Profile Settings Section */
+    #section-settings {
+        position: relative;
+    }
+    
+    /* Profile Card */
+    #section-settings .bg-white.rounded-lg.shadow-md.p-6.mb-6:first-of-type {
+        position: relative !important;
+        padding: 1rem !important;
+    }
+    
+    /* Main flex container - make it column on mobile */
+    #section-settings .flex.flex-col.md\:flex-row.items-center.gap-6 {
+        flex-direction: column !important;
+        align-items: center !important;
+        position: relative !important;
+        padding-top: 2.5rem !important; /* Space for 3 dots button */
+    }
+    
+    /* Avatar section - centered */
+    #section-settings .flex.flex-col.items-center:has(#profile-avatar) {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* User info container - centered */
+    #section-settings .flex-1 {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 0 !important;
+    }
+    
+    /* Container for name/email and 3 dots */
+    #section-settings .flex-1 .flex.items-center.justify-between.mb-2 {
+        width: 100% !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Name/email wrapper */
+    #section-settings .flex-1 .flex.items-center.justify-between > div:first-child {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+    
+    /* Profile name - centered, smaller gap */
+    #profile-name {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Profile email - centered, smaller gap */
+    #profile-email {
+        text-align: center !important;
+        width: 100% !important;
+        display: block !important;
+        margin-top: 0.25rem !important;
+    }
+    
+    /* 3 dots button container - TOP RIGHT corner */
+    #section-settings .relative.self-start {
+        position: absolute !important;
+        top: -2% !important;
+        right: -2% !important;
+        z-index: 10 !important;
+        align-self: auto !important;
+    }
+    
+    /* 3 dots button */
+    #profile-menu-btn {
+        padding: 0.5rem !important;
+        width: 36px !important;
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 0.5rem !important;
+        background-color: transparent !important;
+        background: none !important;
+    }
+
+    #profile-menu-btn:hover {
+        background-color: transparent !important;
+        background: none !important;
+    }
+    
+    #profile-menu-btn svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* Dropdown menu */
+    #profile-dropdown {
+        position: absolute !important;
+        top: 100% !important;
+        right: 0 !important;
+        margin-top: 0.25rem !important;
+        min-width: 200px !important;
+    }
+    
+    /* Statistics grid - FORCE 3 COLUMNS, STAY IN ONE LINE */
+    #section-settings .grid.grid-cols-3 {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+    
+    /* Each stat box - smaller padding */
+    #section-settings .grid.grid-cols-3 > div {
+        padding: 0.5rem !important;
+        min-width: 0 !important;
+    }
+    
+    /* Stat values - smaller font */
+    #section-settings .grid.grid-cols-3 p.text-2xl {
+        font-size: 1.25rem !important;
+    }
+    
+    /* Stat labels - smaller font */
+    #section-settings .grid.grid-cols-3 p.text-xs {
+        font-size: 0.65rem !important;
+    }
+
+    /* Change Password Modal - Mobile Fix */
+    #password-modal .p-6.border-b.relative {
+        padding: 1rem !important;
+    }
+    
+    #password-modal h3 {
+        font-size: 1rem !important;
+        text-align: center !important;
+        padding-right: 2rem !important;
+    }
+    
+    #password-modal #close-password-modal {
+        position: absolute !important;
+        right: 1rem !important;
+        top: 29% !important;
+        transform: translateY(-50%) !important;
+    }
+    
+    #password-modal #close-password-modal svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    /* Fix button text alignment in change password modal */
+    #password-modal button {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0.6rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    #password-modal .flex.gap-3 {
+        display: flex !important;
+        gap: 0.75rem !important;
+    }
+    
+    #password-modal .flex.gap-3 button {
+        flex: 1 !important;
+        text-align: center !important;
+    }
+
+    /* Form inputs inside password modal */
+    #password-modal input[type="password"] {
+        font-size: 0.85rem !important;
+        padding: 0.6rem 0.75rem !important;
+    }
+    
+    #password-modal label {
+        font-size: 0.8rem !important;
+    }
+    
+    #password-modal .text-xs {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* ========== BOOKING PREVIEW MODAL - MOBILE RESPONSIVE (FIXED STICKY BUTTONS) ========== */
+@media (max-width: 768px) {
+    /* Preview Modal Container - Remove padding that causes double scroll */
+    #preview-modal {
+        padding: 0 !important;
+        align-items: flex-start !important;
+    }
+    
+    #preview-modal > div:first-child {
+        max-height: 95vh !important;
+        margin: 0.5rem auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: calc(100% - 1rem) !important;
+    }
+    
+    #preview-modal .bg-white.rounded-lg.shadow-xl {
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 95vh !important;
+        overflow: hidden !important;
+    }
+    
+    /* Modal Header - FIXED AT TOP */
+    #preview-modal .p-6.border-b,
+    #preview-modal .px-4.py-3.border-b {
+        padding: 0.5rem 0.75rem !important;
+        flex-shrink: 0 !important;
+        background: linear-gradient(to right, #DC2626, #B91C1C) !important;
+        border-bottom: none !important;
+    }
+    
+    #preview-modal .flex.justify-between.items-start {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+    
+    #preview-modal .flex-1 h3 {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.1rem !important;
+        line-height: 1.2 !important;
+        color: white !important;
+    }
+    
+    #preview-modal .flex-1 p {
+        font-size: 0.6rem !important;
+        line-height: 1.2 !important;
+        color: white !important;
+    }
+    
+    /* Close Button */
+    #close-preview-modal {
+        padding: 0.25rem !important;
+        flex-shrink: 0 !important;
+        color: white !important;
+    }
+    
+    #close-preview-modal:hover {
+        color: #f3f4f6 !important;
+    }
+    
+    #close-preview-modal i {
+        font-size: 1rem !important;
+    }
+    
+    /* Preview Content - SCROLLABLE MIDDLE SECTION */
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        padding: 0.75rem !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex: 1 1 auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-height: none !important;
+    }
+    
+    /* Header Section */
+    #preview-content .text-center.border-b {
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content img {
+        width: 40px !important;
+        height: 40px !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content h1 {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.15rem !important;
+        font-weight: 600 !important;
+    }
+    
+    #preview-content .text-center p {
+        font-size: 0.55rem !important;
+        margin-top: 0.1rem !important;
+    }
+    
+    /* Preview Title & Status */
+    #preview-content > div > .flex.justify-between.items-start {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+        gap: 0.5rem !important;
+    }
+    
+    #preview-content h2 {
+        font-size: 0.7rem !important;
+        margin-bottom: 0.1rem !important;
+    }
+    
+    #preview-content > div > .flex.justify-between.items-start p {
+        font-size: 0.55rem !important;
+    }
+    
+    /* Status Badges */
+    #preview-content .text-right .inline-block {
+        font-size: 0.5rem !important;
+        padding: 0.15rem 0.35rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Grid Sections */
+    #preview-content .grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content h3 {
+        font-size: 0.65rem !important;
+        margin-bottom: 0.4rem !important;
+        padding-bottom: 0.3rem !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Info Rows */
+    #preview-content .space-y-2,
+    #preview-content .space-y-3 {
+        gap: 0.3rem !important;
+    }
+    
+    #preview-content .flex.justify-between {
+        margin-bottom: 0.3rem !important;
+    }
+    
+    #preview-content .flex.justify-between span {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .flex.justify-between span:first-child {
+        min-width: 60px !important;
+    }
+    
+    /* Service Package Section */
+    #preview-content .bg-gray-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .grid {
+        gap: 0.5rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .flex.justify-between {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Special Requests */
+    #preview-content .mt-3.pt-3 {
+        margin-top: 0.5rem !important;
+        padding-top: 0.5rem !important;
+    }
+    
+    #preview-content .mt-3.pt-3 p:first-child {
+        font-size: 0.55rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content .mt-3.pt-3 p:last-child {
+        font-size: 0.6rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Pricing Section */
+    #preview-content .border-t.pt-4 {
+        padding-top: 0.75rem !important;
+        margin-top: 0.75rem !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
+    
+    #preview-content .bg-gradient-to-r {
+        padding: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .flex {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        align-items: flex-start !important;
+    }
+    
+    #preview-content .bg-gradient-to-r h3 {
+        font-size: 0.7rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-sm {
+        font-size: 0.55rem !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-3xl {
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-sm.mt-1 {
+        font-size: 0.55rem !important;
+        margin-top: 0.15rem !important;
+    }
+    
+    /* Important Information Box */
+    #preview-content .bg-blue-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-blue-50 .flex-shrink-0 i {
+        font-size: 0.7rem !important;
+        margin-top: 0.1rem !important;
+    }
+    
+    #preview-content .bg-blue-50 h4 {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content .bg-blue-50 .space-y-1 p {
+        font-size: 0.55rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    /* Footer Section inside content */
+    #preview-content .text-center:last-child {
+        padding-top: 0.75rem !important;
+        margin-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
+    
+    #preview-content .flex.justify-center {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #preview-content .flex.items-center.space-x-2 {
+        font-size: 0.55rem !important;
+    }
+    
+    #preview-content .flex.items-center.space-x-2 i {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .text-center:last-child p {
+        font-size: 0.55rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* Modal Footer - TRULY STICKY AT BOTTOM */
+    #preview-modal .bg-gray-50.p-6.border-t,
+    #preview-modal .sticky.bottom-0.px-4.py-3.border-t {
+        padding: 0.6rem 0.75rem !important;
+        flex-shrink: 0 !important;
+        background: white !important;
+        border-top: 2px solid #e5e7eb !important;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1) !important;
+        position: relative !important;
+        margin-top: auto !important;
+    }
+    
+    /* Footer content wrapper */
+    #preview-modal .bg-gray-50.p-6.border-t > div,
+    #preview-modal .sticky.bottom-0.px-4.py-3.border-t > div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+    
+    /* Info text */
+    #preview-modal .bg-gray-50 .text-sm.text-gray-600,
+    #preview-modal .sticky.bottom-0 .text-sm.text-gray-600 {
+        font-size: 0.6rem !important;
+        text-align: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        order: 1 !important;
+    }
+    
+    #preview-modal .bg-gray-50 .text-sm.text-gray-600 i,
+    #preview-modal .sticky.bottom-0 .text-sm.text-gray-600 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Buttons container */
+    #preview-modal .bg-gray-50 .flex.gap-3,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0.5rem !important;
+        order: 2 !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Individual buttons */
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        flex: 1 !important;
+        font-size: 0.65rem !important;
+        padding: 0.6rem 0.5rem !important;
+        white-space: nowrap !important;
+        border-radius: 0.4rem !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.25rem !important;
+        min-height: 36px !important;
+        border: none !important;
+    }
+    
+    /* Print button - Blue */
+    #print-preview {
+        background-color: #2563eb !important;
+        color: white !important;
+    }
+    
+    #print-preview:hover {
+        background-color: #1d4ed8 !important;
+    }
+    
+    /* Close button - Gray */
+    #close-preview-btn {
+        background-color: #6b7280 !important;
+        color: white !important;
+    }
+    
+    #close-preview-btn:hover {
+        background-color: #4b5563 !important;
+    }
+    
+    /* Button icons */
+    #preview-modal .bg-gray-50 .flex.gap-3 button i,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button i {
+        font-size: 0.65rem !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Custom scrollbar for content */
+    #preview-content::-webkit-scrollbar,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar {
+        width: 4px !important;
+    }
+    
+    #preview-content::-webkit-scrollbar-track,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar-track {
+        background: #f1f5f9 !important;
+    }
+    
+    #preview-content::-webkit-scrollbar-thumb,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+        background: #DC2626 !important;
+        border-radius: 2px !important;
+    }
+}
+
+/* ========== EXTRA SMALL MOBILE (< 375px) ========== */
+@media (max-width: 374px) {
+    #preview-modal .flex-1 h3 {
+        font-size: 0.7rem !important;
+    }
+    
+    #preview-content h1 {
+        font-size: 0.75rem !important;
+    }
+    
+    #preview-content img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+    
+    #preview-content .bg-gradient-to-r .text-3xl {
+        font-size: 1.1rem !important;
+    }
+    
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        font-size: 0.6rem !important;
+        padding: 0.5rem 0.4rem !important;
+        min-height: 34px !important;
+    }
+    
+    #preview-modal .bg-gray-50 .flex.gap-3 button i,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button i {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-modal .bg-gray-50 .text-sm,
+    #preview-modal .sticky.bottom-0 .text-sm {
+        font-size: 0.5rem !important;
+    }
+}
+
+/* ========== LANDSCAPE MODE ========== */
+@media (max-width: 768px) and (orientation: landscape) {
+    #preview-modal > div:first-child {
+        max-height: 90vh !important;
+    }
+    
+    #preview-modal .bg-gray-50,
+    #preview-modal .sticky.bottom-0 {
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        padding: 0.5rem 0.6rem !important;
+        min-height: 32px !important;
+    }
+}
+
             </style>
             </head>
             <body class="bg-gray-100">
@@ -5341,6 +5575,107 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
 }
 </style>
 
+<style>
+/* Gallery Styles */
+.category-dot {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.category-dot.active {
+    border-color: #DC2626;
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    transform: scale(1.15);
+}
+
+.category-dot.active i {
+    color: white !important;
+}
+
+.category-dot:hover {
+    transform: scale(1.1);
+}
+
+#gallery-main-image {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#gallery-main-image.fade-out {
+    opacity: 0;
+}
+
+#gallery-overlay {
+    transition: opacity 0.5s ease-in-out;
+}
+
+#gallery-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.thumbnail {
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.thumbnail.active {
+    border-color: #DC2626;
+    transform: scale(1.15) translateY(-8px);
+    box-shadow: 0 8px 16px rgba(220, 38, 38, 0.3);
+}
+
+.thumbnail:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Video controls disabled */
+#gallery-promo-video::-webkit-media-controls {
+    display: none !important;
+}
+
+#gallery-promo-video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+/* Scrollbar styling for thumbnails */
+#gallery-thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-thumb {
+    background: #DC2626;
+    border-radius: 10px;
+}
+
+#gallery-thumbnails::-webkit-scrollbar-thumb:hover {
+    background: #B91C1C;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    #section-gallery {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    
+    .category-dot {
+        width: 32px !important;
+        height: 32px !important;
+    }
+}
+</style>
+
 <script>
 // Gallery Data Structure
 const galleryData = {
@@ -5716,7 +6051,7 @@ if (typeof window !== 'undefined') {
                                 </div>
                                 
                                 <!-- Booking Statistics -->
-                                <div class="grid grid-cols-3 md:grid-cols-3 gap-4 mt-4">
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                                     <div class="bg-blue-50 rounded-lg p-3">
                                         <p class="text-2xl font-bold text-blue-600" id="total-bookings">0</p>
                                         <p class="text-xs text-gray-600">Total Events</p>
@@ -5782,91 +6117,89 @@ if (typeof window !== 'undefined') {
                     </div>
                 </div>
 
-            <!-- Change Password Modal -->
-            <div id="password-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                <div class="p-6 border-b relative">
-                  <div class="flex items-center justify-center">
-                    <h3 class="text-xl font-bold flex-1 text-center">Change Password</h3>
-                         <button id="close-password-modal" class="text-gray-500 hover:text-gray-700 absolute right-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+                    <!-- Change Password Modal -->
+                    <div id="password-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                            <div class="p-6 border-b flex items-center justify-between">
+                                <h3 class="text-xl font-bold">Change Password</h3>
+                                <button id="close-password-modal" class="text-gray-500 hover:text-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <form id="change-password-form" class="p-6">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                                    <input type="password" id="current-password" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                                    <input type="password" id="new-password" required minlength="11"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <p class="text-xs text-gray-500 mt-1">Minimum 11 characters</p>
+                                </div>
+                                <div class="mb-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                                    <input type="password" id="confirm-password" required minlength="11"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                </div>
+                                <div class="flex gap-3">
+                                    <button type="button" id="cancel-password-btn" 
+                                            class="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                                        Cancel
+                                    </button>
+                                    <button type="submit" 
+                                            class="flex-1 px-6 py-2 text-white rounded-lg hover:opacity-90 transition"
+                                            style="background-color: #DC2626;">
+                                        Update Password
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                    <form id="change-password-form" class="p-6">
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
-                            <input type="password" id="current-password" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
-                            <input type="password" id="new-password" required minlength="11"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                            <p class="text-xs text-gray-500 mt-1">Minimum 11 characters</p>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
-                            <input type="password" id="confirm-password" required minlength="11"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </div>
-                        <div class="flex gap-3">
-                            <button type="button" id="cancel-password-btn" 
-                                    class="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                                Cancel
+
+                    <!-- Password Popup Modal -->
+                    <div id="password-popup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
+                        <div class="bg-white rounded-lg shadow-xl w-80 p-6 text-center">
+                            <div id="password-popup-icon" class="flex justify-center mb-3"></div>
+                            <p id="password-popup-message" class="text-base font-semibold text-gray-800 mb-4"></p>
+                            <button id="close-password-popup" class="px-6 py-2 text-white rounded-lg hover:opacity-90 w-full" style="background-color: #DC2626;">
+                                OK
                             </button>
-                            <button type="submit" 
-                                    class="flex-1 px-6 py-2 text-white rounded-lg hover:opacity-90 transition"
-                                    style="background-color: #DC2626;">
-                                Update Password
-                            </button>
                         </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
 
-            <!-- Password Popup Modal -->
-            <div id="password-popup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
-                <div class="bg-white rounded-lg shadow-xl w-80 p-6 text-center">
-                    <div id="password-popup-icon" class="flex justify-center mb-3"></div>
-                    <p id="password-popup-message" class="text-base font-semibold text-gray-800 mb-4"></p>
-                    <button id="close-password-popup" class="px-6 py-2 text-white rounded-lg hover:opacity-90 w-full" style="background-color: #DC2626;">
-                        OK
-                    </button>
-                </div>
-            </div>
+                    <!-- Avatar Selection Modal -->
+                    <div id="avatar-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                            <div class="p-6 border-b">
+                                <h3 class="text-xl font-bold">Choose Your Avatar</h3>
+                            </div>
+                            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="avatar-grid"></div>
+                            </div>
+                            <div class="p-6 border-t flex justify-end gap-3">
+                                <button id="cancel-avatar-btn" 
+                                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Avatar Selection Modal -->
-            <div id="avatar-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
-                    <div class="p-6 border-b">
-                        <h3 class="text-xl font-bold">Choose Your Avatar</h3>
+                    <!-- Sign Out Modal -->
+                    <div id="signout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+                            <h3 class="text-lg font-semibold mb-4">Are you sure you want to sign out?</h3>
+                            <div class="flex justify-center gap-4">
+                                <button id="cancel-signout" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 w-24">NO</button>
+                                <button id="confirm-signout" class="px-4 py-2 rounded text-white w-24" style="background-color:#DC2626;">YES</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-6 overflow-y-auto max-h-[60vh]">
-                        <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="avatar-grid"></div>
-                    </div>
-                    <div class="p-6 border-t flex justify-end gap-3">
-                        <button id="cancel-avatar-btn" 
-                                class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sign Out Modal -->
-            <div id="signout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-80 text-center">
-                    <h3 class="text-lg font-semibold mb-4">Are you sure you want to sign out?</h3>
-                    <div class="flex justify-center gap-4">
-                        <button id="cancel-signout" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 w-24">NO</button>
-                        <button id="confirm-signout" class="px-4 py-2 rounded text-white w-24" style="background-color:#DC2626;">YES</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
 <section id="section-about" class="hidden">
     <h2 class="text-3xl font-bold mb-2 text-gray-800">About Zaf's Kitchen</h2>
@@ -6141,12 +6474,12 @@ if (typeof window !== 'undefined') {
 
             <div id="booking-details-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-96 max-h-96 overflow-y-auto">
-                <div class="flex justify-between items-start mb-4">
-                    <h3 class="text-lg font-semibold flex-1 pr-4">Bookings for <span id="selected-date"></span></h3>
-                    <button id="close-booking-details" class="text-gray-500 hover:text-gray-700 flex-shrink-0">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Bookings for <span id="selected-date"></span></h3>
+                        <button id="close-booking-details" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
                     <div id="booking-details-content">
                         <!-- Booking details will be populated here -->
                     </div>
@@ -7143,49 +7476,49 @@ function showpreviewModal(booking) {
                         </div>
                         ` : ''}
                         
-                ${!isPast ? (booking.booking_status === 'approved' ? `
-                <div class="mt-4 p-4 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-semibold text-green-800">Event Confirmed!</div>
-                            
-                            ${booking.payment_status !== 'paid' ? `
-                                <!-- Payment Countdown -->
-                                <div class="mt-2 p-3 bg-yellow-50 rounded-lg">
-                                    <div class="flex items-center gap-2 mb-1">
-                                        <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
-                                        <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
-                                    </div>
-                                    <div class="text-xs text-yellow-700 mb-1">Complete downpayment within:</div>
-                                    <div id="payment-countdown-${booking.id}" class="text-base font-bold text-yellow-800 payment-countdown" 
-                                        data-booking-id="${booking.id}">
-                                        Calculating...
-                                    </div>
-                                    <p class="text-xs text-yellow-600 mt-1">⚠️ Booking will auto-cancel if not paid</p>
-                                </div>
-                            ` : ''}
-                            
-                            <!-- Event Countdown -->
-                            <div class="mt-2 p-3 bg-blue-50 rounded-lg">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <i class="fas fa-calendar-check text-blue-600 text-sm"></i>
-                                    <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
-                                </div>
-                                <div id="event-countdown-${booking.id}" class="text-base font-bold text-blue-800 event-countdown" 
-                                    data-booking-id="${booking.id}">
-                                    Calculating...
-                                </div>
-                                <p class="text-xs text-blue-600 mt-1">${formattedDate} at ${startTime12}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-sm text-green-600 font-medium">Total: ${displayPrice}</div>
-                        </div>
+${!isPast ? (booking.booking_status === 'approved' ? `
+<div class="mt-4 p-4 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg">
+    <div class="flex items-center gap-3">
+        <div class="flex-shrink-0">
+            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+        </div>
+        <div class="flex-1">
+            <div class="font-semibold text-green-800">Event Confirmed!</div>
+            
+            ${booking.payment_status !== 'paid' ? `
+                <!-- Payment Countdown -->
+                <div class="mt-2 p-3 bg-yellow-50 rounded-lg">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
+                        <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
                     </div>
+                    <div class="text-xs text-yellow-700 mb-1">Complete downpayment within:</div>
+                    <div id="payment-countdown-${booking.id}" class="text-base font-bold text-yellow-800 payment-countdown" 
+                         data-booking-id="${booking.id}">
+                        Calculating...
+                    </div>
+                    <p class="text-xs text-yellow-600 mt-1">⚠️ Booking will auto-cancel if not paid</p>
                 </div>
+            ` : ''}
+            
+            <!-- Event Countdown -->
+            <div class="mt-2 p-3 bg-blue-50 rounded-lg">
+                <div class="flex items-center gap-2 mb-1">
+                    <i class="fas fa-calendar-check text-blue-600 text-sm"></i>
+                    <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
+                </div>
+                <div id="event-countdown-${booking.id}" class="text-base font-bold text-blue-800 event-countdown" 
+                     data-booking-id="${booking.id}">
+                    Calculating...
+                </div>
+                <p class="text-xs text-blue-600 mt-1">${formattedDate} at ${startTime12}</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="text-sm text-green-600 font-medium">Total: ${displayPrice}</div>
+        </div>
+    </div>
+</div>
                         ` : booking.booking_status === 'pending' ? `
                         <div class="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-lg">
                             <div class="flex items-center gap-3">
@@ -10304,37 +10637,18 @@ if (nextStep2) {
                     });
                 }
 
-const confirmSignout = document.getElementById('confirm-signout');
-if (confirmSignout) {
-    confirmSignout.addEventListener('click', function() {
-        console.log('🔴 Sign out confirmed');
-        
-        // 1. Set logout flag FIRST
-        localStorage.setItem('logout_in_progress', 'true');
-        
-        // 2. Clear all storage
-        try {
-            localStorage.clear();
-            sessionStorage.clear();
-        } catch (e) {
-            console.error('Storage clear error:', e);
-        }
-        
-        // 3. Prevent any back navigation
-        history.pushState(null, '', location.href);
-        window.onpopstate = function() {
-            history.pushState(null, '', location.href);
-        };
-        
-        // 4. Force redirect with replace (no history)
-        window.location.replace('logout.php?t=' + Date.now());
-        
-        // 5. Backup redirect
-        setTimeout(function() {
-            window.location.href = 'logout.php?t=' + Date.now();
-        }, 500);
-    });
-}
+                const confirmSignout = document.getElementById('confirm-signout');
+                if (confirmSignout) {
+                    confirmSignout.addEventListener('click', function() {
+                        // Clear localStorage before redirecting
+                        localStorage.removeItem('currentSection');
+                        localStorage.removeItem('bookingFormData');
+                        
+                        // Redirect to logout.php instead of auth.php directly
+                        window.location.href = 'logout.php';
+                    });
+                }
+
                 // Modal event listeners
                 const messageModal = document.getElementById('message-modal');
                 if (messageModal) {
@@ -11529,7 +11843,9 @@ if (confirmSignout) {
         // ============= PERIODIC EXPIRATION CHECK =============
 
         // Check expiration every hour while page is open
-        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour
+        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Check every hour         
+         
 </script>
 </body>
 </html>
+
