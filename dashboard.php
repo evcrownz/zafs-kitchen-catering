@@ -1,10 +1,42 @@
 <?php
-// Prevent caching
+
+// Prevent caching - MUST BE FIRST
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
+header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
 
 session_start();
+require_once 'connection.php';
+
+// ✅ CHECK IF USER IS LOGGED IN - REDIRECT IF NOT
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
+    // Log the unauthorized access attempt
+    error_log("Unauthorized dashboard access - No session found");
+    
+    // Clear any cached data
+    session_destroy();
+    
+    // Force redirect to auth page
+    header("Location: auth.php?error=session_expired");
+    exit();
+}
+
+// ✅ PREVENT ACCESS IF JUST LOGGED OUT
+if (isset($_COOKIE['just_logged_out'])) {
+    error_log("Dashboard access blocked - User just logged out");
+    
+    // Clear the logout cookie
+    setcookie('just_logged_out', '', time() - 3600, '/');
+    
+    // Destroy session
+    session_destroy();
+    
+    // Force redirect
+    header("Location: auth.php?logout=complete");
+    exit();
+}
+
 require_once 'connection.php';
 
 // âœ… CHECK IF USER IS LOGGED IN
@@ -4384,7 +4416,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                         <div class="bg-gray-50 p-6 border-t border-gray-200 flex justify-between items-center">
                             <div class="text-sm text-gray-600">
                                 <i class="fas fa-shield-alt text-[#DC2626] mr-2"></i>
-                                Secure Booking â€¢ Zaf's Kitchen Service
+                                Secure Booking • Zaf's Kitchen Service
                             </div>
                             <div class="flex gap-3">
                                 <button id="print-preview" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors font-semibold flex items-center gap-2">
@@ -7163,7 +7195,7 @@ function showpreviewModal(booking) {
                 </div>
                 <h1 class="text-2xl font-bold text-gray-900 mb-2">ZAF'S KITCHEN CATERING</h1>
                 <p class="text-gray-600 text-sm">Professional Event Catering Services</p>
-                <p class="text-gray-500 text-xs mt-1">Quezon City, Metro Manila â€¢ +63 912 345 6789</p>
+                <p class="text-gray-500 text-xs mt-1">Quezon City, Metro Manila • +63 912 345 6789</p>
             </div>
 
             <!-- preview Title & Status -->
@@ -7290,10 +7322,10 @@ function showpreviewModal(booking) {
                     <div class="ml-3">
                         <h4 class="text-sm font-semibold text-blue-800">Important Information</h4>
                         <div class="mt-1 text-sm text-blue-700 space-y-1">
-                            <p>â€¢ This is a booking confirmation Book Preview</p>
-                            <p>â€¢ Final pricing may be adjusted based on location and specific requirements</p>
-                            <p>â€¢ Payment instructions will be provided upon booking approval</p>
-                            <p>â€¢ Please present this Book Preview for verification</p>
+                            <p>• This is a booking confirmation Book Preview</p>
+                            <p>• Final pricing may be adjusted based on location and specific requirements</p>
+                            <p>• Payment instructions will be provided upon booking approval</p>
+                            <p>• Please present this Book Preview for verification</p>
                         </div>
                     </div>
                 </div>
@@ -7812,9 +7844,9 @@ function showSuccessModal(bookingData) {
                         <div class="text-left bg-gray-50 p-4 rounded-lg">
                             <p class="font-semibold mb-2">What happens next:</p>
                             <ul class="text-xs space-y-1">
-                                <li>â€¢ Our admin will review your booking details</li>
-                                <li>â€¢ You'll receive confirmation once approved</li>
-                                <li>â€¢ Payment details will be provided upon approval</li>
+                                <li>• Our admin will review your booking details</li>
+                                <li>• You'll receive confirmation once approved</li>
+                                <li>• Payment details will be provided upon approval</li>
                             </ul>
                             <p class="italic mt-2 text-xs">Thank you for choosing Zaf's Kitchen!</p>
                         </div>
@@ -8086,7 +8118,7 @@ function showpreviewModal(booking) {
                         <div class="text-xs text-gray-600 mt-2">${priceNote}</div>
                     </div>
                     <div class="text-xs text-gray-500">
-                        For ${booking.guest_count || '0'} guests â€¢ Inclusive of service charges
+                        For ${booking.guest_count || '0'} guests • Inclusive of service charges
                     </div>
                 </div>
             </div>
@@ -8127,7 +8159,7 @@ function showpreviewModal(booking) {
                     </div>
                 </div>
                 <p class="text-xs text-gray-400">
-                    This is an electronically generated Book Preview â€¢ Valid without signature<br>
+                    This is an electronically generated Book Preview • Valid without signature<br>
                     Thank you for choosing Zaf's Kitchen Catering Services
                 </p>
             </div>
@@ -9642,7 +9674,7 @@ document.addEventListener('keydown', function(e) {
                 // Show error message and focus first invalid field
                 if (!isValid) {
                     console.log('Step 1 validation failed:', errorMessages);
-                    showMessage('error', 'Required Fields Missing', 'Please fill in all required fields:<br>â€¢ ' + errorMessages.join('<br>â€¢ '));
+                    showMessage('error', 'Required Fields Missing', 'Please fill in all required fields:<br>• ' + errorMessages.join('<br>• '));
                     if (firstInvalidField) {
                         firstInvalidField.focus();
                         firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -9686,7 +9718,7 @@ function validateStep2() {
     
     if (!isValid) {
         console.log('Step 2 validation failed - missing fields:', errorMessages);
-        showMessage('error', 'Required Fields Missing', 'Please fill in all required fields:<br>â€¢ ' + errorMessages.join('<br>â€¢ '));
+        showMessage('error', 'Required Fields Missing', 'Please fill in all required fields:<br>• ' + errorMessages.join('<br>• '));
         if (firstInvalidField) {
             firstInvalidField.focus();
             firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -10640,17 +10672,65 @@ if (nextStep2) {
                     });
                 }
 
-                const confirmSignout = document.getElementById('confirm-signout');
-                if (confirmSignout) {
-                    confirmSignout.addEventListener('click', function() {
-                        // Clear localStorage before redirecting
-                        localStorage.removeItem('currentSection');
-                        localStorage.removeItem('bookingFormData');
-                        
-                        // Redirect to logout.php instead of auth.php directly
-                        window.location.href = 'logout.php';
+            const confirmSignout = document.getElementById('confirm-signout');
+            if (confirmSignout) {
+                confirmSignout.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    console.log('🔴 Sign-out initiated');
+                    
+                    // 1. Clear ALL storage immediately
+                    try {
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        console.log('✅ Storage cleared');
+                    } catch (error) {
+                        console.error('❌ Storage clear error:', error);
+                    }
+                    
+                    // 2. Clear ALL cookies
+                    document.cookie.split(";").forEach(function(c) { 
+                        var name = c.trim().split("=")[0];
+                        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
                     });
-                }
+                    console.log('✅ Cookies cleared');
+                    
+                    // 3. Remove event listeners
+                    window.onbeforeunload = null;
+                    
+                    // 4. Hide modal
+                    const signoutModal = document.getElementById('signout-modal');
+                    if (signoutModal) signoutModal.classList.add('hidden');
+                    
+                    // 5. Show loading overlay
+                    document.body.innerHTML = `
+                        <div style="position: fixed; inset: 0; background: linear-gradient(135deg, #DC2626, #991B1B); display: flex; align-items: center; justify-content: center; z-index: 99999;">
+                            <div style="text-align: center; color: white; font-family: Arial;">
+                                <div style="width: 50px; height: 50px; margin: 20px auto; border: 5px solid rgba(255,255,255,0.3); border-top: 5px solid white; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                                <h2 style="margin: 10px 0; font-size: 24px;">Signing out...</h2>
+                                <p style="margin: 5px 0; opacity: 0.9;">Please wait</p>
+                            </div>
+                        </div>
+                        <style>
+                            @keyframes spin {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                            }
+                        </style>
+                    `;
+                    
+                    // 6. Force redirect to logout.php
+                    setTimeout(function() {
+                        console.log('🔴 Redirecting to logout.php');
+                        window.location.replace('logout.php?t=' + Date.now());
+                    }, 500);
+                    
+                    // 7. Backup redirect
+                    setTimeout(function() {
+                        window.location.href = 'logout.php?t=' + Date.now();
+                    }, 1500);
+                });
+            }
 
                 // Modal event listeners
                 const messageModal = document.getElementById('message-modal');
@@ -11267,7 +11347,10 @@ if (nextStep2) {
                 // Dropdown sign out
                 const dropdownSignout = document.getElementById('dropdown-signout');
                 if (dropdownSignout) {
-                    dropdownSignout.addEventListener('click', function() {
+                    dropdownSignout.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Show confirmation modal
                         const dropdown = document.getElementById('profile-dropdown');
                         const signoutModal = document.getElementById('signout-modal');
                         if (dropdown) dropdown.classList.add('hidden');
