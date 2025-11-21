@@ -9,6 +9,35 @@ header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
 session_start();
 require_once 'connection.php';
 
+// Load .env file if it exists
+$envFile = __DIR__ . '/.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        
+        list($name, $value) = explode('=', $line, 2);
+        $name = trim($name);
+        $value = trim($value);
+        
+        if (!array_key_exists($name, $_ENV)) {
+            $_ENV[$name] = $value;
+            putenv("$name=$value");
+        }
+    }
+    error_log("✅ .env file loaded successfully");
+} else {
+    error_log("⚠️ No .env file found");
+}
+
+// Debug: Check if API key is loaded
+$apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
+if (!$apiKey) {
+    error_log("❌ CRITICAL: BREVO_API_KEY not found in environment");
+} else {
+    error_log("✅ BREVO_API_KEY found: " . substr($apiKey, 0, 6) . "...");
+}
+
 // ✅ CHECK IF USER IS LOGGED IN - REDIRECT IF NOT
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
     // Log the unauthorized access attempt
@@ -619,7 +648,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
                     exit;
                 }
 
-// ✅ FIXED Admin booking approval endpoint - REPLACE in dashboard.php starting from line ~485
+// ✅ ENHANCED Admin booking approval endpoint with better debugging
 if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking') {
     header('Content-Type: application/json');
     
@@ -637,7 +666,9 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
     }
     
     try {
-        // ✅ FIXED: Get ALL booking details including user email
+        error_log("🚀 STARTING BOOKING APPROVAL PROCESS FOR ID: $booking_id");
+        
+        // ✅ Get ALL booking details including user email
         $bookingStmt = $conn->prepare("
             SELECT 
                 b.id,
@@ -679,11 +710,18 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
         // ✅ Validate email exists
         if (empty($booking['email'])) {
             error_log("❌ No email found for booking #$booking_id");
+            error_log("❌ Booking data: " . print_r($booking, true));
             echo json_encode(['success' => false, 'message' => 'Customer email not found in database.']);
             exit;
         }
         
-        error_log("📧 Approving booking #$booking_id for email: " . $booking['email']);
+        error_log("📧 Approving booking #$booking_id for: " . $booking['email']);
+        error_log("📋 Booking details: " . print_r([
+            'celebrant' => $booking['celebrant_name'],
+            'event_type' => $booking['event_type'],
+            'date' => $booking['event_date'],
+            'total_price' => $booking['total_price']
+        ], true));
         
         // ✅ Update booking status FIRST
         $updateStmt = $conn->prepare("
@@ -704,11 +742,32 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
         
         error_log("✅ Booking #$booking_id status updated to 'approved'");
         
-        // ✅ NOW send email
-        require_once 'sendmail.php';
-        
+        // ✅ NOW send email - with enhanced error handling
         error_log("📧 Attempting to send approval email to: " . $booking['email']);
         
+        // Test if sendmail.php exists and is readable
+        if (!file_exists('sendmail.php')) {
+            error_log("❌ sendmail.php file not found!");
+            echo json_encode([
+                'success' => true, 
+                'message' => '✅ Booking approved but email system error. Please contact customer manually at: ' . $booking['email']
+            ]);
+            exit;
+        }
+        
+        require_once 'sendmail.php';
+        
+        // Test if function exists
+        if (!function_exists('sendBookingApprovalEmail')) {
+            error_log("❌ sendBookingApprovalEmail function not found in sendmail.php");
+            echo json_encode([
+                'success' => true, 
+                'message' => '✅ Booking approved but email function error. Please contact customer manually at: ' . $booking['email']
+            ]);
+            exit;
+        }
+        
+        error_log("🔄 Calling sendBookingApprovalEmail function...");
         $emailSent = sendBookingApprovalEmail($booking);
         
         if ($emailSent) {
@@ -719,7 +778,6 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
             ]);
         } else {
             error_log("⚠️ Booking approved but email FAILED for " . $booking['email']);
-            error_log("⚠️ Check Brevo API logs and sendmail.php");
             echo json_encode([
                 'success' => true, 
                 'message' => '⚠️ Booking approved but email failed to send. Please contact customer manually at: ' . $booking['email']
