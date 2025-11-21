@@ -1,113 +1,41 @@
 <?php
-function sendOTPEmail($email, $otp, $name) {
-    $apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
-    
-    if (!$apiKey) {
-        error_log("❌ BREVO_API_KEY not set");
-        return false;
-    }
-
-    $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
-    $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
-
-    $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $safe_otp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
-    $current_year = date('Y');
-
-    $data = [
-        'sender' => ['name' => $fromName, 'email' => $fromEmail],
-        'to' => [['email' => $email, 'name' => $name]],
-        'subject' => 'Email Verification - Zaf\'s Kitchen',
-        'htmlContent' => "
-            <!DOCTYPE html>
-            <html lang='en'>
-            <head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'></head>
-            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
-                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
-                    <div style='text-align: center; margin-bottom: 30px;'><h1 style='color: #DC2626; margin: 0;'>Zaf's Kitchen</h1></div>
-                    <h2 style='color: #DC2626; margin-bottom: 20px;'>Welcome to Zaf's Kitchen!</h2>
-                    <p style='margin-bottom: 15px;'>Hello <strong>$safe_name</strong>,</p>
-                    <p style='margin-bottom: 20px;'>Please use the following verification code:</p>
-                    <div style='background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 30px; text-align: center; margin: 30px 0; border-radius: 12px; border-left: 5px solid #DC2626;'>
-                        <p style='margin: 0 0 10px 0; font-size: 14px; color: #666;'>Your Verification Code:</p>
-                        <h1 style='color: #DC2626; font-size: 36px; letter-spacing: 8px; margin: 0;'>$safe_otp</h1>
-                    </div>
-                    <div style='background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 20px 0;'>
-                        <p style='margin: 0; color: #856404;'><strong>Important:</strong> This code expires in <strong>10 minutes</strong>.</p>
-                    </div>
-                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
-                        <p style='font-size: 12px; color: #666; text-align: center;'>© $current_year Zaf's Kitchen. All rights reserved.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-        "
-    ];
-
-    return sendBrevoEmail($data);
-}
-
-function sendPasswordResetEmail($email, $reset_link, $name) {
-    $apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
-    if (!$apiKey) { error_log("❌ BREVO_API_KEY not set"); return false; }
-
-    $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
-    $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
-    $safe_name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $safe_link = htmlspecialchars($reset_link, ENT_QUOTES, 'UTF-8');
-    $current_year = date('Y');
-
-    $data = [
-        'sender' => ['name' => $fromName, 'email' => $fromEmail],
-        'to' => [['email' => $email, 'name' => $name]],
-        'subject' => 'Password Reset - Zaf\'s Kitchen',
-        'htmlContent' => "
-            <!DOCTYPE html>
-            <html lang='en'>
-            <head><meta charset='UTF-8'></head>
-            <body style='font-family: Arial, sans-serif; color: #333; margin: 0; padding: 0; background-color: #f4f4f4;'>
-                <div style='max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;'>
-                    <div style='text-align: center; margin-bottom: 30px;'><h1 style='color: #DC2626; margin: 0;'>Zaf's Kitchen</h1></div>
-                    <h2 style='color: #DC2626;'>Password Reset Request</h2>
-                    <p>Hello <strong>$safe_name</strong>,</p>
-                    <p>Click the button below to reset your password:</p>
-                    <div style='text-align: center; margin: 30px 0;'>
-                        <a href='$safe_link' style='background-color: #DC2626; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;'>Reset Password</a>
-                    </div>
-                    <p style='word-break: break-all; color: #666; font-size: 14px;'>$safe_link</p>
-                    <div style='background-color: #fff3cd; border-radius: 8px; padding: 15px; margin: 20px 0;'>
-                        <p style='margin: 0; color: #856404;'><strong>Important:</strong> Expires in <strong>30 minutes</strong>.</p>
-                    </div>
-                    <div style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;'>
-                        <p style='font-size: 12px; color: #666; text-align: center;'>© $current_year Zaf's Kitchen.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-        "
-    ];
-
-    return sendBrevoEmail($data);
-}
-
-// ✅ NEW: Booking Approval Email with GCash Payment Instructions
+// ✅ ENHANCED sendBookingApprovalEmail with detailed logging
 function sendBookingApprovalEmail($booking) {
+    error_log("=== 📧 STARTING EMAIL SEND PROCESS ===");
+    
     $apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
     
     if (!$apiKey) {
-        error_log("❌ BREVO_API_KEY not set for approval email");
+        error_log("❌ FATAL: BREVO_API_KEY not set!");
+        error_log("❌ Check your .env file or environment variables");
         return false;
     }
+    
+    error_log("✅ API Key found: " . substr($apiKey, 0, 10) . "...");
 
     $fromEmail = $_ENV['BREVO_FROM'] ?? getenv('BREVO_FROM') ?? 'crownicsjames@gmail.com';
     $fromName = $_ENV['BREVO_NAME'] ?? getenv('BREVO_NAME') ?? "Zaf's Kitchen";
     
-    // Extract booking details
-    $email = $booking['email'];
+    error_log("📤 From: $fromName <$fromEmail>");
+    
+    // ✅ Extract and validate booking details
+    $email = $booking['email'] ?? null;
+    
+    if (!$email) {
+        error_log("❌ FATAL: No email address in booking data!");
+        error_log("❌ Booking data keys: " . implode(', ', array_keys($booking)));
+        return false;
+    }
+    
+    error_log("📬 Recipient: $email");
+    
     $name = htmlspecialchars($booking['name'] ?? $booking['full_name'], ENT_QUOTES, 'UTF-8');
     $booking_id = htmlspecialchars($booking['id'], ENT_QUOTES, 'UTF-8');
     $celebrant = htmlspecialchars($booking['celebrant_name'], ENT_QUOTES, 'UTF-8');
     $event_type = ucfirst(htmlspecialchars($booking['event_type'], ENT_QUOTES, 'UTF-8'));
+    
+    error_log("📋 Booking #$booking_id - $event_type for $celebrant");
+    
     $event_date = date('F d, Y (l)', strtotime($booking['event_date']));
     $start_time = date('g:i A', strtotime($booking['start_time']));
     $end_time = date('g:i A', strtotime($booking['end_time']));
@@ -115,15 +43,16 @@ function sendBookingApprovalEmail($booking) {
     $package = ucfirst(str_replace('_', ' ', htmlspecialchars($booking['food_package'], ENT_QUOTES, 'UTF-8')));
     $location = htmlspecialchars($booking['location'] ?? 'To be confirmed', ENT_QUOTES, 'UTF-8');
     $total_price = number_format($booking['total_price'], 2);
-    $downpayment = number_format($booking['total_price'] * 0.5, 2); // 50% downpayment
+    $downpayment = number_format($booking['total_price'] * 0.5, 2);
     
-    // Calculate deadline (20 hours from now)
     $deadline = date('F d, Y - g:i A', strtotime('+20 hours'));
     $current_year = date('Y');
     
-    // GCash Details - UPDATE THESE WITH YOUR ACTUAL DETAILS
-    $gcash_number = '0917-XXX-XXXX'; // Replace with actual GCash number
-    $gcash_name = 'Zaf\'s Kitchen / Your Name'; // Replace with actual registered name
+    // ✅ UPDATE THESE WITH YOUR ACTUAL GCASH DETAILS
+    $gcash_number = '0917-XXX-XXXX'; // ⚠️ REPLACE WITH REAL NUMBER
+    $gcash_name = 'Zaf\'s Kitchen'; // ⚠️ REPLACE WITH REAL NAME
+
+    error_log("💰 Total: ₱$total_price | Downpayment: ₱$downpayment");
 
     $data = [
         'sender' => ['name' => $fromName, 'email' => $fromEmail],
@@ -244,7 +173,7 @@ function sendBookingApprovalEmail($booking) {
                                 📧 Email: <a href='mailto:zafskitchen95@gmail.com' style='color: #DC2626;'>zafskitchen95@gmail.com</a>
                             </p>
                             <p style='margin: 0; font-size: 14px; color: #666;'>
-                                📱 Contact: 0917-XXX-XXXX
+                                📱 Contact: $gcash_number
                             </p>
                         </div>
                         
@@ -267,26 +196,31 @@ function sendBookingApprovalEmail($booking) {
         "
     ];
 
+    error_log("📤 Calling sendBrevoEmail function...");
     $result = sendBrevoEmail($data);
     
     if ($result) {
-        error_log("✅ Booking approval email sent to $email for booking #$booking_id");
+        error_log("✅ ✅ ✅ EMAIL SENT SUCCESSFULLY to $email for booking #$booking_id");
     } else {
-        error_log("❌ Failed to send booking approval email to $email");
+        error_log("❌ ❌ ❌ EMAIL SENDING FAILED for $email");
     }
+    
+    error_log("=== 📧 EMAIL SEND PROCESS COMPLETE ===");
     
     return $result;
 }
 
-// ✅ Helper function to send emails via Brevo API
+// ✅ Enhanced Brevo API helper with detailed logging
 function sendBrevoEmail($data) {
     $apiKey = $_ENV['BREVO_API_KEY'] ?? getenv('BREVO_API_KEY');
     
     if (!$apiKey) {
-        error_log("❌ BREVO_API_KEY not set");
+        error_log("❌ BREVO_API_KEY not set in sendBrevoEmail");
         return false;
     }
 
+    error_log("🔌 Connecting to Brevo API...");
+    
     $ch = curl_init();
     
     curl_setopt($ch, CURLOPT_URL, 'https://api.brevo.com/v3/smtp/email');
@@ -302,24 +236,37 @@ function sendBrevoEmail($data) {
     ];
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     
+    error_log("📡 Sending API request to Brevo...");
+    
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
     
     curl_close($ch);
 
+    error_log("📊 Brevo API Response - HTTP Code: $httpCode");
+
     if ($httpCode === 201) {
+        error_log("✅ Brevo API SUCCESS (HTTP 201)");
         return true;
     } else {
-        error_log("❌ Brevo API Error - HTTP Code: $httpCode");
-        error_log("❌ Response: " . $result);
+        error_log("❌ Brevo API FAILED - HTTP Code: $httpCode");
+        error_log("❌ Response Body: " . $result);
         if ($error) {
             error_log("❌ cURL Error: " . $error);
         }
+        
+        // ⚠️ Parse and log specific error
+        $response = json_decode($result, true);
+        if ($response && isset($response['message'])) {
+            error_log("❌ Brevo Error Message: " . $response['message']);
+        }
+        
         return false;
     }
 }
 
+// Keep existing OTP and password reset functions...
 function generateOTP($length = 6) {
     return str_pad(random_int(0, 999999), $length, '0', STR_PAD_LEFT);
 }

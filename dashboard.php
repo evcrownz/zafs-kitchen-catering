@@ -619,7 +619,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
                     exit;
                 }
 
-// Admin booking approval endpoint
+// ✅ FIXED Admin booking approval endpoint - REPLACE in dashboard.php starting from line ~485
 if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking') {
     header('Content-Type: application/json');
     
@@ -637,7 +637,7 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
     }
     
     try {
-        // Get booking details with user email
+        // ✅ FIXED: Get ALL booking details including user email
         $bookingStmt = $conn->prepare("
             SELECT 
                 b.id,
@@ -660,26 +660,32 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
                 b.payment_status,
                 b.created_at,
                 u.email,
-                COALESCE(u.name, b.full_name) as name
+                u.name
             FROM bookings b 
-            JOIN usertable u ON b.user_id = u.id 
+            INNER JOIN usertable u ON b.user_id = u.id 
             WHERE b.id = ?
         ");
+        
         $bookingStmt->execute([$booking_id]);
         $booking = $bookingStmt->fetch(PDO::FETCH_ASSOC);
         
+        // ✅ Check if booking exists
         if (!$booking) {
+            error_log("❌ Booking not found: ID #$booking_id");
             echo json_encode(['success' => false, 'message' => 'Booking not found.']);
             exit;
         }
         
-        // Validate email exists
+        // ✅ Validate email exists
         if (empty($booking['email'])) {
-            echo json_encode(['success' => false, 'message' => 'Customer email not found.']);
+            error_log("❌ No email found for booking #$booking_id");
+            echo json_encode(['success' => false, 'message' => 'Customer email not found in database.']);
             exit;
         }
         
-        // Update booking status
+        error_log("📧 Approving booking #$booking_id for email: " . $booking['email']);
+        
+        // ✅ Update booking status FIRST
         $updateStmt = $conn->prepare("
             UPDATE bookings 
             SET booking_status = 'approved', 
@@ -687,35 +693,43 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
                 updated_at = CURRENT_TIMESTAMP 
             WHERE id = ?
         ");
-        $result = $updateStmt->execute([$booking_id]);
         
-        if ($result) {
-            // Include email function
-            require_once 'sendmail.php';
-            
-            // ✅ Send approval email with GCash payment instructions
-            $emailSent = sendBookingApprovalEmail($booking);
-            
-            if ($emailSent) {
-                error_log("✅ Approval email sent for booking #$booking_id to " . $booking['email']);
-                echo json_encode([
-                    'success' => true, 
-                    'message' => '✅ Booking approved! Email sent to ' . $booking['email'] . ' with payment instructions.'
-                ]);
-            } else {
-                error_log("⚠️ Booking approved but email failed for #$booking_id");
-                echo json_encode([
-                    'success' => true, 
-                    'message' => '⚠️ Booking approved but email failed to send. Please contact customer manually.'
-                ]);
-            }
+        $updateResult = $updateStmt->execute([$booking_id]);
+        
+        if (!$updateResult) {
+            error_log("❌ Failed to update booking status for #$booking_id");
+            echo json_encode(['success' => false, 'message' => 'Failed to update booking status.']);
+            exit;
+        }
+        
+        error_log("✅ Booking #$booking_id status updated to 'approved'");
+        
+        // ✅ NOW send email
+        require_once 'sendmail.php';
+        
+        error_log("📧 Attempting to send approval email to: " . $booking['email']);
+        
+        $emailSent = sendBookingApprovalEmail($booking);
+        
+        if ($emailSent) {
+            error_log("✅ ✅ ✅ SUCCESS! Approval email sent to " . $booking['email']);
+            echo json_encode([
+                'success' => true, 
+                'message' => '✅ Booking approved! Confirmation email sent to ' . $booking['email']
+            ]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to approve booking.']);
+            error_log("⚠️ Booking approved but email FAILED for " . $booking['email']);
+            error_log("⚠️ Check Brevo API logs and sendmail.php");
+            echo json_encode([
+                'success' => true, 
+                'message' => '⚠️ Booking approved but email failed to send. Please contact customer manually at: ' . $booking['email']
+            ]);
         }
         
     } catch (Exception $e) {
-        error_log("Approval error: " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        error_log("❌ CRITICAL ERROR in approval process: " . $e->getMessage());
+        error_log("❌ Stack trace: " . $e->getTraceAsString());
+        echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
     }
     exit;
 }
