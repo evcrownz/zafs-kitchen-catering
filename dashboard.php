@@ -693,18 +693,20 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
             // Include email function
             require_once 'sendmail.php';
             
-            // Send approval email
+            // ✅ Send approval email with GCash payment instructions
             $emailSent = sendBookingApprovalEmail($booking);
             
             if ($emailSent) {
+                error_log("✅ Approval email sent for booking #$booking_id to " . $booking['email']);
                 echo json_encode([
                     'success' => true, 
-                    'message' => 'âœ… Booking approved! Email sent to ' . $booking['email']
+                    'message' => '✅ Booking approved! Email sent to ' . $booking['email'] . ' with payment instructions.'
                 ]);
             } else {
+                error_log("⚠️ Booking approved but email failed for #$booking_id");
                 echo json_encode([
                     'success' => true, 
-                    'message' => 'âš ï¸ Booking approved but email failed. Check error logs.'
+                    'message' => '⚠️ Booking approved but email failed to send. Please contact customer manually.'
                 ]);
             }
         } else {
