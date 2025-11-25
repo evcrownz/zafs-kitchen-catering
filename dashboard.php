@@ -76,7 +76,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
                         $custom_theme = trim($_POST['custom_theme'] ?? '');
                         $theme_suggestions = trim($_POST['theme_suggestions'] ?? '');
                         $selected_menus = trim($_POST['selected_menus'] ?? '');
-                        $total_price = floatval($_POST['total_price'] ?? '0');
+                        $package_price = floatval($_POST['package_price'] ?? '0');
                         
                         // Basic validation
                         if (empty($full_name) || empty($contact_number) || empty($celebrant_name) || 
@@ -228,11 +228,11 @@ if ($totalEvents == 2) {
                         // Convert selected_menus to JSON format for JSONB column
                         $selected_menus_json = !empty($selected_menus) ? json_encode(explode(',', $selected_menus)) : null;
                         
-                        // Insert booking with user_id and total_price
+                        // Insert booking with user_id and package_price
                         $insertStmt = $conn->prepare("INSERT INTO bookings (
                             user_id, full_name, contact_number, celebrant_name, guest_count, celebrant_age, 
                             food_package, event_type, location, event_date, start_time, end_time, 
-                            event_theme, custom_theme, theme_suggestions, selected_menus, total_price, booking_status, created_at
+                            event_theme, custom_theme, theme_suggestions, selected_menus, package_price, booking_status, created_at
                         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)");
 
                         $result = $insertStmt->execute([
@@ -252,19 +252,19 @@ if ($totalEvents == 2) {
                             $custom_theme, 
                             $theme_suggestions, 
                             $selected_menus_json,
-                            $total_price,
+                            $package_price,
                             'pending'
                         ]);
 
                         if ($result) {
                             $booking_id = $conn->lastInsertId();
-                            error_log("New booking submitted - ID: $booking_id, Customer: $full_name, User ID: $user_id, Total: $total_price");
+                            error_log("New booking submitted - ID: $booking_id, Customer: $full_name, User ID: $user_id, Total: $package_price");
                             
                             echo json_encode([
                                 'success' => true, 
                                 'message' => 'Booking submitted successfully! Your booking details have been sent for admin approval.', 
                                 'booking_id' => $booking_id,
-                                'total_price' => $total_price
+                                'package_price' => $package_price
                             ]);
                         } else {
                             echo json_encode(['success' => false, 'message' => 'Database error occurred.']);
@@ -304,6 +304,9 @@ $stmt = $conn->prepare("SELECT
     event_theme,
     custom_theme,
     theme_suggestions,
+    package_price,
+    service_charge,
+    charge_description,    
     total_price,
     booking_status,
     payment_status,
@@ -348,6 +351,9 @@ $stmt = $conn->prepare("SELECT
     event_theme,
     custom_theme,
     theme_suggestions,
+    package_price,
+    service_charge,
+    charge_description,
     total_price,
     booking_status,
     payment_status,
@@ -357,7 +363,7 @@ $stmt = $conn->prepare("SELECT
     updated_at
     FROM bookings 
     ORDER BY event_date DESC, created_at DESC
-");
+"); 
 $stmt->execute();
                     $stmt->execute();
                     $bookings = $stmt->fetchAll();
@@ -512,13 +518,13 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
                         full_name,
                         booking_status,
                         user_id,
-                        total_price,
+                        package_price,
                         COUNT(*) as booking_count
                         FROM bookings 
                         WHERE EXTRACT(YEAR FROM event_date) = ? 
                         AND EXTRACT(MONTH FROM event_date) = ? 
                         AND booking_status != 'cancelled'
-                        GROUP BY event_date, start_time, end_time, event_type, location, full_name, booking_status, user_id, total_price
+                        GROUP BY event_date, start_time, end_time, event_type, location, full_name, booking_status, user_id, package_price
                         ORDER BY event_date
                     ");
                     $stmt->execute([$year, $month]);
@@ -536,7 +542,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
                             full_name,
                             booking_status,
                             user_id,
-                            total_price
+                            package_price
                             FROM bookings 
                             WHERE event_date = ? 
                             AND booking_status != 'cancelled'
@@ -555,7 +561,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
                                 'is_own_booking' => ($current_user_id && $booking['user_id'] == $current_user_id),
                                 'full_name' => $booking['full_name'],
                                 'booking_status' => $booking['booking_status'],
-                                'total_price' => $booking['total_price']
+                                'package_price' => $booking['package_price']
                             ];
                         }
                         
@@ -619,12 +625,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
                     exit;
                 }
 
-
+// Admin booking approval endpoint
 if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking') {
     header('Content-Type: application/json');
     
     // Check if user is admin
-    if (!isset($_SESSION['user_// Admin booking approval endpointid']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
         echo json_encode(['success' => false, 'message' => 'Admin access required']);
         exit;
     }
@@ -655,7 +661,7 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
                 b.event_theme,
                 b.custom_theme,
                 b.theme_suggestions,
-                b.total_price,
+                b.package_price,
                 b.booking_status,
                 b.payment_status,
                 b.created_at,
@@ -770,7 +776,7 @@ if ($_POST && isset($_POST['action']) && $_POST['action'] === 'approve_booking')
                         COUNT(CASE WHEN booking_status = 'pending' THEN 1 END) as pending_bookings,
                         COUNT(CASE WHEN booking_status = 'approved' THEN 1 END) as approved_bookings,
                         COUNT(CASE WHEN booking_status = 'cancelled' THEN 1 END) as cancelled_bookings,
-                        COALESCE(SUM(CASE WHEN booking_status = 'approved' THEN total_price ELSE 0 END), 0) as total_spent,
+                        COALESCE(SUM(CASE WHEN booking_status = 'approved' THEN package_price ELSE 0 END), 0) as total_spent,
                         COUNT(CASE WHEN event_date >= CURRENT_DATE AND booking_status != 'cancelled' THEN 1 END) as upcoming_events
                         FROM bookings 
                         WHERE user_id = ?
@@ -4124,6 +4130,118 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
+
+
+
+
+/* Avatar Grid Scrollbar */
+#avatar-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+#avatar-grid::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+#avatar-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+    border-radius: 10px;
+}
+
+#avatar-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+
+/* Avatar Modal - Red Theme Scrollbar */
+#avatar-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+#avatar-grid::-webkit-scrollbar-track {
+    background: #fee2e2;
+    border-radius: 10px;
+}
+
+#avatar-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #DC2626, #991B1B);
+    border-radius: 10px;
+    border: 2px solid #fee2e2;
+}
+
+#avatar-grid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #B91C1C, #7F1D1D);
+}
+
+/* Upload button animation - REMOVED SCALE */
+#upload-avatar-btn {
+    transition: all 0.3s ease;
+}
+
+#upload-avatar-btn:hover {
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    /* REMOVED transform: scale */
+}
+
+#upload-avatar-btn:active {
+    /* REMOVED transform: scale(0.95) */
+    opacity: 0.9;
+}
+
+/* Avatar grid hover effects - Red theme - NO ZOOM */
+#avatar-grid > div {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#avatar-grid > div:hover {
+    border-color: #DC2626 !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    /* NO transform: scale */
+}
+
+/* Loading overlay styling */
+.loading-spinner {
+    border: 3px solid #fee2e2;
+    border-top: 3px solid #DC2626;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mobile Responsive - Avatar Modal */
+@media (max-width: 768px) {
+    #avatar-modal .flex.gap-6 {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    #avatar-modal .w-px {
+        display: none; /* Hide vertical divider on mobile */
+    }
+    
+    #avatar-modal .flex-shrink-0 {
+        flex-direction: row !important;
+        width: 100%;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    #avatar-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    .overflow-y-auto {
+        max-height: 300px !important;
+    }
+}
+
             </style>
             </head>
             <body class="bg-gray-100">
@@ -4457,7 +4575,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                     <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-[95vh] overflow-hidden">
                         <div class="bg-gradient-to-r from-[white] to-[white] p-6">
                             <div class="flex justify-between items-center">
-                                <h3 class="text-xl font-bold text-red">Book Preview</h3>
+                                <h3 class="text-xl font-bold text-red">Book Receipt</h3>
                                 <button id="close-preview-modal" class="text-white hover:text-gray-200 transition-colors">
                                     <i class="fas fa-times text-xl"></i>
                                 </button>
@@ -4476,7 +4594,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                             <div class="flex gap-3">
                                 <button id="print-preview" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors font-semibold flex items-center gap-2">
                                     <i class="fas fa-print"></i>
-                                    Print Book Preview
+                                    Print Book Receipt
                                 </button>
                                 <button id="close-preview-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 rounded-lg transition-colors font-semibold">
                                     Close
@@ -4515,7 +4633,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                 <div class="w-full">
                     <form id="booking-form" method="POST">
                         <input type="hidden" name="action" value="book_event">
-                        <input type="hidden" id="total_price" name="total_price" value="0">
+                        <input type="hidden" id="package_price" name="package_price" value="0">
                         
                         <!-- Step 1: Basic Information -->
                         <div id="booking-step1" class="form-step active bg-white p-6 rounded-lg shadow-lg border-2 border-gray-300">
@@ -6074,28 +6192,29 @@ if (typeof window !== 'undefined') {
                     <!-- Profile Card -->
                     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
                         <div class="flex flex-col md:flex-row items-center gap-6">
-                            <!-- Avatar Selection -->
-                            <div class="flex flex-col items-center">
-                                <div class="relative">
-                                    <img id="profile-avatar" 
-                                        src="<?php 
-                                        if (!empty($_SESSION['avatar_url'])) {
-                                            echo htmlspecialchars($_SESSION['avatar_url']);
-                                        } else {
-                                            echo 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . ($_SESSION['user_id'] ?? 'default');
-                                        }
-                                        ?>" 
-                                        alt="Profile Avatar" 
-                                        class="w-32 h-32 rounded-full border-4 border-blue-500 shadow-lg">
-                                    <button id="change-avatar-btn" 
-                                            class="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-2">Click to change avatar</p>
-                            </div>
+
+                <!-- Avatar Selection -->
+                <div class="flex flex-col items-center">
+                    <div class="relative">
+                        <img id="profile-avatar" 
+                            src="<?php 
+                            if (!empty($_SESSION['avatar_url'])) {
+                                echo htmlspecialchars($_SESSION['avatar_url']);
+                            } else {
+                                echo 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . ($_SESSION['user_id'] ?? 'default');
+                            }
+                            ?>" 
+                            alt="Profile Avatar" 
+                            class="w-32 h-32 rounded-full border-4 border-[#DC2626] shadow-lg object-cover">
+                        <button id="change-avatar-btn" 
+                                class="absolute bottom-0 right-0 bg-[#DC2626] hover:bg-[#B91C1C] text-white p-2 rounded-full transition-colors shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">Click to change photo</p>
+                </div>
 
                             <!-- User Information -->
                             <div class="flex-1 text-center md:text-left">
@@ -6258,23 +6377,78 @@ if (typeof window !== 'undefined') {
                         </div>
                     </div>
 
-                    <!-- Avatar Selection Modal -->
-                    <div id="avatar-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
-                            <div class="p-6 border-b">
-                                <h3 class="text-xl font-bold">Choose Your Avatar</h3>
-                            </div>
-                            <div class="p-6 overflow-y-auto max-h-[60vh]">
-                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-4" id="avatar-grid"></div>
-                            </div>
-                            <div class="p-6 border-t flex justify-end gap-3">
-                                <button id="cancel-avatar-btn" 
-                                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                                    Cancel
-                                </button>
-                            </div>
+<!-- Enhanced Avatar Selection Modal with Upload -->
+<div id="avatar-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-hidden">
+        <!-- Header -->
+        <div class="p-6 border-b bg-gradient-to-r from-red-50 to-orange-50">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-800">Choose Your Profile Picture</h3>
+                    <p class="text-sm text-gray-600 mt-1">Upload your own photo or select an avatar</p>
+                </div>
+                <button id="close-avatar-modal" class="text-gray-500 hover:text-gray-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Content Area with Grid Layout -->
+        <div class="p-6">
+            <div class="flex gap-6">
+                <!-- LEFT SIDE: Upload Section (FIXED - NO SCROLL) -->
+                <div class="flex-shrink-0 flex flex-col items-center">
+                    <!-- Profile Circle Preview -->
+                    <div class="relative mb-3">
+                        <div class="w-24 h-24 rounded-full border-4 border-[#DC2626] bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center overflow-hidden">
+                            <i class="fas fa-user text-4xl text-[#DC2626] opacity-30"></i>
                         </div>
                     </div>
+                    
+                    <!-- Upload Button (OUTSIDE, BELOW THE CIRCLE) -->
+                    <button id="upload-avatar-btn" class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] hover:from-[#B91C1C] hover:to-[#991B1B] text-white px-4 py-2 rounded-lg shadow-md flex items-center gap-2 font-semibold">
+                        <i class="fas fa-upload"></i>
+                        Upload Photo
+                    </button>
+                    
+                    <p class="text-xs text-center text-gray-500 mt-2 max-w-[120px]">
+                        Max 5MB<br>(JPG, PNG, GIF)
+                    </p>
+                </div>
+                
+                <!-- VERTICAL DIVIDER -->
+                <div class="w-px bg-gray-300"></div>
+                
+                <!-- RIGHT SIDE: Avatar Grid (SCROLLABLE ONLY) -->
+                <div class="flex-1 flex flex-col">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                        <i class="fas fa-user-circle text-[#DC2626]"></i>
+                        Or Choose an Avatar Style
+                    </h4>
+                    
+                    <!-- SCROLLABLE AVATAR GRID CONTAINER -->
+                    <div class="overflow-y-auto pr-2" style="max-height: 400px;">
+                        <div id="avatar-grid" class="grid grid-cols-4 gap-3">
+                            <!-- Avatar items will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="p-4 border-t bg-gray-50 flex justify-end">
+            <button id="cancel-avatar-btn" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition text-gray-700 font-semibold">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden file input for upload -->
+<input type="file" id="avatar-picture-input" accept="image/jpeg,image/jpg,image/png,image/gif" class="hidden">
 
                     <!-- Sign Out Modal -->
                     <div id="signout-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
@@ -6303,7 +6477,7 @@ if (typeof window !== 'undefined') {
     <!-- Vision & Mission Grid -->
     <div class="grid md:grid-cols-2 gap-6 mb-8">
         <!-- Vision Card -->
-        <div class="bg-white rounded-lg shadow-lg border-2 border-gray-200 p-6 hover:shadow-xl transition-shadow">
+        <div class="bg-white rounded-lg shadow-lg box`rder-2 border-gray-200 p-6 hover:shadow-xl transition-shadow">
             <div class="flex items-center mb-4">
                 <div class="bg-[#DC2626] rounded-full p-3 mr-4">
                     <i class="fas fa-eye text-white text-2xl"></i>
@@ -7003,7 +7177,7 @@ function updatePriceCalculator() {
             
             // Update hidden input for form submission
             const totalPrice = basePrice + additionalPrice;
-            document.getElementById('total_price').value = totalPrice;
+            document.getElementById('package_price').value = totalPrice;
             
             // Add animation to all total displays
             animatePriceUpdate();
@@ -7126,7 +7300,7 @@ function updatePriceCalculator() {
                     if (container) container.style.display = 'none';
                 });
                 
-                document.getElementById('total_price').value = '0';
+                document.getElementById('package_price').value = '0';
                 currentPriceData = { basePrice: 0, additionalPrice: 0, guestCount: 0, packageType: '' };
             }
 
@@ -7218,8 +7392,8 @@ function showpreviewModal(booking) {
     let priceDisplay = 'To be confirmed';
     let priceNote = 'Final price subject to admin review and location assessment';
     
-    if (booking.total_price && booking.total_price > 0) {
-        priceDisplay = `₱${parseFloat(booking.total_price).toLocaleString('en-PH', {
+    if (booking.package_price && booking.package_price > 0) {
+        priceDisplay = `₱${parseFloat(booking.package_price).toLocaleString('en-PH', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}`;
@@ -7352,21 +7526,107 @@ function showpreviewModal(booking) {
                 </div>
             </div>
 
-            <!-- Pricing Section -->
-            <div class="border-t border-gray-200 pt-4">
-                <div class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] text-white rounded-lg p-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-semibold">Estimated Total</h3>
-                            <p class="text-sm opacity-90">${priceNote}</p>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-3xl font-bold">${priceDisplay}</div>
-                            <div class="text-sm opacity-90 mt-1">For ${booking.guest_count} guests</div>
-                        </div>
-                    </div>
-                </div>
+<!-- Pricing Section -->
+<div class="border-t border-gray-200 pt-4">
+    ${booking.payment_status === 'paid' ? `
+    <!-- PAID RECEIPT BREAKDOWN -->
+    <div class="border-2 border-green-500 rounded-lg overflow-hidden">
+        <div class="bg-green-500 text-white px-4 py-2">
+            <h3 class="text-base font-bold uppercase">
+                <i class="fas fa-receipt mr-2"></i>Payment Summary
+            </h3>
+        </div>
+        <div class="p-4 space-y-3">
+            <!-- Package Cost -->
+            <div class="flex justify-between items-center pb-2 border-b">
+                <span class="text-sm text-gray-600">Package Cost:</span>
+                <span class="font-semibold text-gray-900">₱${parseFloat(booking.package_price || 0).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</span>
             </div>
+            
+            <!-- Service Charge (if exists) -->
+            ${booking.service_charge && parseFloat(booking.service_charge) > 0 ? `
+            <div class="flex justify-between items-start pb-2 border-b service-charge-row">
+                <div class="flex-1">
+                    <div class="text-sm text-gray-600">Service Charge:</div>
+                    ${booking.charge_description ? `
+                    <div class="text-xs text-gray-500 italic mt-1 charge-description" style="max-width: 300px; line-height: 1.4;">${booking.charge_description}</div>
+                    ` : ''}
+                </div>
+                <span class="font-semibold text-gray-900 ml-4">₱${parseFloat(booking.service_charge).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</span>
+            </div>
+            ` : ''}
+            
+            <!-- Number of Guests -->
+            <div class="flex justify-between items-center pb-2 border-b">
+                <span class="text-sm text-gray-600">Number of Guests:</span>
+                <span class="font-semibold text-gray-900">${booking.guest_count || '0'} pax</span>
+            </div>
+            
+            <!-- Total -->
+            <div class="flex justify-between items-center pt-2 bg-green-50 -mx-4 px-4 py-3">
+                <span class="text-base font-bold text-green-800">TOTAL PAID:</span>
+                <span class="text-2xl font-bold text-green-600">₱${parseFloat(booking.total_price || booking.package_price || 0).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</span>
+            </div>
+        </div>
+    </div>
+    ` : `
+    <!-- PENDING PAYMENT BREAKDOWN -->
+    <div class="border-2 border-gray-300 rounded-lg p-4">
+        <h3 class="text-base font-bold text-gray-900 border-b pb-2 mb-3 uppercase">
+            <i class="fas fa-calculator text-[#DC2626] mr-2"></i>Estimated Cost
+        </h3>
+        <div class="space-y-3">
+            <!-- Package Cost -->
+            <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Package Cost:</span>
+                <span class="font-semibold text-gray-900">₱${parseFloat(booking.package_price || 0).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</span>
+            </div>
+            
+            <!-- Service Charge (if exists) -->
+            ${booking.service_charge && parseFloat(booking.service_charge) > 0 ? `
+            <div class="flex justify-between items-start service-charge-row">
+                <div class="flex-1">
+                    <div class="text-sm text-gray-600">Service Charge:</div>
+                    ${booking.charge_description ? `
+                    <div class="text-xs text-gray-500 italic mt-1 charge-description" style="max-width: 300px; line-height: 1.4;">${booking.charge_description}</div>
+                    ` : ''}
+                </div>
+                <span class="font-semibold text-gray-900 ml-4">₱${parseFloat(booking.service_charge).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</span>
+            </div>
+            ` : ''}
+            
+            <!-- Total -->
+            <div class="flex justify-between items-center pt-2 border-t">
+                <span class="text-base font-bold text-[#DC2626]">Estimated Total:</span>
+                <span class="text-2xl font-bold text-[#DC2626]">₱${parseFloat(booking.total_price || booking.package_price || 0).toLocaleString('en-PH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</span>
+            </div>
+            
+            <div class="text-center">
+                <p class="text-xs text-gray-500">Final amount may vary based on requirements</p>
+                <p class="text-xs text-gray-500 mt-1">For ${booking.guest_count || '0'} guests</p>
+            </div>
+        </div>
+    </div>
+    `}
+</div>
 
             <!-- Important Information -->
             <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
@@ -7377,10 +7637,10 @@ function showpreviewModal(booking) {
                     <div class="ml-3">
                         <h4 class="text-sm font-semibold text-blue-800">Important Information</h4>
                         <div class="mt-1 text-sm text-blue-700 space-y-1">
-                            <p>• This is a booking confirmation Book Preview</p>
+                            <p>• This is a booking confirmation Book Receipt</p>
                             <p>• Final pricing may be adjusted based on location and specific requirements</p>
                             <p>• Payment instructions will be provided upon booking approval</p>
-                            <p>• Please present this Book Preview for verification</p>
+                            <p>• Please present this Book Receipt for verification</p>
                         </div>
                     </div>
                 </div>
@@ -7393,7 +7653,7 @@ function showpreviewModal(booking) {
                     For inquiries, please contact us at info@zafskitchen.com or call +63 912 345 6789
                 </p>
                 <p class="text-xs text-gray-400 mt-2">
-                    This is an electronically generated Book Preview. No signature required.
+                    This is an electronically generated Book Receipt. No signature required.
                 </p>
             </div>
         </div>
@@ -7416,10 +7676,10 @@ function showpreviewModal(booking) {
                     minute: '2-digit'
                 });
                 
-                    // Calculate price if total_price exists, otherwise estimate
+                    // Calculate price if package_price exists, otherwise estimate
                     let displayPrice = '₱0.00';
-                    if (booking.total_price && booking.total_price > 0) {
-                        displayPrice = `₱${parseFloat(booking.total_price).toLocaleString('en-PH', {
+                    if (booking.package_price && booking.package_price > 0) {
+                        displayPrice = `₱${parseFloat(booking.package_price).toLocaleString('en-PH', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
                         })}`;
@@ -7457,7 +7717,7 @@ function showpreviewModal(booking) {
                 }
                 
                 const ageDisplay = booking.event_type === 'birthday' && booking.celebrant_age ? 
-                    ` (${booking.celebrant_age} years old)` : '';
+                    ` (Age ${booking.celebrant_age})` : '';
                 
                 // Only pending bookings can be deleted
                 const canDelete = (booking.booking_status === 'pending');
@@ -7490,20 +7750,22 @@ function showpreviewModal(booking) {
                                         <div class="text-sm text-gray-500">Booking ID</div>
                                         <div class="font-mono text-sm">#${booking.id.toString().padStart(4, '0')}</div>
                                     </div>
-                            <div class="mt-2 flex gap-2">
-                                <button onclick='showpreviewModal(${JSON.stringify(booking)})' 
-                                    class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-5 py-1 text-xs rounded-lg transition-colors" 
-                                    title="View preview">
-                                    <i class="fas fa-preview mr-1"></i>Book Preview
-                                </button>
-                                ${canDelete ? `
-                                <button onclick="showDeleteModal(${booking.id}, '${booking.celebrant_name}', '${booking.event_type}')" 
-                                    class="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-lg transition-colors" 
-                                    title="Delete this booking">
-                                    <i class="fas fa-trash mr-1"></i>Cancel     
-                                </button>
-                                ` : ''}
-                            </div>
+                                <div class="mt-2 flex gap-2">
+                                    ${booking.booking_status === 'approved' ? `
+                                    <button onclick='showpreviewModal(${JSON.stringify(booking)})' 
+                                        class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-5 py-1 text-xs rounded-lg transition-colors" 
+                                        title="View official booking receipt">
+                                        <i class="fas fa-file-invoice mr-1"></i>Official Receipt
+                                    </button>
+                                    ` : ''}
+                                    ${canDelete ? `
+                                    <button onclick="showDeleteModal(${booking.id}, '${booking.celebrant_name}', '${booking.event_type}')" 
+                                        class="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-lg transition-colors" 
+                                        title="Delete this booking">
+                                        <i class="fas fa-trash mr-1"></i>Cancel     
+                                    </button>
+                                    ` : ''}
+                                </div>
                                 </div>
                             </div>
                             
@@ -7566,43 +7828,43 @@ function showpreviewModal(booking) {
                             </div>
                             ` : ''}
                             
-${!isPast ? (booking.booking_status === 'approved' ? `
-<div class="mt-3 space-y-2">
-    <div class="flex items-center gap-2 mb-2">
-        <div class="h-0.5 flex-1 bg-gradient-to-r from-green-400 to-green-600 rounded-full"></div>
-        <span class="text-xs font-semibold text-green-700">✓ Event Confirmed</span>
-        <div class="h-0.5 flex-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full"></div>
-    </div>
-    
-    ${booking.payment_status !== 'paid' ? `
-        <!-- Payment Countdown -->
-        <div class="p-3 bg-yellow-50 rounded-lg">
-            <div class="flex items-center gap-2 mb-1">
-                <i class="fas fa-exclamation-triangle text-yellow-600 text-xs"></i>
-                <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
+                ${!isPast ? (booking.booking_status === 'approved' ? `
+            <div class="mt-3 space-y-2">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="h-0.5 flex-1 bg-gradient-to-r from-green-400 to-green-600 rounded-full"></div>
+                    <span class="text-xs font-semibold text-green-700">✓ Event Confirmed</span>
+                    <div class="h-0.5 flex-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full"></div>
+                </div>
+                
+                ${booking.payment_status !== 'paid' ? `
+                    <!-- Payment Countdown -->
+                    <div class="p-3 bg-white rounded-lg">
+                        <div class="flex items-center gap-2 mb-1">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 text-xs"></i>
+                            <span class="font-semibold text-yellow-800 text-xs">⏰ Payment Deadline</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-1">Complete downpayment within:</div>
+                        <div id="payment-countdown-${booking.id}" class="text-sm font-bold text-yellow-700 payment-countdown" 
+                            data-booking-id="${booking.id}">
+                            Calculating...
+                        </div>
+                        <p class="text-xs text-yellow-600 mt-1">⚠️ Booking will auto-cancel if not paid</p>
+                    </div>
+                ` : ''}
+                
+                <!-- Event Countdown -->
+                <div class="p-3 bg-white rounded-lg">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i class="fas fa-calendar-check text-blue-600 text-xs"></i>
+                        <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
+                    </div>
+                    <div id="event-countdown-${booking.id}" class="text-sm font-bold text-blue-700 event-countdown" 
+                        data-booking-id="${booking.id}">
+                        Calculating...
+                    </div>
+                    <p class="text-xs text-blue-600 mt-1">${formattedDate} at ${startTime12}</p>
+                </div>
             </div>
-            <div class="text-xs text-gray-600 mb-1">Complete downpayment within:</div>
-            <div id="payment-countdown-${booking.id}" class="text-sm font-bold text-yellow-700 payment-countdown" 
-                data-booking-id="${booking.id}">
-                Calculating...
-            </div>
-            <p class="text-xs text-yellow-600 mt-1">⚠️ Booking will auto-cancel if not paid</p>
-        </div>
-    ` : ''}
-    
-    <!-- Event Countdown -->
-    <div class="p-3 bg-blue-50 rounded-lg">
-        <div class="flex items-center gap-2 mb-1">
-            <i class="fas fa-calendar-check text-blue-600 text-xs"></i>
-            <span class="font-semibold text-blue-800 text-xs">📅 Event Countdown</span>
-        </div>
-        <div id="event-countdown-${booking.id}" class="text-sm font-bold text-blue-700 event-countdown" 
-            data-booking-id="${booking.id}">
-            Calculating...
-        </div>
-        <p class="text-xs text-blue-600 mt-1">${formattedDate} at ${startTime12}</p>
-    </div>
-</div>
         </div>
     </div>
                             ` : booking.booking_status === 'pending' ? `
@@ -7764,8 +8026,8 @@ function displayBookingsWithPrice(bookings) {
     // Calculate total spent
     let totalSpent = 0;
     bookings.forEach(booking => {
-        if (booking.booking_status === 'approved' && booking.total_price) {
-            totalSpent += parseFloat(booking.total_price) || 0;
+        if (booking.booking_status === 'approved' && booking.package_price) {
+            totalSpent += parseFloat(booking.package_price) || 0;
         }
     });
     
@@ -7988,8 +8250,8 @@ function showpreviewModal(booking) {
     let priceDisplay = 'To be confirmed';
     let priceNote = 'Final price subject to admin review and location assessment';
     
-    if (booking.total_price && booking.total_price > 0) {
-        priceDisplay = `₱${parseFloat(booking.total_price).toLocaleString('en-PH', {
+    if (booking.package_price && booking.package_price > 0) {
+        priceDisplay = `₱${parseFloat(booking.package_price).toLocaleString('en-PH', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}`;
@@ -8034,185 +8296,299 @@ function showpreviewModal(booking) {
     // Contact number handling
     const contactNumber = booking.contact_number ? booking.contact_number : 'Not provided';
 
-    content.innerHTML = `
-        <div class="space-y-8 px-8">
-            <!-- Header Section -->
-            <div class="text-center">
-                <div class="flex justify-center items-center mb-4">
-                    <img src="logo/logo-border.png" alt="Zaf's Kitchen" class="w-16 h-16">
+content.innerHTML = `
+    <div class="space-y-6">
+        <!-- Header -->
+        <div class="text-center border-b-2 border-gray-300 pb-6">
+            <div class="flex justify-center items-center mb-4">
+                <img src="logo/logo-border.png" alt="Zaf's Kitchen" class="w-24 h-24 rounded-full border-4 border-[#DC2626]">
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                ${booking.payment_status === 'paid' ? 'OFFICIAL RECEIPT' : 'BOOKING CONFIRMATION'}
+            </h1>
+            <p class="text-gray-600 text-sm">Professional Catering Services</p>
+            <p class="text-gray-500 text-xs mt-1">Quezon City, Metro Manila • Contact: +63 912 345 6789</p>
+        </div>
+
+        <!-- Receipt Number & Date (Only for Paid) -->
+        ${booking.payment_status === 'paid' ? `
+        <div class="bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-green-600 font-semibold uppercase">Receipt No.</p>
+                    <p class="text-lg font-bold text-green-800">OR-${booking.id.toString().padStart(6, '0')}</p>
                 </div>
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">BOOKING CONFIRMATION</h1>
-                <div class="flex justify-center items-center space-x-4 text-xs text-gray-600">
-                    <div class="flex items-center">
-                        <i class="fas fa-calendar-alt mr-1 text-[#DC2626]"></i>
-                        <span>Issued: ${bookedDate}</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-hashtag mr-1 text-[#DC2626]"></i>
-                        <span>Ref: #${booking.id.toString().padStart(6, '0')}</span>
-                    </div>
+                <div>
+                    <p class="text-xs text-green-600 font-semibold uppercase">Date Issued</p>
+                    <p class="text-lg font-bold text-green-800">${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                 </div>
             </div>
-
-            <!-- Status Badges -->
-            <div class="flex justify-center space-x-4 mb-6">
-                <div class="flex items-center space-x-1">
-                    <i class="fas ${status.icon} ${status.class} text-sm"></i>
-                    <span class="font-semibold text-xs ${status.class}">${status.text}</span>
-                </div>
-                <div class="flex items-center space-x-1">
-                    <i class="fas ${paymentStatus.icon} ${paymentStatus.class} text-sm"></i>
-                    <span class="font-semibold text-xs ${paymentStatus.class}">${paymentStatus.text}</span>
-                </div>
-            </div>
-
-            <!-- Main Content Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <!-- Client Information -->
-                <div class="space-y-4">
-                    <h3 class="text-base font-semibold text-gray-900 border-b pb-2">
-                        Client Information
-                    </h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Full Name:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${booking.full_name || 'Not provided'}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Contact Number:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${contactNumber}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Celebrant:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${booking.celebrant_name || 'Not provided'}</span>
-                        </div>
-                        ${booking.event_type === 'birthday' && booking.celebrant_age ? `
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Age:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${booking.celebrant_age} years old</span>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-
-                <!-- Event Details -->
-                <div class="space-y-4">
-                    <h3 class="text-base font-semibold text-gray-900 border-b pb-2">
-                        Event Details
-                    </h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Event Type:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1 capitalize">${booking.event_type || 'Not specified'}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Date:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${formattedDate}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Time:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${startTime12} - ${endTime12}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Location:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${booking.location || 'To be confirmed'}</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium text-gray-600 w-32">Guests:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1">${booking.guest_count || '0'} persons</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Service Package Section -->
-            <div class="space-y-4">
-                <h3 class="text-base font-semibold text-gray-900 border-b pb-2">
-                    Service Package
-                </h3>
-                <div class="space-y-3 text-sm">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <span class="font-medium text-gray-600">Package Type:</span>
-                                <span class="font-semibold text-[#DC2626] capitalize">${booking.food_package || 'Not specified'}</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="font-medium text-gray-600">Event Theme:</span>
-                                <span class="font-semibold text-gray-900 capitalize">${booking.event_theme === 'custom' ? (booking.custom_theme || 'Custom Theme') : (booking.event_theme || 'Not specified')}</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    ${booking.theme_suggestions ? `
-                    <div class="mt-3 pt-3 border-t border-gray-200">
-                        <div class="flex justify-between items-start">
-                            <span class="font-medium text-gray-600">Special Requests:</span>
-                            <span class="font-semibold text-gray-900 text-right flex-1 ml-4">${booking.theme_suggestions}</span>
-                        </div>
-                    </div>
-                    ` : ''}
-                </div>
-            </div>
-
-            <!-- Pricing Section -->
-            <div class="space-y-3">
-                <h3 class="text-base font-semibold text-gray-900 border-b pb-2">
-                    Payment Summary
-                </h3>
-                <div class="text-center">
-                    <div class="mb-2">
-                        <div class="text-2xl font-bold text-[#DC2626]">${priceDisplay}</div>
-                        <div class="text-xs text-gray-600 mt-2">${priceNote}</div>
-                    </div>
-                    <div class="text-xs text-gray-500">
-                        For ${booking.guest_count || '0'} guests • Inclusive of service charges
-                    </div>
-                </div>
-            </div>
-
-            <!-- Important Information -->
-            <div class="space-y-3">
-                <h4 class="text-base font-semibold text-gray-900 border-b pb-2">Important Information</h4>
-                <div class="grid grid-cols-1 gap-3 text-xs text-gray-600">
-                    <div class="flex items-start space-x-2">
-                        <i class="fas fa-check text-green-500 mt-0.5 text-xs"></i>
-                        <span>This is an official booking confirmation Book Preview</span>
-                    </div>
-                    <div class="flex items-start space-x-2">
-                        <i class="fas fa-check text-green-500 mt-0.5 text-xs"></i>
-                        <span>Final pricing may be adjusted based on requirements</span>
-                    </div>
-                    <div class="flex items-start space-x-2">
-                        <i class="fas fa-check text-green-500 mt-0.5 text-xs"></i>
-                        <span>Payment instructions provided upon approval</span>
-                    </div>
-                    <div class="flex items-start space-x-2">
-                        <i class="fas fa-check text-green-500 mt-0.5 text-xs"></i>
-                        <span>Please present this Book Preview for verification</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="text-center border-t border-gray-200 pt-6">
-                <div class="flex justify-center items-center space-x-6 mb-3 text-xs text-gray-500">
-                    <div class="flex items-center space-x-2">
-                        <i class="fas fa-phone"></i>
-                        <span>+63 912 345 6789</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <i class="fas fa-envelope"></i>
-                        <span>info@zafskitchen.com</span>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-400">
-                    This is an electronically generated Book Preview • Valid without signature<br>
-                    Thank you for choosing Zaf's Kitchen Catering Services
-                </p>
+            <div class="mt-3 pt-3 border-t border-green-200">
+                <p class="text-sm text-green-700 font-semibold">✓ PAYMENT RECEIVED & CONFIRMED</p>
             </div>
         </div>
-    `;
+        ` : ''}
+
+        <!-- Status Badges -->
+        <div class="flex justify-center gap-4 mb-4">
+            <div class="flex items-center gap-2 px-4 py-2 rounded-full ${status.class}">
+                <i class="fas ${status.icon}"></i>
+                <span class="font-semibold text-sm">${status.text}</span>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 rounded-full ${paymentStatus.class} ${booking.payment_status !== 'paid' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' : ''}">
+                <i class="fas ${paymentStatus.icon}"></i>
+                <span class="font-semibold text-sm">${booking.payment_status !== 'paid' ? 'UNPAID' : paymentStatus.text}</span>
+            </div>
+        </div>
+
+        <!-- Customer Information -->
+        <div class="border-2 border-gray-200 rounded-lg p-4">
+            <h3 class="text-base font-bold text-gray-900 border-b pb-2 mb-3 uppercase">
+                <i class="fas fa-user-circle text-[#DC2626] mr-2"></i>Customer Information
+            </h3>
+            <div class="grid grid-cols-2 gap-x-6 gap-y-3">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Full Name</p>
+                    <p class="font-semibold text-gray-900">${booking.full_name || 'Not provided'}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Contact Number</p>
+                    <p class="font-semibold text-gray-900">${contactNumber}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Celebrant Name</p>
+                    <p class="font-semibold text-gray-900">${booking.celebrant_name || 'Not provided'}</p>
+                </div>
+                ${booking.event_type === 'birthday' && booking.celebrant_age ? `
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Age</p>
+                    <p class="font-semibold text-gray-900">${booking.celebrant_age} years old</p>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+
+        <!-- Event Details -->
+        <div class="border-2 border-gray-200 rounded-lg p-4">
+            <h3 class="text-base font-bold text-gray-900 border-b pb-2 mb-3 uppercase">
+                <i class="fas fa-calendar-check text-[#DC2626] mr-2"></i>Event Details
+            </h3>
+            <div class="grid grid-cols-2 gap-x-6 gap-y-3">
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Event Type</p>
+                    <p class="font-semibold text-gray-900 capitalize">${booking.event_type || 'Not specified'}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Event Date</p>
+                    <p class="font-semibold text-gray-900">${formattedDate}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Event Time</p>
+                    <p class="font-semibold text-gray-900">${startTime12} - ${endTime12}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase">Number of Guests</p>
+                    <p class="font-semibold text-gray-900">${booking.guest_count || '0'} persons</p>
+                </div>
+                <div class="col-span-2">
+                    <p class="text-xs text-gray-500 uppercase">Event Location</p>
+                    <p class="font-semibold text-gray-900">${booking.location || 'To be confirmed'}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Package -->
+        <div class="border-2 border-gray-200 rounded-lg p-4">
+            <h3 class="text-base font-bold text-gray-900 border-b pb-2 mb-3 uppercase">
+                <i class="fas fa-utensils text-[#DC2626] mr-2"></i>Service Package
+            </h3>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Package Type:</span>
+                    <span class="font-bold text-[#DC2626] capitalize text-lg">${booking.food_package || 'Not specified'}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Event Theme:</span>
+                    <span class="font-semibold text-gray-900 capitalize">${booking.event_theme === 'custom' ? (booking.custom_theme || 'Custom Theme') : (booking.event_theme || 'Not specified')}</span>
+                </div>
+                
+                ${booking.theme_suggestions ? `
+                <div class="pt-3 border-t border-gray-200">
+                    <p class="text-xs text-gray-500 uppercase mb-2">Special Requests</p>
+                    <p class="text-sm text-gray-700 italic">"${booking.theme_suggestions}"</p>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+
+<!-- PAYMENT BREAKDOWN -->
+${booking.payment_status === 'paid' ? `
+<!-- PAID RECEIPT -->
+<div class="border-2 border-green-500 rounded-lg overflow-hidden">
+    <div class="bg-green-500 text-white px-4 py-2">
+        <h3 class="text-base font-bold uppercase">
+            <i class="fas fa-receipt mr-2"></i>Payment Summary
+        </h3>
+    </div>
+    <div class="p-4 space-y-3">
+        <!-- Package Cost -->
+        <div class="flex justify-between items-center pb-2 border-b gap-4">
+            <span class="text-sm text-gray-600">Package Cost:</span>
+            <span class="font-semibold text-gray-900 whitespace-nowrap">₱${parseFloat(booking.package_price || 0).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        </div>
+        <!-- Service Fee (if exists) -->
+        ${booking.service_charge && parseFloat(booking.service_charge) > 0 ? `
+        <div class="flex justify-between items-start pb-2 border-b">
+            <div class="flex-1">
+                <div class="text-sm text-gray-600">Service Fee:</div>
+                ${booking.charge_description ? `
+                <div class="text-xs text-gray-500 italic mt-1">${booking.charge_description}</div>
+                ` : ''}
+            </div>
+            <span class="font-semibold text-gray-900 ml-4">₱${parseFloat(booking.service_charge).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        </div>
+        ` : `
+        <div class="flex justify-between items-center pb-2 border-b">
+            <span class="text-sm text-gray-600">Service Fee:</span>
+            <span class="font-semibold text-gray-900">Included</span>
+        </div>
+        `}
+        
+        <!-- Number of Guests -->
+        <div class="flex justify-between items-center pb-2 border-b">
+            <span class="text-sm text-gray-600">Number of Guests:</span>
+            <span class="font-semibold text-gray-900">${booking.guest_count || '0'} pax</span>
+        </div>
+        
+        <!-- TOTAL AMMOUNT PRICE -->
+        <div class="flex justify-between items-center pt-2 bg-green-50 -mx-4 px-4 py-3">
+            <span class="text-base font-bold text-green-800">TOTAL AMMOUNT PRICE:</span>
+            <span class="text-2xl font-bold text-green-600">₱${parseFloat(booking.total_price || booking.package_price || 0).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        </div>
+    </div>
+</div>
+` : `
+<!-- UNPAID RECEIPT -->
+<div class="border-2 border-yellow-500 rounded-lg overflow-hidden">
+    <div class="bg-yellow-500 text-white px-4 py-2">
+        <h3 class="text-base font-bold uppercase">
+            <i class="fas fa-receipt mr-2"></i>Payment Summary - UNPAID
+        </h3>
+    </div>
+    <div class="p-4 space-y-3 bg-yellow-50">
+        <!-- Package Cost -->
+        <div class="flex justify-between items-center pb-2 border-b border-yellow-200">
+            <span class="text-sm text-gray-700">Package Cost:</span>
+            <span class="font-semibold text-gray-900">₱${parseFloat(booking.package_price || 0).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        </div>
+        
+        <!-- Service Fee (if exists) -->
+        ${booking.service_charge && parseFloat(booking.service_charge) > 0 ? `
+        <div class="flex justify-between items-start gap-6 pb-2 border-b border-yellow-200">
+            <div class="flex-1 min-w-0 max-w-[110%]">
+                <div class="text-sm text-gray-600">Service Fee:</div>
+                ${booking.charge_description ? `
+                <div class="text-xs text-gray-500 italic mt-1 pr-4">${booking.charge_description}</div>
+                ` : ''}
+            </div>
+            <span class="font-semibold text-gray-900 whitespace-nowrap flex-shrink-0">₱${parseFloat(booking.service_charge).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        </div>
+        ` : `
+        <div class="flex justify-between items-center pb-2 border-b border-yellow-200">
+            <span class="text-sm text-gray-700">Service Fee:</span>
+            <span class="font-semibold text-gray-900">Included</span>
+        </div>
+        `}
+        
+        <!-- Number of Guests -->
+        <div class="flex justify-between items-center pb-2 border-b border-yellow-200">
+            <span class="text-sm text-gray-700">Number of Guests:</span>
+            <span class="font-semibold text-gray-900">${booking.guest_count || '0'} pax</span>
+        </div>
+        
+        <!-- TOTAL AMMOUNT PRICE -->
+        <div class="flex justify-between items-center pt-2 bg-yellow-100 -mx-4 px-4 py-3 border-t border-yellow-200">
+            <span class="text-base font-bold text-yellow-800">TOTAL AMMOUNT PRICE:</span>
+            <span class="text-2xl font-bold text-yellow-600">₱${parseFloat(booking.total_price || booking.package_price || 0).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</span>
+        </div>
+        
+        <div class="text-center mt-2">
+        </div>
+    </div>
+</div>
+`}
+
+<!-- Terms & Conditions -->
+<div class="bg-blue-50 border-l-4 border-blue-500 rounded p-4">
+    <div class="flex items-start gap-3">
+        <i class="fas fa-info-circle text-blue-600 text-lg mt-1 flex-shrink-0"></i>
+        <div class="text-sm text-blue-900 space-y-2">
+            <p class="font-semibold">Important Reminders:</p>
+            <ul class="list-disc list-inside space-y-1 text-xs">
+                ${booking.payment_status === 'paid' ? `
+                <li>This is your official receipt - please present on event day</li>
+                <li>Event setup will begin 2 hours before scheduled time</li>
+                <li>Final guest count must be confirmed 3 days before event</li>
+                <li>Any additional requests may incur extra charges</li>
+                ` : `
+                <li>This is a booking confirmation - not an official receipt</li>
+                <li>Payment must be completed within the deadline</li>
+                <li>Final pricing may vary based on requirements</li>
+                <li>Event date is reserved pending payment confirmation</li>
+                `}
+                <li>Contact us for any changes or concerns</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <!-- Footer -->
+        <div class="text-center border-t-2 border-gray-300 pt-6">
+            <div class="flex justify-center items-center gap-8 mb-4 text-sm text-gray-600">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-phone text-[#DC2626]"></i>
+                    <span>+63 912 345 6789</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-envelope text-[#DC2626]"></i>
+                    <span>info@zafskitchen.com</span>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 mb-2">
+                ${booking.payment_status === 'paid' 
+                    ? 'This is a computer-generated official receipt • Valid without signature' 
+                    : 'This is an electronically generated booking confirmation'}
+            </p>
+            <p class="text-xs text-gray-400">
+                Thank you for choosing Zaf's Kitchen Catering Services
+            </p>
+            ${booking.payment_status === 'paid' ? `
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                <p class="text-xs font-semibold text-gray-600">PAID IN FULL</p>
+                <p class="text-xs text-gray-500 mt-1">We look forward to serving you!</p>
+            </div>
+            ` : ''}
+        </div>
+    </div>
+`;
     
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
@@ -10912,7 +11288,7 @@ if (nextStep2) {
                             event_theme: formData.get('event_theme'),
                             custom_theme: formData.get('custom_theme'),
                             theme_suggestions: formData.get('theme_suggestions'),
-                            total_price: data.total_price,
+                            package_price: data.package_price,
                             booking_status: 'pending',
                             payment_status: 'unpaid',
                             created_at: new Date().toISOString()
@@ -11233,55 +11609,62 @@ if (nextStep2) {
                 console.log('DOM Content Loaded - Initializing enhanced booking form');
                 
                 // ============= PROFILE SETTINGS EVENT LISTENERS =============
-                // Avatar change button
-                const changeAvatarBtn = document.getElementById('change-avatar-btn');
-                if (changeAvatarBtn) {
-                    changeAvatarBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        openAvatarModal();
-                    });
-                }
-                
-                // Cancel avatar button
-                const cancelAvatarBtn = document.getElementById('cancel-avatar-btn');
-                if (cancelAvatarBtn) {
-                    cancelAvatarBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        closeAvatarModal();
-                    });
-                }
-                
-                // Close avatar modal on backdrop click
-                const avatarModal = document.getElementById('avatar-modal');
-                if (avatarModal) {
-                    avatarModal.addEventListener('click', function(e) {
-                        if (e.target === this) {
-                            closeAvatarModal();
-                        }
-                    });
-                }
-                
-                // Profile dropdown toggle
-                const profileMenuBtn = document.getElementById('profile-menu-btn');
-                if (profileMenuBtn) {
-                    profileMenuBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const dropdown = document.getElementById('profile-dropdown');
-                        if (dropdown) {
-                            dropdown.classList.toggle('hidden');
-                        }
-                    });
-                }
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
-                    const dropdown = document.getElementById('profile-dropdown');
-                    const menuBtn = document.getElementById('profile-menu-btn');
-                    
-                    if (dropdown && !dropdown.contains(e.target) && e.target !== menuBtn && !menuBtn?.contains(e.target)) {
-                        dropdown.classList.add('hidden');
-                    }
-                });
+// Change avatar button - opens modal
+const changeAvatarBtn = document.getElementById('change-avatar-btn');
+if (changeAvatarBtn) {
+    changeAvatarBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openAvatarModal();
+    });
+}
+
+// Upload button inside modal
+document.addEventListener('click', function(e) {
+    if (e.target.closest('#upload-avatar-btn')) {
+        e.preventDefault();
+        const fileInput = document.getElementById('avatar-picture-input');
+        if (fileInput) fileInput.click();
+    }
+});
+
+// File input change for avatar upload
+const avatarPictureInput = document.getElementById('avatar-picture-input');
+if (avatarPictureInput) {
+    avatarPictureInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            uploadProfilePicture(this.files[0]);
+            this.value = ''; // Reset input
+        }
+    });
+}
+
+// Close avatar modal button
+const closeAvatarModalBtn = document.getElementById('close-avatar-modal');
+if (closeAvatarModalBtn) {
+    closeAvatarModalBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeAvatarModal();
+    });
+}
+
+// Cancel avatar button
+const cancelAvatarBtn = document.getElementById('cancel-avatar-btn');
+if (cancelAvatarBtn) {
+    cancelAvatarBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeAvatarModal();
+    });
+}
+
+// Close avatar modal on backdrop click
+const avatarModal = document.getElementById('avatar-modal');
+if (avatarModal) {
+    avatarModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAvatarModal();
+        }
+    });
+}
                 
                 // Change password button
                 const changePasswordBtn = document.getElementById('change-password-btn');
@@ -11595,78 +11978,137 @@ if (nextStep2) {
                 });
             }
 
-        // ============= AVATAR FUNCTIONALITY (CATERING BUSINESS THEME) =============
-            const avatarSeeds = [
-                'Chef', 'Gourmet', 'Bistro', 'Cuisine', 'Deluxe',
-                'Premium', 'Savory', 'Fusion', 'Epicure', 'Banquet',
-                'Feast', 'Catering', 'Culinary', 'Flavor', 'Taste',
-                'Dining', 'Plate', 'Garnish', 'Seasonal', 'Fresh'
-            ];
+        // ============= ENHANCED AVATAR FUNCTIONALITY WITH UPLOAD =============
+        const avatarSeeds = [
+            'Chef', 'Gourmet', 'Bistro', 'Cuisine', 'Deluxe',
+            'Premium', 'Savory', 'Fusion', 'Epicure', 'Banquet',
+            'Feast', 'Catering', 'Culinary', 'Flavor', 'Taste',
+            'Dining', 'Plate', 'Garnish', 'Seasonal', 'Fresh'
+        ];
 
-            function generateAvatarGrid() {
-                const grid = document.getElementById('avatar-grid');
-                if (!grid) return;
+        function generateAvatarGrid() {
+            const grid = document.getElementById('avatar-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            avatarSeeds.forEach(seed => {
+                const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
                 
-                grid.innerHTML = '';
+                const avatarDiv = document.createElement('div');
+                // REMOVED hover:scale-110 and transform
+                avatarDiv.className = 'cursor-pointer transition-all border-2 border-gray-200 hover:border-[#DC2626] rounded-lg overflow-hidden shadow-sm hover:shadow-md';
+                avatarDiv.onclick = () => selectAvatar(avatarUrl);
                 
-                avatarSeeds.forEach(seed => {
-                    const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
-                    
-                    const avatarDiv = document.createElement('div');
-                    avatarDiv.className = 'cursor-pointer hover:scale-110 transition-transform border-2 border-transparent hover:border-blue-500 rounded-lg overflow-hidden';
-                    avatarDiv.onclick = () => selectAvatar(avatarUrl);
-                    
-                    const img = document.createElement('img');
-                    img.src = avatarUrl;
-                    img.alt = `Avatar ${seed}`;
-                    img.className = 'w-full h-full object-cover';
-                    
-                    avatarDiv.appendChild(img);
-                    grid.appendChild(avatarDiv);
-                });
-            }
+                const img = document.createElement('img');
+                img.src = avatarUrl;
+                img.alt = `Avatar ${seed}`;
+                img.className = 'w-full h-full object-cover';
+                
+                avatarDiv.appendChild(img);
+                grid.appendChild(avatarDiv);
+            });
+        }
 
-            function selectAvatar(avatarUrl) {
-                fetch('save_avatar.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `avatar_url=${encodeURIComponent(avatarUrl)}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const profileAvatar = document.getElementById('profile-avatar');
-                        if (profileAvatar) profileAvatar.src = avatarUrl;
-                        closeAvatarModal();
-                        showPasswordPopup('success', 'Avatar updated successfully!');
-                    } else {
-                        showPasswordPopup('error', data.message || 'Failed to save avatar.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error saving avatar:', error);
-                    showPasswordPopup('error', 'An error occurred while saving avatar.');
-                });
-            }
+function selectAvatar(avatarUrl) {
+    fetch('save_avatar.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `avatar_url=${encodeURIComponent(avatarUrl)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const profileAvatar = document.getElementById('profile-avatar');
+            if (profileAvatar) profileAvatar.src = avatarUrl;
+            closeAvatarModal();
+            showPasswordPopup('success', 'Avatar updated successfully!');
+        } else {
+            showPasswordPopup('error', data.message || 'Failed to save avatar.');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving avatar:', error);
+        showPasswordPopup('error', 'An error occurred while saving avatar.');
+    });
+}
 
-            function openAvatarModal() {
-                const modal = document.getElementById('avatar-modal');
-                if (modal) {
-                    generateAvatarGrid();
-                    modal.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                }
-            }
+function openAvatarModal() {
+    const modal = document.getElementById('avatar-modal');
+    if (modal) {
+        generateAvatarGrid();
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
 
-            function closeAvatarModal() {
-                const modal = document.getElementById('avatar-modal');
-                if (modal) {
-                    modal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
-            }
+function closeAvatarModal() {
+    const modal = document.getElementById('avatar-modal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+}
+
+// ============= PROFILE PICTURE UPLOAD FUNCTIONALITY =============
+function uploadProfilePicture(file) {
+    // Validate file
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+        showPasswordPopup('error', 'Invalid file type. Only JPG, PNG, and GIF allowed.');
+        return;
+    }
+    
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        showPasswordPopup('error', 'File too large. Maximum size is 5MB.');
+        return;
+    }
+    
+    // Show loading state
+    const profileAvatar = document.getElementById('profile-avatar');
+    const originalSrc = profileAvatar.src;
+    
+    // Show loading spinner on avatar
+    const loadingOverlay = document.createElement('div');
+    loadingOverlay.className = 'absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center';
+    loadingOverlay.innerHTML = '<div class="loading-spinner"></div>';
+    profileAvatar.parentElement.appendChild(loadingOverlay);
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('profile_picture', file);
+    
+    // Upload
+    fetch('upload_profile_picture.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            profileAvatar.src = data.avatar_url + '?t=' + Date.now(); // Add timestamp to force reload
+            closeAvatarModal();
+            showPasswordPopup('success', 'Profile picture uploaded successfully!');
+        } else {
+            profileAvatar.src = originalSrc;
+            showPasswordPopup('error', data.message || 'Failed to upload picture.');
+        }
+    })
+    .catch(error => {
+        console.error('Error uploading picture:', error);
+        profileAvatar.src = originalSrc;
+        showPasswordPopup('error', 'An error occurred while uploading.');
+    })
+    .finally(() => {
+        // Remove loading overlay
+        if (loadingOverlay && loadingOverlay.parentElement) {
+            loadingOverlay.remove();
+        }
+    });
+}
 
             // ============= PASSWORD POPUP FUNCTIONALITY =============
             function showPasswordPopup(type, message) {
