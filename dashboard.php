@@ -142,14 +142,20 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['email'])) {
                             exit;
                         }
 
-// âœ… Step 1: Check if 2 events already overlap at this exact time (BLOCK IMMEDIATELY)
+// ✅ Step 1: Check if 2 events already overlap at this exact time (BLOCK IMMEDIATELY)
 $overlapStmt = $conn->prepare("
     SELECT COUNT(*) as overlap_count
     FROM bookings 
     WHERE event_date = ? 
     AND booking_status != 'cancelled' 
-    AND ((start_time < ? AND end_time > ?) OR (start_time < ? AND end_time > ?) OR (start_time >= ? AND end_time <= ?))
+    AND (
+        (start_time < ? AND end_time > ?) OR 
+        (start_time < ? AND end_time > ?) OR 
+        (start_time >= ? AND start_time < ?) OR
+        (end_time > ? AND end_time <= ?)
+    )
 ");
+$overlapStmt->execute([$event_date, $end_time, $start_time, $start_time, $end_time, $start_time, $end_time, $start_time, $end_time]);
 $overlapStmt->execute([$event_date, $start_time, $start_time, $end_time, $end_time, $start_time, $end_time]);
 $overlapResult = $overlapStmt->fetch();
 
@@ -162,7 +168,7 @@ if ($overlapResult['overlap_count'] >= 2) {
     exit;
 }
 
-// âœ… Step 2: If exactly 2 events exist on this date, check 4-hour gap rule
+// ✅ Step 2: If exactly 2 events exist on this date, check 4-hour gap rule
 $totalEventsStmt = $conn->prepare("SELECT COUNT(*) as total FROM bookings WHERE event_date = ? AND booking_status != 'cancelled'");
 $totalEventsStmt->execute([$event_date]);
 $totalEvents = $totalEventsStmt->fetch()['total'];
@@ -173,20 +179,22 @@ if ($totalEvents == 2) {
     $allEventsStmt->execute([$event_date]);
     $existingEvents = $allEventsStmt->fetchAll();
     
-    $newStart = strtotime("2000-01-01 $start_time");
-    $newEnd = strtotime("2000-01-01 $end_time");
+    // ⚠️ FIX: Use actual event date instead of dummy date for proper time handling
+    $newStart = strtotime("$event_date $start_time");
+    $newEnd = strtotime("$event_date $end_time");
     $fourHoursInSeconds = 4 * 3600; // 4 hours = 14400 seconds
     
     $hasValidGap = false;
     $nearestGap = PHP_INT_MAX;
     
-    foreach ($existingEvents as $event) {
-        $existingStart = strtotime("2000-01-01 " . $event['start_time']);
-        $existingEnd = strtotime("2000-01-01 " . $event['end_time']);
+ foreach ($existingEvents as $event) {
+        // ⚠️ FIX: Use actual event date for proper time comparison
+        $existingStart = strtotime("$event_date " . $event['start_time']);
+        $existingEnd = strtotime("$event_date " . $event['end_time']);
         
         // Calculate gaps (in seconds)
-        $gapBefore = $existingStart - $newEnd; // Gap between new event END and existing event START
-        $gapAfter = $newStart - $existingEnd;  // Gap between existing event END and new event START
+        $gapBefore = $existingStart - $newEnd;
+        $gapAfter = $newStart - $existingEnd;
         
         // Track the smallest gap for error message
         if ($gapBefore > 0 && $gapBefore < $nearestGap) {
@@ -399,7 +407,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
         AND booking_status != 'cancelled' 
         AND ((start_time < ? AND end_time > ?) OR (start_time < ? AND end_time > ?) OR (start_time >= ? AND end_time <= ?))
     ");
-    $overlapStmt->execute([$event_date, $start_time, $start_time, $end_time, $end_time, $start_time, $end_time]);
+$overlapStmt->execute([$event_date, $end_time, $start_time, $start_time, $end_time, $start_time, $end_time, $start_time, $end_time]);
     $overlapCount = $overlapStmt->fetch()['count'];
     
     // If 2+ events already overlap with this time, conflict immediately
@@ -451,8 +459,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_conflict') {
         $nearestGap = PHP_INT_MAX;
         
         foreach ($existingEvents as $event) {
-            $existingStart = strtotime("2000-01-01 " . $event['start_time']);
-            $existingEnd = strtotime("2000-01-01 " . $event['end_time']);
+        $existingStart = strtotime("$event_date " . $event['start_time']);
+        $existingEnd = strtotime("$event_date " . $event['end_time']);
             
             $gapBefore = $existingStart - $newEnd;
             $gapAfter = $newStart - $existingEnd;
