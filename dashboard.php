@@ -1009,11 +1009,170 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
             <!-- Poppins Font -->
             <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
             <style>
+ 
+
+
+
+        /* Root variables for light and dark themes */
+        :root {
+            --bg-primary: #f3f4f6;
+            --bg-secondary: #ffffff;
+            --bg-gradient-start: #DC2626;
+            --bg-gradient-end: #B91C1C;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --input-bg: #ffffff;
+            --sidebar-bg: #e5e7eb;
+            --calendar-bg: #ffffff;
+            --modal-bg: #ffffff;
+            --table-bg: #ffffff;
+            --hover-bg: #f9fafb;
+        }
+
+        /* Dark mode variables - WALANG PUTI! */
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #282828;
+            --bg-gradient-start: #DC2626;
+            --bg-gradient-end: #991B1B;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a3a3a3;
+            --border-color: #3d3d3d;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --card-bg: #282828;
+            --input-bg: #1f1f1f;
+            --sidebar-bg: #282828;
+            --calendar-bg: #282828;
+            --modal-bg: #282828;
+            --table-bg: #282828;
+            --hover-bg: #333333;
+        }
+
+            /* Smooth transitions for all elements */
+            * {
+                font-family: 'Poppins', sans-serif;
+                transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* Body & main backgrounds */
+            body {
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+            }
+
+            main {
+                background-color: var(--bg-primary);
+            }
+
+            /* Dark mode animation overlay */
+            .dark-mode-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle at center, 
+                            rgba(153, 27, 27, 0.95) 0%, 
+                            rgba(15, 23, 42, 0.98) 100%);
+                z-index: 99999;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .dark-mode-overlay.active {
+                opacity: 1;
+            }
+
+            /* Dark mode toggle button styles */
+            #toggle-darkmode {
+                position: relative;
+                overflow: hidden;
+            }
+
+            #toggle-darkmode::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+                transform: translate(-50%, -50%);
+                transition: width 0.6s ease, height 0.6s ease;
+            }
+
+            #toggle-darkmode:hover::before {
+                width: 300px;
+                height: 300px;
+            }
+
+            /* Card backgrounds */
+            .bg-white {
+                background-color: var(--card-bg) !important;
+            }
+
+            /* Text colors */
+            .text-gray-800,
+            .text-gray-900 {
+                color: var(--text-primary) !important;
+            }
+
+            .text-gray-600,
+            .text-gray-700 {
+                color: var(--text-secondary) !important;
+            }
+
+            /* Border colors */
+            .border-gray-200,
+            .border-gray-300 {
+                border-color: var(--border-color) !important;
+            }
+
+            /* Input backgrounds */
+            input:not([type="checkbox"]):not([type="radio"]),
+            select,
+            textarea {
+                background-color: var(--input-bg) !important;
+                color: var(--text-primary) !important;
+                border-color: var(--border-color) !important;
+            }
+
+            input::placeholder,
+            textarea::placeholder {
+                color: var(--text-secondary) !important;
+            }
+
+            /* Sidebar */
+            aside#sidebar {
+                background-color: var(--sidebar-bg) !important;
+            }
+
+            /* Calendar */
+            .calendar-day {
+                background-color: var(--calendar-bg) !important;
+            }
+
+            /* Shadows */
+            .shadow-lg,
+            .shadow-xl,
+            .shadow-md {
+                box-shadow: 0 10px 15px -3px var(--shadow), 
+                            0 4px 6px -2px var(--shadow) !important;
+            }
+
             /* Global Styles */
             * {
                 font-family: 'Poppins', sans-serif;
             }
-
+            
             /* Navigation Styles */
             .hover-nav:hover {
                 background-color: #DC2626!important;
@@ -4242,78 +4401,742 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
     }
 }
 
-            </style>
-            </head>
-            <body class="bg-gray-100">
+/* Calendar Loading Animation */
+#calendar-loading {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="lg:hidden fixed top-4 left-4 z-30 text-white p-2 rounded-lg shadow-lg" style="background-color:#DC2626;">
-                <i class="fas fa-bars w-6 h-6"></i>
-            </button>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
-            <!-- Backdrop -->
-            <div id="backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden lg:hidden"></div>
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
 
-            <!-- Sidebar -->
-            <aside id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-gray-200 text-gray-800 flex flex-col justify-between rounded-r-xl z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
-                style="box-shadow: 6px 0 12px rgba(0, 0, 0, 0.2);">
-                <div>
-                    <div class="p-6 flex flex-col items-center border-b border-gray-300 shadow-md">
-                        <img src="logo/logo-border.png" alt="Logo" class="w-26 h-24 rounded-full object-cover mb-1">
-                        <h1 class="text-x6 font-bold text-center">Zaf's Kitchen</h1>
+/* Mobile responsive */
+@media (max-width: 768px) {
+    #calendar-loading {
+        min-height: 300px;
+    }
+    
+    #calendar-loading .w-20.h-20 {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    
+    #calendar-loading i {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* ========== BOOKING RECEIPT MODAL - MOBILE RESPONSIVE FIX ========== */
+@media (max-width: 768px) {
+    /* Preview Modal Container - Proper height constraint */
+    #preview-modal {
+        padding: 0 !important;
+        align-items: flex-start !important;
+        overflow: hidden !important;
+    }
+    
+    #preview-modal > div:first-child {
+        max-height: 90vh !important;
+        margin: 0.5rem auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: calc(100% - 1rem) !important;
+        overflow: hidden !important;
+    }
+    
+    #preview-modal .bg-white.rounded-lg.shadow-xl {
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 90vh !important;
+        overflow: hidden !important;
+    }
+    
+    /* Modal Header - FIXED AT TOP */
+    #preview-modal .p-6.border-b,
+    #preview-modal .px-4.py-3.border-b {
+        padding: 0.5rem 0.75rem !important;
+        flex-shrink: 0 !important;
+        background: linear-gradient(to right, #DC2626, #B91C1C) !important;
+        border-bottom: none !important;
+        min-height: auto !important;
+    }
+    
+    #preview-modal .flex.justify-between.items-start {
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+    
+    #preview-modal .flex-1 h3 {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.1rem !important;
+        line-height: 1.2 !important;
+        color: white !important;
+    }
+    
+    #preview-modal .flex-1 p {
+        font-size: 0.6rem !important;
+        line-height: 1.2 !important;
+        color: white !important;
+    }
+    
+    /* Close Button */
+    #close-preview-modal {
+        padding: 0.25rem !important;
+        flex-shrink: 0 !important;
+        color: white !important;
+    }
+    
+    #close-preview-modal:hover {
+        color: #f3f4f6 !important;
+    }
+    
+    #close-preview-modal i {
+        font-size: 1rem !important;
+    }
+    
+    /* Preview Content - SCROLLABLE MIDDLE SECTION WITH FIXED HEIGHT */
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        padding: 0.75rem !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        flex: 1 1 auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-height: calc(90vh - 120px) !important;
+        min-height: 200px !important;
+    }
+    
+    /* Header Section */
+    #preview-content .text-center.border-b {
+        padding-bottom: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content img {
+        width: 40px !important;
+        height: 40px !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content h1 {
+        font-size: 0.8rem !important;
+        margin-bottom: 0.15rem !important;
+        font-weight: 600 !important;
+    }
+    
+    #preview-content .text-center p {
+        font-size: 0.55rem !important;
+        margin-top: 0.1rem !important;
+    }
+    
+    /* ✅ RECEIPT NO. & DATE ISSUED - SAME LINE (2 COLUMNS) */
+    #preview-content .bg-green-50.border-2.border-green-200 .grid.grid-cols-2,
+    #preview-content .border-2.border-yellow-500 .grid.grid-cols-2 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #preview-content .bg-green-50 .grid > div,
+    #preview-content .border-2.border-yellow-500 .grid > div {
+        text-align: center !important;
+    }
+    
+    #preview-content .bg-green-50 .grid p,
+    #preview-content .border-2.border-yellow-500 .grid p {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    #preview-content .bg-green-50 .grid .text-lg,
+    #preview-content .border-2.border-yellow-500 .grid .text-lg {
+        font-size: 0.75rem !important;
+    }
+    
+    /* ✅ PAYMENT RECEIVED CONFIRMATION - CENTER, BELOW GRID */
+    #preview-content .bg-green-50 .mt-3.pt-3,
+    #preview-content .border-2.border-yellow-500 .mt-2 {
+        margin-top: 0.5rem !important;
+        padding-top: 0.5rem !important;
+        border-top: 1px solid rgba(34, 197, 94, 0.3) !important;
+        text-align: center !important;
+    }
+    
+    #preview-content .bg-green-50 .text-sm.text-green-700,
+    #preview-content .border-2.border-yellow-500 .text-center p {
+        font-size: 0.6rem !important;
+        font-weight: 600 !important;
+        margin: 0 !important;
+    }
+    
+    /* Status Badges */
+    #preview-content .flex.justify-center.gap-4 {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        flex-wrap: wrap !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #preview-content .flex.justify-center .flex.items-center {
+        padding: 0.3rem 0.5rem !important;
+        font-size: 0.55rem !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    #preview-content .flex.justify-center i {
+        font-size: 0.6rem !important;
+    }
+    
+    /* Customer & Event Information Boxes */
+    #preview-content .border-2.border-gray-200 {
+        padding: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    #preview-content .border-2 h3 {
+        font-size: 0.65rem !important;
+        margin-bottom: 0.4rem !important;
+        padding-bottom: 0.3rem !important;
+    }
+    
+    #preview-content .border-2 h3 i {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .border-2 .grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 0.4rem !important;
+    }
+    
+    #preview-content .border-2 .grid > div {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+    
+    #preview-content .border-2 .grid p.text-xs {
+        font-size: 0.55rem !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    #preview-content .border-2 .grid p.font-semibold {
+        font-size: 0.6rem !important;
+        text-align: right !important;
+        word-break: break-word !important;
+    }
+    
+    /* Service Package Section */
+    #preview-content .bg-gray-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .space-y-3 {
+        gap: 0.4rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .flex.justify-between {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .text-sm {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .bg-gray-50 .font-bold,
+    #preview-content .bg-gray-50 .font-semibold {
+        font-size: 0.65rem !important;
+        text-align: right !important;
+    }
+    
+    #preview-content .bg-gray-50 .text-lg {
+        font-size: 0.75rem !important;
+    }
+    
+    /* ✅ PAYMENT SUMMARY - PAID & UNPAID - PROPER ALIGNMENT */
+    /* PAID Receipt */
+    #preview-content .border-2.border-green-500 {
+        margin-top: 0.75rem !important;
+        border-radius: 0.5rem !important;
+        overflow: hidden !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .bg-green-500 {
+        padding: 0.4rem 0.5rem !important;
+    }
+    
+    #preview-content .border-2.border-green-500 h3 {
+        font-size: 0.65rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .p-4 {
+        padding: 0.6rem !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .space-y-3 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    /* Each row in payment summary */
+    #preview-content .border-2.border-green-500 .flex.justify-between {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+        padding-bottom: 0.4rem !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .flex.justify-between span:first-child {
+        font-size: 0.6rem !important;
+        text-align: left !important;
+        flex-shrink: 0 !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .flex.justify-between span:last-child {
+        font-size: 0.65rem !important;
+        text-align: right !important;
+        white-space: nowrap !important;
+        margin-left: auto !important;
+    }
+    
+    /* Service Fee with Description */
+    #preview-content .border-2.border-green-500 .flex.justify-between.items-start {
+        align-items: flex-start !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .flex-1 {
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .text-xs {
+        font-size: 0.55rem !important;
+        line-height: 1.3 !important;
+        margin-top: 0.2rem !important;
+        word-break: break-word !important;
+    }
+    
+    /* Total Amount Price */
+    #preview-content .border-2.border-green-500 .bg-green-50 {
+        margin-left: -0.6rem !important;
+        margin-right: -0.6rem !important;
+        margin-bottom: -0.6rem !important;
+        padding: 0.5rem 0.6rem !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .text-base {
+        font-size: 0.65rem !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .text-2xl {
+        font-size: 1rem !important;
+    }
+    
+    /* UNPAID Receipt */
+    #preview-content .border-2.border-yellow-500 {
+        margin-top: 0.75rem !important;
+        border-radius: 0.5rem !important;
+        overflow: hidden !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .bg-yellow-500 {
+        padding: 0.4rem 0.5rem !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 h3 {
+        font-size: 0.65rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .bg-yellow-50 {
+        padding: 0.6rem !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .space-y-3 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+    }
+    
+    /* Each row in unpaid summary */
+    #preview-content .border-2.border-yellow-500 .flex.justify-between {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 0.75rem !important;
+        padding-bottom: 0.4rem !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .flex.justify-between span:first-child {
+        font-size: 0.6rem !important;
+        text-align: left !important;
+        flex-shrink: 0 !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .flex.justify-between span:last-child {
+        font-size: 0.65rem !important;
+        text-align: right !important;
+        white-space: nowrap !important;
+        margin-left: auto !important;
+    }
+    
+    /* Service Fee with Description - Unpaid */
+    #preview-content .border-2.border-yellow-500 .flex.justify-between.items-start {
+        align-items: flex-start !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .flex-1 {
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .text-xs {
+        font-size: 0.55rem !important;
+        line-height: 1.3 !important;
+        margin-top: 0.2rem !important;
+        word-break: break-word !important;
+    }
+    
+    /* Total Amount - Unpaid */
+    #preview-content .border-2.border-yellow-500 .bg-yellow-100 {
+        margin-left: -0.6rem !important;
+        margin-right: -0.6rem !important;
+        padding: 0.5rem 0.6rem !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .text-base {
+        font-size: 0.65rem !important;
+    }
+    
+    #preview-content .border-2.border-yellow-500 .text-2xl {
+        font-size: 1rem !important;
+    }
+    
+    /* Important Information Box */
+    #preview-content .bg-blue-50 {
+        padding: 0.5rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.4rem !important;
+    }
+    
+    #preview-content .bg-blue-50 .flex-shrink-0 i {
+        font-size: 0.7rem !important;
+        margin-top: 0.1rem !important;
+    }
+    
+    #preview-content .bg-blue-50 h4 {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #preview-content .bg-blue-50 .space-y-1 p,
+    #preview-content .bg-blue-50 ul li {
+        font-size: 0.55rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.15rem !important;
+    }
+    
+    /* Footer Section */
+    #preview-content .text-center:last-child {
+        padding-top: 0.75rem !important;
+        margin-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        border-top: 1px solid #e5e7eb !important;
+    }
+    
+    #preview-content .flex.justify-center {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+        justify-content: center !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #preview-content .flex.items-center.space-x-2 {
+        font-size: 0.55rem !important;
+    }
+    
+    #preview-content .flex.items-center.space-x-2 i {
+        font-size: 0.6rem !important;
+    }
+    
+    #preview-content .text-center:last-child p {
+        font-size: 0.55rem !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* Modal Footer - STICKY AT BOTTOM */
+    #preview-modal .bg-gray-50.p-6.border-t,
+    #preview-modal .sticky.bottom-0.px-4.py-3.border-t {
+        padding: 0.6rem 0.75rem !important;
+        flex-shrink: 0 !important;
+        background: white !important;
+        border-top: 2px solid #e5e7eb !important;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.1) !important;
+        position: relative !important;
+        margin-top: auto !important;
+        min-height: auto !important;
+        height: auto !important;
+    }
+    
+    /* Footer content wrapper */
+    #preview-modal .bg-gray-50.p-6.border-t > div,
+    #preview-modal .sticky.bottom-0.px-4.py-3.border-t > div {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+    }
+    
+    /* Info text */
+    #preview-modal .bg-gray-50 .text-sm.text-gray-600,
+    #preview-modal .sticky.bottom-0 .text-sm.text-gray-600 {
+        font-size: 0.6rem !important;
+        text-align: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        order: 1 !important;
+    }
+    
+    #preview-modal .bg-gray-50 .text-sm.text-gray-600 i,
+    #preview-modal .sticky.bottom-0 .text-sm.text-gray-600 i {
+        font-size: 0.65rem !important;
+    }
+    
+    /* Buttons container */
+    #preview-modal .bg-gray-50 .flex.gap-3,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0.5rem !important;
+        order: 2 !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Individual buttons */
+    #preview-modal .bg-gray-50 .flex.gap-3 button,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button {
+        flex: 1 !important;
+        font-size: 0.65rem !important;
+        padding: 0.6rem 0.5rem !important;
+        white-space: nowrap !important;
+        border-radius: 0.4rem !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.25rem !important;
+        min-height: 36px !important;
+        border: none !important;
+    }
+    
+    /* Print button */
+    #print-preview {
+        background-color: #2563eb !important;
+        color: white !important;
+    }
+    
+    #print-preview:hover {
+        background-color: #1d4ed8 !important;
+    }
+    
+    /* Close button */
+    #close-preview-btn {
+        background-color: #6b7280 !important;
+        color: white !important;
+    }
+    
+    #close-preview-btn:hover {
+        background-color: #4b5563 !important;
+    }
+    
+    /* Button icons */
+    #preview-modal .bg-gray-50 .flex.gap-3 button i,
+    #preview-modal .sticky.bottom-0 .flex.gap-3 button i {
+        font-size: 0.65rem !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Scrollbar styling */
+    #preview-content::-webkit-scrollbar,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar {
+        width: 4px !important;
+    }
+    
+    #preview-content::-webkit-scrollbar-track,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar-track {
+        background: #f1f5f9 !important;
+    }
+    
+    #preview-content::-webkit-scrollbar-thumb,
+    #preview-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+        background: #DC2626 !important;
+        border-radius: 2px !important;
+    }
+}
+
+/* ========== EXTRA SMALL DEVICES (< 375px) ========== */
+@media (max-width: 374px) {
+    #preview-modal > div:first-child {
+        max-height: 85vh !important;
+    }
+    
+    #preview-modal .bg-white.rounded-lg.shadow-xl {
+        max-height: 85vh !important;
+    }
+    
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        max-height: calc(85vh - 110px) !important;
+        padding: 0.5rem !important;
+    }
+    
+    #preview-content .border-2.border-green-500 .text-2xl,
+    #preview-content .border-2.border-yellow-500 .text-2xl {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* ========== LANDSCAPE MODE ========== */
+@media (max-width: 768px) and (orientation: landscape) {
+    #preview-modal > div:first-child {
+        max-height: 85vh !important;
+    }
+    
+    #preview-modal .px-4.py-3.overflow-y-auto,
+    #preview-content {
+        max-height: calc(85vh - 100px) !important;
+    }
+}
+
+/* ===== FIX: SPACING BETWEEN SECTIONS ON MOBILE ===== */
+#preview-content > * {
+    margin-bottom: 0.75rem !important;
+}
+
+/* For inner rows that are too tight */
+#preview-content .grid > div,
+#preview-content .flex.justify-between,
+#preview-content .flex.items-center,
+#preview-content .space-y-3 > * {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Ensure titles have spacing */
+#preview-content h3,
+#preview-content h4 {
+    margin-bottom: 0.4rem !important;
+}
+
+/* Extra spacing under labels */
+#preview-content p.text-xs,
+#preview-content p.font-semibold,
+#preview-content span {
+    margin-bottom: 0.2rem !important;
+}
+
+</style>
+</head>
+    <body class="bg-gray-100">
+
+    <!-- Mobile Menu Button -->
+    <button id="mobile-menu-btn" class="lg:hidden fixed top-4 left-4 z-30 text-white p-2 rounded-lg shadow-lg" style="background-color:#DC2626;">
+        <i class="fas fa-bars w-6 h-6"></i>
+    </button>
+
+    <!-- Backdrop -->
+    <div id="backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-10 hidden lg:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-gray-200 text-gray-800 flex flex-col justify-between rounded-r-xl z-20 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+        style="box-shadow: 6px 0 12px rgba(0, 0, 0, 0.2);">
+        <div>
+            <div class="p-6 flex flex-col items-center border-b border-gray-300 shadow-md">
+                <img src="logo/logo-border.png" alt="Logo" class="w-26 h-24 rounded-full object-cover mb-1">
+                <h1 class="text-x6 font-bold text-center">Zaf's Kitchen</h1>
+            </div>
+
+            <nav class="flex-1 px-4 py-6 space-y-3">
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-calendar-plus text-[1.8rem]"></i>
+                    <span class="font-semibold">Book Now</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-list-check text-[1.8rem]"></i>
+                    <span class="font-semibold">My Bookings</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-utensils text-[1.8rem]"></i>
+                    <span class="font-semibold">Menu Packages</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-image text-[1.8rem]"></i>
+                    <span class="font-semibold">Gallery</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-calendar-check text-[1.8rem]"></i>
+                    <span class="font-semibold">Available Schedule</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-user-cog text-[1.8rem]"></i>
+                    <span class="font-semibold">Profile Settings</span>
+                </a>
+                <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
+                    <i class="fas fa-circle-info text-[1.8rem]"></i>
+                    <span class="font-semibold">About Us</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="lg:ml-64 p-6 lg:p-10 pt-16 lg:pt-10 min-h-screen">
+
+
+    <!-- Enhanced Mobile-Friendly Dashboard Section -->
+    <section id="section-dashboard" class="px-2 md:px-4">
+        <div class="mb-8">
+            <!-- Welcome Header with Animation -->
+            <div class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] rounded-xl shadow-lg p-4 md:p-8 mb-4 md:mb-6 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl md:text-3xl font-bold mb-1 md:mb-2">Welcome back, <span id="dashboard-user-name"><?php echo htmlspecialchars($_SESSION['name'] ?? 'User'); ?></span>!</h2>
+                        <p class="text-xs md:text-lg opacity-90">Let's make your next event unforgettable</p>
                     </div>
-
-                    <nav class="flex-1 px-4 py-6 space-y-3">
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-calendar-plus text-[1.8rem]"></i>
-                            <span class="font-semibold">Book Now</span>
-                        </a>
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-list-check text-[1.8rem]"></i>
-                            <span class="font-semibold">My Bookings</span>
-                        </a>
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-utensils text-[1.8rem]"></i>
-                            <span class="font-semibold">Menu Packages</span>
-                        </a>
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-image text-[1.8rem]"></i>
-                            <span class="font-semibold">Gallery</span>
-                        </a>
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-calendar-check text-[1.8rem]"></i>
-                            <span class="font-semibold">Available Schedule</span>
-                        </a>
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-user-cog text-[1.8rem]"></i>
-                            <span class="font-semibold">Profile Settings</span>
-                        </a>
-                        <a href="#" class="flex items-center gap-4 py-2 px-3 rounded hover-nav transition">
-                            <i class="fas fa-circle-info text-[1.8rem]"></i>
-                            <span class="font-semibold">About Us</span>
-                        </a>
-                    </nav>
-                </div>
-            </aside>
-
-            <main class="lg:ml-64 p-6 lg:p-10 pt-16 lg:pt-10 min-h-screen">
-
-
-<!-- Enhanced Mobile-Friendly Dashboard Section -->
-<section id="section-dashboard" class="px-2 md:px-4">
-    <div class="mb-8">
-        <!-- Welcome Header with Animation -->
-        <div class="bg-gradient-to-r from-[#DC2626] to-[#B91C1C] rounded-xl shadow-lg p-4 md:p-8 mb-4 md:mb-6 text-white">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-xl md:text-3xl font-bold mb-1 md:mb-2">Welcome back, <span id="dashboard-user-name"><?php echo htmlspecialchars($_SESSION['name'] ?? 'User'); ?></span>!</h2>
-                    <p class="text-xs md:text-lg opacity-90">Let's make your next event unforgettable</p>
-                </div>
-                <div class="hidden md:block">
-                    <img src="logo/logo-border.png" alt="Zaf's Kitchen" class="w-20 h-20 md:w-24 md:h-24 animate-pulse">
+                    <div class="hidden md:block">
+                        <img src="logo/logo-border.png" alt="Zaf's Kitchen" class="w-20 h-20 md:w-24 md:h-24 animate-pulse">
+                    </div>
                 </div>
             </div>
-        </div>
 
         <!-- Quick Statistics Cards - SUPER COMPACT MOBILE -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 mb-4 md:mb-6">
@@ -4993,23 +5816,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                                 <div class="space-y-2">
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="lechon_kawali" data-price="50" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Lechon Kawali</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱50</span>
+                                                        <span class="flex-1">Example</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1150</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="chicken_adobo" data-price="30" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Chicken Adobo</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱30</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1130</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="beef_caldereta" data-price="75" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Beef Caldereta</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱75</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1175</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_main[]" value="sweet_sour_fish" data-price="60" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Sweet & Sour Fish</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱60</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1160</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -5019,23 +5842,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                                 <div class="space-y-2">
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="pancit_canton" data-price="25" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Pancit Canton</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱25</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1125</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="fried_rice" data-price="20" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Fried Rice</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱20</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1120</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="lumpiang_shanghai" data-price="35" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Lumpiang Shanghai</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱35</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1135</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_side[]" value="mixed_vegetables" data-price="15" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Mixed Vegetables</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱15</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1115</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -5045,23 +5868,23 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                                                 <div class="space-y-2">
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="leche_flan" data-price="40" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Leche Flan</span>
+                                                        <span class="flex-1">Exampe</span>
                                                         <span class="text-[#DC2626] font-medium">+₱2240</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="halo_halo" data-price="45" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Halo-Halo</span>
+                                                        <span class="flex-1">Exampe</span>
                                                         <span class="text-[#DC2626] font-medium">+₱45</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="buko_pie" data-price="55" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Buko Pie</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱55</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1155</span>
                                                     </label>
                                                     <label class="flex items-center hover:bg-gray-50 p-2 rounded transition-colors">
                                                         <input type="checkbox" name="menu_dessert[]" value="ice_cream" data-price="30" class="mr-3 text-[#DC2626] w-4 h-4">
-                                                        <span class="flex-1">Ice Cream</span>
-                                                        <span class="text-[#DC2626] font-medium">+₱30</span>
+                                                        <span class="flex-1">Exampe</span>
+                                                        <span class="text-[#DC2626] font-medium">+₱1130</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -5183,6 +6006,18 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_event_status') {
                         </div>
                     </div>
                 </section>
+
+                <!-- Loading Screen for Calendar -->
+<div id="calendar-loading" class="hidden">
+    <div class="flex flex-col items-center justify-center py-12">
+        <div class="relative">
+            <div class="w-20 h-20 border-4 border-gray-200 border-t-[#DC2626] rounded-full animate-spin"></div>
+            <i class="fas fa-calendar-alt absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#DC2626] text-2xl"></i>
+        </div>
+        <p class="text-gray-600 mt-4 font-semibold">Loading schedule...</p>
+        <p class="text-gray-500 text-sm mt-2">Please wait</p>
+    </div>
+</div>
 
     <!-- MENU PACKAGES SECTION-->
     <section id="section-menu" class="hidden">
@@ -6240,12 +7075,15 @@ if (typeof window !== 'undefined') {
                                                 </svg>
                                                 <span class="text-gray-700">Change Password</span>
                                             </button>
-                                            <button id="toggle-darkmode" class="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-3 transition border-b border-gray-100">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                                                </svg>
-                                                <span class="text-gray-700">Dark Mode</span>
-                                            </button>
+                                           <button id="toggle-darkmode" class="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-3 transition border-b border-gray-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                            </svg>
+                                            <span class="text-gray-700" id="darkmode-text">Dark Mode</span>
+                                           </button>
+
+                                        <!-- Dark Mode Overlay Animation -->
+                                         <div class="dark-mode-overlay" id="dark-mode-overlay"></div>
                                             <button id="dropdown-signout" class="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center gap-3 rounded-b-lg transition">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -8298,17 +9136,32 @@ function showpreviewModal(booking) {
 
 content.innerHTML = `
     <div class="space-y-6">
-        <!-- Header -->
-        <div class="text-center border-b-2 border-gray-300 pb-6">
-            <div class="flex justify-center items-center mb-4">
-                <img src="logo/logo-border.png" alt="Zaf's Kitchen" class="w-24 h-24 rounded-full border-4 border-[#DC2626]">
+        <!-- Header - Centered, Smaller Logo, Text Beside Logo -->
+        <div class="border-b-2 border-gray-300 pb-6">
+            <div class="flex justify-center">
+                <div class="flex items-center gap-6">
+                    
+                    <!-- Smaller Logo -->
+                    <div class="flex-shrink-0">
+                        <img src="logo/logo.png" alt="Zaf's Kitchen" class="w-16 h-16 object-contain">
+                    </div>
+
+                    <!-- Text beside logo -->
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-1">
+                            ${booking.payment_status === 'paid' ? 'OFFICIAL RECEIPT' : 'BOOKING CONFIRMATION'}
+                        </h1>
+                        <p class="text-gray-600 text-lg font-semibold">
+                            Zaf's Kitchen Catering Services
+                        </p>
+                    </div>
+
+                </div>
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                ${booking.payment_status === 'paid' ? 'OFFICIAL RECEIPT' : 'BOOKING CONFIRMATION'}
-            </h1>
-            <p class="text-gray-600 text-sm">Professional Catering Services</p>
-            <p class="text-gray-500 text-xs mt-1">Quezon City, Metro Manila • Contact: +63 912 345 6789</p>
         </div>
+
+
+
 
         <!-- Receipt Number & Date (Only for Paid) -->
         ${booking.payment_status === 'paid' ? `
@@ -8331,15 +9184,25 @@ content.innerHTML = `
 
         <!-- Status Badges -->
         <div class="flex justify-center gap-4 mb-4">
+            <!-- Booking Status -->
             <div class="flex items-center gap-2 px-4 py-2 rounded-full ${status.class}">
                 <i class="fas ${status.icon}"></i>
                 <span class="font-semibold text-sm">${status.text}</span>
             </div>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-full ${paymentStatus.class} ${booking.payment_status !== 'paid' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' : ''}">
-                <i class="fas ${paymentStatus.icon}"></i>
-                <span class="font-semibold text-sm">${booking.payment_status !== 'paid' ? 'UNPAID' : paymentStatus.text}</span>
+
+            <!-- Payment Status (UNPAID = yellow text only) -->
+            <div class="flex items-center gap-2 px-4 py-2 rounded-full 
+                ${booking.payment_status === 'paid' ? paymentStatus.class : 'text-yellow-600'}">
+                
+                <i class="fas ${paymentStatus.icon} ${booking.payment_status !== 'paid' ? 'text-yellow-600' : ''}"></i>
+
+                <span class="font-semibold text-sm">
+                    ${booking.payment_status !== 'paid' ? 'UNPAID' : paymentStatus.text}
+                </span>
             </div>
         </div>
+
+
 
         <!-- Customer Information -->
         <div class="border-2 border-gray-200 rounded-lg p-4">
@@ -10449,25 +11312,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 setupDateInput();
             }
 
-            // Calendar functionality
-            function loadCalendar() {
-                updateCalendarTitle();
+ function loadCalendar() {
+    // Show loading screen
+    const calendarGrid = document.getElementById('calendar-grid');
+    const calendarLoading = document.getElementById('calendar-loading');
+    
+    if (calendarGrid) calendarGrid.classList.add('hidden');
+    if (calendarLoading) calendarLoading.classList.remove('hidden');
+    
+    updateCalendarTitle();
+    
+    const url = window.location.pathname + `?action=get_calendar_data&month=${currentMonth}&year=${currentYear}`;
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            calendarData = data;
+            
+            // Simulate minimum loading time for smooth UX (500ms)
+            setTimeout(() => {
+                generateCalendar();
                 
-                const url = window.location.pathname + `?action=get_calendar_data&month=${currentMonth}&year=${currentYear}`;
-                
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.json();
-                    })
-                    .then(data => {
-                        calendarData = data;
-                        generateCalendar();
-                    })
-                    .catch(error => {
-                        console.error('Error loading calendar:', error);
-                    });
+                // Hide loading, show calendar
+                if (calendarLoading) calendarLoading.classList.add('hidden');
+                if (calendarGrid) calendarGrid.classList.remove('hidden');
+            }, 500);
+        })
+        .catch(error => {
+            console.error('Error loading calendar:', error);
+            
+            // Hide loading on error
+            if (calendarLoading) {
+                calendarLoading.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-3xl mb-4"></i>
+                        <p class="text-gray-600 font-semibold">Failed to load schedule</p>
+                        <button onclick="loadCalendar()" class="mt-4 bg-[#DC2626] hover:bg-[#B91C1C] text-white px-6 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-refresh mr-2"></i>Retry
+                        </button>
+                    </div>
+                `;
             }
+        });
+}
+
+
 
             function updateCalendarTitle() {
                 const months = [
@@ -12419,7 +13311,101 @@ function uploadProfilePicture(file) {
         // ============= PERIODIC EXPIRATION CHECK =============
 
         // Check expiration every hour while page is open
-        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Ccheck every hour         
+        setInterval(checkFormDataExpiration, 60 * 60 * 1000); // Ccheck every hour   
+        
+        
+        // ========================================
+// 🌙 ANGAS NA DARK MODE WITH ANIMATION
+// ========================================
+
+// Check saved theme on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    
+    if (savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        updateDarkModeText(true);
+    }
+    
+    console.log('🌙 Dark mode initialized:', savedTheme);
+});
+
+// Dark mode toggle functionality
+const toggleDarkMode = document.getElementById('toggle-darkmode');
+if (toggleDarkMode) {
+    toggleDarkMode.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const overlay = document.getElementById('dark-mode-overlay');
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const isDark = currentTheme === 'dark';
+        
+        console.log('🌙 Toggling dark mode. Current:', currentTheme);
+        
+        // Show overlay animation
+        if (overlay) {
+            overlay.classList.add('active');
+        }
+        
+        // Wait for animation
+        setTimeout(() => {
+            // Toggle theme
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                updateDarkModeText(false);
+                console.log('☀️ Switched to light mode');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                updateDarkModeText(true);
+                console.log('🌙 Switched to dark mode');
+            }
+            
+            // Hide overlay
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+            }, 300);
+            
+        }, 300);
+        
+        // Close dropdown
+        const dropdown = document.getElementById('profile-dropdown');
+        if (dropdown) {
+            dropdown.classList.add('hidden');
+        }
+    });
+}
+
+// Update dark mode button text
+function updateDarkModeText(isDark) {
+    const text = document.getElementById('darkmode-text');
+    if (text) {
+        text.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    }
+}
+
+// Profile menu button toggle
+const profileMenuBtn = document.getElementById('profile-menu-btn');
+const profileDropdown = document.getElementById('profile-dropdown');
+
+if (profileMenuBtn && profileDropdown) {
+    profileMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('hidden');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!profileMenuBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+            profileDropdown.classList.add('hidden');
+        }
+    });
+}
+
+console.log('✅ Dark mode functionality loaded');
 </script>
 </body>
 </html>
